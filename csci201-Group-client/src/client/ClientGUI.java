@@ -80,6 +80,7 @@ public class ClientGUI extends JFrame implements Serializable {
 		return chatMessage;
 	}
 	
+	
 	public boolean sendMessage(){
 		return sendMessage;
 	}
