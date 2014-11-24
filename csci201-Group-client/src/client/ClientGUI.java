@@ -64,7 +64,7 @@ public class ClientGUI extends JFrame implements Serializable {
 		System.out.println("Creating chat window.");
 		createAndShowGUI();
 		sendMessage = false;
-		// Configure KeyListener for keyboard
+		//Configure KeyListener for keyboard
 		KeyboardFocusManager.getCurrentKeyboardFocusManager()
 		  .addKeyEventDispatcher(new KeyEventDispatcher() {
 		      @Override
