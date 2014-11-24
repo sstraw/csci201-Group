@@ -64,7 +64,6 @@ public class Client extends Thread {
 		} catch (IOException | InterruptedException ioe) {
 			System.out.println("ioe in ChatClient: " + ioe.getMessage());
 		}
-		
 	}
 	
 	void setLevel(int level) {

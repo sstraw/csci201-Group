@@ -91,7 +91,7 @@ public class ClientGUI extends JFrame implements Serializable {
 	}
 	public void createAndShowGUI(){
 		setSize(750, 700);
-		setLocation(250, 25);
+		setLocation(250, 25); 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 		
