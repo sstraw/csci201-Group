@@ -15,14 +15,29 @@ public class Server implements Runnable{
 	private ReentrantLock lock = new ReentrantLock();
 	private Condition newLevel = lock.newCondition();
 	private Vector<ServerThread> playerThreads;
+	private Vector<ChatThread> ctVector = new Vector<ChatThread>();
 	private ServerSocket serversocket;
 	private int gamestate;
+	private Socket s;
 
 	public Server(){
 		playerThreads = new Vector<ServerThread>(4);
 		gamestate = Server.WAITINGROOM;
 		try {
 			this.serversocket = new ServerSocket(55555);
+			
+			// My test chat server had this code here instead of in run,
+			// so if it doesn't work in run(), we can try uncommenting this.
+			/*while(true){
+				System.out.println("Waiting for connections...");
+				s = serversocket.accept();
+				System.out.println("Connection from " + s.getInetAddress());
+				if(s != null){
+					ChatThread ct = new ChatThread(s, this);
+					ctVector.add(ct);
+					ct.start();
+				}
+			}*/
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -60,6 +75,16 @@ public class Server implements Runnable{
 		return lock;
 	}
 	
+	public void sendMessage(String message, ChatThread ct) {
+		for(ChatThread c : ctVector) {
+			c.send(message);
+		}
+	}
+	
+	public void removeChatThread(ChatThread ct) {
+		ctVector.remove(ct);
+	}
+	
 	public void run() {
 		//Main server loop to receive new connections?
 		while (true){
@@ -67,6 +92,12 @@ public class Server implements Runnable{
 				Socket s = serversocket.accept();
 				if (playerThreads.size() < 4){
 					playerThreads.add(new ServerThread(this, s));
+				}
+				// If ChatThread doesn't work here, uncomment the code in the constructor
+				if(s != null){
+					ChatThread ct = new ChatThread(s, this);
+					ctVector.add(ct);
+					ct.start();
 				}
 				else{
 					s.close();

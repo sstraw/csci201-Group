@@ -1,7 +1,5 @@
 package client;
 
-//import ChatWindow;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -32,17 +30,25 @@ import javax.swing.event.DocumentListener;
 
 public class Client extends Thread {
 	
-	private boolean waitingRoom = true;
+	ArrayList<JPanel> levelOneDashboards; //will hold hardcoded set of Dashboards for each level
+	ArrayList<JPanel> levelTwoDashboards;
+	ArrayList<JPanel> levelThreeDashboards;
+	ArrayList<JPanel> levelFourDashboards;
+	ArrayList<JPanel> levelFiveDashboards;
 	
+	private int currentLevel;
+	private boolean waitingRoom = true;
 	
 	// Chat variables
 	private static Semaphore semaphore = new Semaphore(4);
 	private Socket s;
 	private PrintWriter pw;
 	private BufferedReader br;
+
 	private JTextArea dashCommand = new JTextArea();
 	private ClientGUI clientGUI = new ClientGUI( dashCommand );
 	
+
 	
 	public Client(String hostname, int port) {
 		
@@ -85,13 +91,23 @@ public class Client extends Thread {
 		}
 	}
 	
-	void setLevel(int level) {
+	// Still have to figure out how we're sending the dashboards 
+		// to the clientGUIs.
+		/*
+		void chooseDashboard(int index) {  //
+			if (currentLevel==1) { 
+				currentDashboard = levelOneDashboards.get(index);
+			} else if (currentLevel==2) {
+				currentDashboard = levelTwoDashboards.get(index);
+			} else if (currentLevel==3) {
+				currentDashboard = levelThreeDashboards.get(index);
+			} else if (currentLevel==4) {
+				currentDashboard = levelFourDashboards.get(index);
+			} else if (currentLevel==5) {
+				currentDashboard = levelFiveDashboards.get(index);
+			}
+		}*/
 		
-	}
-	
-	/*
-	
-	*/
 	
 	public void run() {
 		try {
@@ -107,8 +123,7 @@ public class Client extends Thread {
 		} catch (IOException | InterruptedException ioe) {
 			System.out.println("ioe in run: " + ioe.getMessage());
 		}
-}
-
+	}
 	
 	public static void main(String [] args) {
 		// We will need to get the IP
@@ -129,8 +144,7 @@ public class Client extends Thread {
 	    catch (IllegalAccessException e) {
 	       // handle exception
 	    }
-		Client cl = new Client("10.123.43.191", 10000);
-		
+		new Client("10.123.43.191", 10000);
 	}
 	
 }
