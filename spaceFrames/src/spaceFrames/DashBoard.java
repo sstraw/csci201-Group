@@ -26,8 +26,6 @@ import javax.swing.JToggleButton;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-
-
 public class DashBoard extends JFrame{
 	
 	private JProgressBar progressBar;
@@ -38,8 +36,6 @@ public class DashBoard extends JFrame{
 	 
 	class missed extends Thread {
 		
-		
-		
 		public missed(){
 			time = 100;
 		}
@@ -47,7 +43,6 @@ public class DashBoard extends JFrame{
 	    public void run() {
 	    	while ( true){
 	    		//System.out.println("Time's up!");
-	    		
 	    		
 	    		progressBar.setValue( time);
 	    		
@@ -81,7 +76,6 @@ public class DashBoard extends JFrame{
 	    			time--;
 	    		}
 	    		
-	    		
 	    	}
 	    }
 	  }
@@ -94,7 +88,7 @@ public class DashBoard extends JFrame{
 		JPanel mainLayout = new JPanel();
 		mainLayout.setLayout( new BorderLayout() );
 		
-		// panel that contains everything other than text 
+		//  panel that contains everything other than text 
 		JPanel gamePanel = new JPanel();
 		gamePanel.setLayout( new BoxLayout( gamePanel , BoxLayout.PAGE_AXIS) );
 		//gamePanel.add(Box.createRigidArea(new Dimension(0, 25)));
@@ -198,11 +192,14 @@ public class DashBoard extends JFrame{
 		db1.add( sec2 );
 		db1.add(Box.createRigidArea(new Dimension(10, 0)));
 		
+<<<<<<< HEAD
 		
 		
 		
 		
 		//bottom row
+=======
+>>>>>>> branch 'master' of https://github.com/sstraw/csci201-Group
 		JPanel db2 = new JPanel();
 		db2.setLayout( new BoxLayout( db2 , BoxLayout.LINE_AXIS) );
 		db2.setBackground( Color.black);
@@ -213,7 +210,6 @@ public class DashBoard extends JFrame{
 		db2.add( sec3 );
 		sec3.setLayout( new BoxLayout( sec3 , BoxLayout.PAGE_AXIS) );
 		sec3.setBorder( BorderFactory.createLineBorder(Color.black) );
-		
 		
 		sec3.add(Box.createRigidArea(new Dimension(355, 30)));
 		
@@ -230,13 +226,11 @@ public class DashBoard extends JFrame{
 		slider.setMaximumSize( new Dimension(250, 35));
 		sec3.add(Box.createRigidArea(new Dimension(0, 90)));
 		
-		
 		db2.add(Box.createRigidArea(new Dimension(12, 0)));
 		JPanel sec4 = new JPanel();
 		db2.add( sec4 );
 		sec4.setLayout( new BoxLayout( sec4 , BoxLayout.PAGE_AXIS) );
 		sec4.setBorder( BorderFactory.createLineBorder(Color.black) );
-		
 		
 		sec4.add(Box.createRigidArea(new Dimension(155, 30)));
 		JLabel beamText = new JLabel("SPECTROBEAM");
@@ -245,8 +239,6 @@ public class DashBoard extends JFrame{
 		sec4.add( beamText );
 		
 		mainLayout.add( gamePanel, BorderLayout.CENTER );
-		
-		
 		
 		//chatlayout
 		JPanel chatPanel = new JPanel();
@@ -269,9 +261,7 @@ public class DashBoard extends JFrame{
 		setVisible(true);
 		
        
-		missesLeft = 10;
-		
-		
+		missesLeft = 10;	
 	}
 	
 	public static void main(String [] args) {
@@ -295,9 +285,6 @@ public class DashBoard extends JFrame{
 	    }
 		new DashBoard();
 	}
-	
-	
-
 	
 }
 
