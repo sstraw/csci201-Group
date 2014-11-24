@@ -42,7 +42,7 @@ public class ChatThread extends Thread {
 			}
 		} catch (IOException | InterruptedException ioe) {
 			server.removeChatThread(this);
-			System.out.println("Client disconnected from " + s.getInetAddress());
+			//System.out.println("Client disconnected from " + s.getInetAddress());
 		}
 	}
 }
