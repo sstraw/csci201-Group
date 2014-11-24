@@ -114,17 +114,19 @@ public class Dashboard1_1 extends JPanel{
 		beamText.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		sec4.add( beamText );
 		sec4.add(Box.createRigidArea(new Dimension(0, 30)));
-		final JToggleButton beamcable = new JToggleButton("OFF");
-		sec4.add(beamcable);
-		beamcable.setAlignmentX( Component.CENTER_ALIGNMENT );
-		beamcable.setMaximumSize( new Dimension(100, 135));
-		beamcable.addActionListener(new ActionListener() {
+		final JToggleButton beamswitch = new JToggleButton("OFF");
+		sec4.add(beamswitch);
+		beamswitch.setAlignmentX( Component.CENTER_ALIGNMENT );
+		beamswitch.setMaximumSize( new Dimension(100, 135));
+		beamswitch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				if( beamcable.getText().equals("OFF")){
-					beamcable.setText("ON");
+				if( beamswitch.getText().equals("OFF")){
+					beamswitch.setText("ON");
+					System.out.println("SPECTROBEAM SET TO ON");
 				}
 				else{
-					beamcable.setText("ON");
+					beamswitch.setText("OFF");
+					System.out.println("SPECTROBEAM SET TO OFF");
 				}
 			}
 		});
