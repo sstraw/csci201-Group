@@ -1,7 +1,5 @@
 package client;
 
-import ChatWindow;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -70,6 +68,9 @@ public class Client extends Thread {
 		
 	}
 	
+	// Still have to figure out how we're sending the dashboards 
+	// to the clientGUIs.
+	/*
 	void chooseDashboard(int index) {  //
 		if (currentLevel==1) { 
 			currentDashboard = levelOneDashboards.get(index);
@@ -82,7 +83,7 @@ public class Client extends Thread {
 		} else if (currentLevel==5) {
 			currentDashboard = levelFiveDashboards.get(index);
 		}
-	}
+	}*/
 	
 	public void run() {
 		try {
@@ -98,9 +99,8 @@ public class Client extends Thread {
 		} catch (IOException | InterruptedException ioe) {
 			System.out.println("ioe in run: " + ioe.getMessage());
 		}
-}
+	}
 
-	
 	public static void main(String [] args) {
 		// We will need to get the IP
 		Client cl = new Client("10.123.43.191", 10000);
