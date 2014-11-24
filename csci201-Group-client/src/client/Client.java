@@ -27,6 +27,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class Client extends Thread {
 	
@@ -38,9 +40,29 @@ public class Client extends Thread {
 	private Socket s;
 	private PrintWriter pw;
 	private BufferedReader br;
-	private ClientGUI clientGUI = new ClientGUI();
+	private JTextArea dashCommand = new JTextArea();
+	private ClientGUI clientGUI = new ClientGUI( dashCommand );
+	
 	
 	public Client(String hostname, int port) {
+		
+		
+		//this event gets called whenever an action is done on the dashboard
+		dashCommand.getDocument().addDocumentListener(new DocumentListener() {
+
+		    public void removeUpdate(DocumentEvent e) {
+		       // System.out.println("removeUpdate");
+		    }
+
+		    public void insertUpdate(DocumentEvent e) {
+		    	System.out.println( dashCommand.getText() );
+		    }
+
+		    public void changedUpdate(DocumentEvent e) {
+		       // System.out.println("changedUpdate");
+		    }
+		});
+		
 		// Establish connection to server
 		try {
 			s = new Socket(hostname, port);

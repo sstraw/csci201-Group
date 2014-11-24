@@ -55,8 +55,12 @@ public class ClientGUI extends JFrame implements Serializable {
 	private String message = "";
 	private boolean sendMessage;
 	private JPanel dashboard; 
+	private JTextArea dashCommand;
 	
-	public ClientGUI(){
+	public ClientGUI( JTextArea d){
+		
+		dashCommand = d;
+		
 		System.out.println("Creating chat window.");
 		createAndShowGUI();
 		sendMessage = false;
@@ -138,7 +142,7 @@ public class ClientGUI extends JFrame implements Serializable {
 		progressBar.setForeground( Color.GREEN);			
 		gamePanel.add( progressBar );
 		
-		currentDashboard = new Dashboard1_1();
+		currentDashboard = new Dashboard1_1( dashCommand );
 		currentDashboard.setLayout(new GridLayout(2 ,1));
 		gamePanel.add(currentDashboard);		
 		mainLayout.add(gamePanel, BorderLayout.CENTER);

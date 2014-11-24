@@ -7,11 +7,19 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+
+
+
 public class Dashboard1_1 extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
+	
+	private JTextArea command;
+	
 
-	public Dashboard1_1(){
+	public Dashboard1_1( JTextArea d ){
+		
+		command = d;
 		
 		this.setLayout( new GridLayout(2 ,1) );
 		
@@ -39,6 +47,7 @@ public class Dashboard1_1 extends JPanel{
 		hot.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				System.out.println("INDUCTION IRON SET TO HOT");
+				command.setText("test");
 			}
 		});
 		
