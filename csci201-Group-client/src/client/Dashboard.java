@@ -1,5 +1,9 @@
 package client;
 
-public class Dashboard {
+import javax.swing.JPanel;
+
+public class Dashboard extends JPanel{
+	
+	
 
 }
