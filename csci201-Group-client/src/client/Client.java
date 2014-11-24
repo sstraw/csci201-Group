@@ -22,7 +22,24 @@ public class Client extends Thread {
 				
 	}
 	
+	void setLevel(int level) {
+		
+	}
 	
+	void chooseDashboard(int index) {  //
+		if (currentLevel==1) {
+			currentDashboard = levelOneDashboards.get(index);
+		} else if (currentLevel==2) {
+			currentDashboard = levelTwoDashboards.get(index);
+		} else if (currentLevel==3) {
+			currentDashboard = levelThreeDashboards.get(index);
+		} else if (currentLevel==4) {
+			currentDashboard = levelFourDashboards.get(index);
+		} else if (currentLevel==5) {
+			currentDashboard = levelFiveDashboards.get(index);
+		}
+		
+	}
 	
 	
 }
