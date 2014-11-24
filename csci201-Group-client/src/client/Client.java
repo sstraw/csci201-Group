@@ -82,7 +82,6 @@ public class Client extends Thread {
 		} else if (currentLevel==5) {
 			currentDashboard = levelFiveDashboards.get(index);
 		}
-		
 	}
 	
 	public void run() {

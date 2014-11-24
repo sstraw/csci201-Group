@@ -44,7 +44,7 @@ public class ClientGUI extends JFrame implements Serializable {
 	private JTextArea playerChat;
 	private String message = "";
 	private boolean sendMessage;
-	private JPanel dashboard;
+	private JPanel dashboard; 
 	
 	public ClientGUI(){
 		System.out.println("Creating chat window.");
