@@ -1,5 +1,7 @@
 package client;
 
+import ChatWindow;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -12,6 +14,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.Semaphore;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -20,6 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class Client extends Thread {
@@ -32,81 +36,34 @@ public class Client extends Thread {
 	private int currentLevel;
 	private boolean waitingRoom = true;
 	
-	private JPanel currentDashboard;
-	private JProgressBar progressBar;
-	private JLabel shipAnimation;
-	private ImageIcon shipIcon;
-
+	// Chat variables
+	private static Semaphore semaphore = new Semaphore(4);
+	private Socket s;
+	private PrintWriter pw;
+	private BufferedReader br;
+	private ClientGUI clientGUI = new ClientGUI();
 	
-	public Client() {
-		//establish connection with server
-		initializeGUI();
-		//initialize GUI components
-
-		//display GUI
-	}
-	
-	private void initializeGUI() {
-		JFrame gameFrame = new JFrame();
-		gameFrame.setSize(750, 700);
-		gameFrame.setLocation(250, 25);
-		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		JPanel mainLayout = new JPanel();
-		mainLayout.setLayout(new BorderLayout());
-		
-		//panel that contains everything other than text 
-		JPanel gamePanel = new JPanel();
-		gamePanel.setLayout(new BoxLayout( gamePanel , BoxLayout.PAGE_AXIS));
-		//gamePanel.add(Box.createRigidArea(new Dimension(0, 25)));
-		
-		shipAnimation = new JLabel();
-		JPanel shipPanel = new JPanel();
-		shipPanel.setLayout(new GridLayout (1,1));
-		shipPanel.setMaximumSize( new Dimension (550, 100));
-		shipAnimation.setMinimumSize( new Dimension(550, 100));
-		shipAnimation.setAlignmentX(Component.LEFT_ALIGNMENT);
-		shipIcon = new ImageIcon("ShipImages/ship" + 9 + ".jpg");
-		shipAnimation.setIcon(shipIcon);
-		shipAnimation.setIcon(shipIcon);
-		shipAnimation.setBorder( BorderFactory.createLineBorder(Color.black) );
-		shipPanel.add(shipAnimation);
-		gamePanel.add(shipPanel);
-		
-		//text field showing the recieved instruction
-		JTextField instruction = new JTextField("INSTRUCTIONS GO HERE");
-		gamePanel.add( instruction );
-		instruction.setMaximumSize( new Dimension (550, 50));
-		instruction.setEditable(false);	
-		instruction.setHorizontalAlignment(JTextField.CENTER);
-		
-		//progress bar
-		progressBar = new JProgressBar(0, 100);
-		progressBar.setValue(100);
-		progressBar.setForeground( Color.GREEN);			
-		gamePanel.add( progressBar );
-		
-		currentDashboard = new Dashboard1_1();
-		currentDashboard.setLayout(new GridLayout(2 ,1));
-		gamePanel.add(currentDashboard);		
-		mainLayout.add(gamePanel, BorderLayout.CENTER);
-		
-		//Chat Panel
-		JPanel chatPanel = new JPanel();
-		chatPanel.setLayout(new GridLayout(1 ,1));
-		chatPanel.setPreferredSize( new Dimension(200, 700));
-		mainLayout.add(chatPanel, BorderLayout.EAST);
-		chatPanel.setBackground(Color.WHITE);
-		chatPanel.setBorder(BorderFactory.createLineBorder(Color.black));		
-		JTextField keyInput = new JTextField("CHAT GOES HERE");		
-		keyInput.setMaximumSize(new Dimension(50, 100));
-		chatPanel.add(keyInput);
-		//Thread count = new Thread (new missed());
-		//count.start();
-		
-		//goes on the east of main
-		gameFrame.add(mainLayout);
-		gameFrame.setVisible(true);
+	public Client(String hostname, int port) {
+		// Establish connection to server
+		try {
+			s = new Socket(hostname, port);
+			this.pw = new PrintWriter(s.getOutputStream());
+			this.br = new BufferedReader(new InputStreamReader(s.getInputStream()));
+			this.start();
+				
+			while (true) {
+				semaphore.acquire();
+				if(clientGUI.sendMessage() == true ){
+					String line = clientGUI.getChatMessage();
+					System.out.println("YOUR LINE: " + line);
+					pw.println(line);
+					pw.flush();
+				}
+				semaphore.release();
+			}
+		} catch (IOException | InterruptedException ioe) {
+			System.out.println("ioe in ChatClient: " + ioe.getMessage());
+		}
 		
 	}
 	
@@ -129,8 +86,26 @@ public class Client extends Thread {
 		
 	}
 	
+	public void run() {
+		try {
+			semaphore.acquire();
+			while(true) {
+				String line;
+				while((line = br.readLine()) != null){
+					System.out.println("FROM OTHER CLIENT: " + line);
+					clientGUI.receiveMessage(line);
+				}
+				semaphore.release();
+			}
+		} catch (IOException | InterruptedException ioe) {
+			System.out.println("ioe in run: " + ioe.getMessage());
+		}
+}
+
+	
 	public static void main(String [] args) {
-		Client cl = new Client();
+		// We will need to get the IP
+		Client cl = new Client("10.123.43.191", 10000);
 		
 	}
 	
