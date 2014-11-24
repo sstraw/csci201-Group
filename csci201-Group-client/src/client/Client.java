@@ -36,6 +36,7 @@ public class Client extends Thread {
 	private int currentLevel;
 	private boolean waitingRoom = true;
 	
+	
 	// Chat variables
 	private static Semaphore semaphore = new Semaphore(4);
 	private Socket s;
