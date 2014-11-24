@@ -71,7 +71,7 @@ public class Client extends Thread {
 	}
 	
 	void chooseDashboard(int index) {  //
-		if (currentLevel==1) {
+		if (currentLevel==1) { 
 			currentDashboard = levelOneDashboards.get(index);
 		} else if (currentLevel==2) {
 			currentDashboard = levelTwoDashboards.get(index);
