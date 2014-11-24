@@ -19,7 +19,6 @@ import javax.swing.JToggleButton;
 
 public class Dashboard1_1 extends JPanel{
 	
-	
 	private static final long serialVersionUID = 1L;
 
 	public Dashboard1_1(){
@@ -144,7 +143,8 @@ public class Dashboard1_1 extends JPanel{
 		});
 		sec4.add(Box.createRigidArea(new Dimension(0, 30)));
 		
-	}
+	}	
+
 
 }
 
