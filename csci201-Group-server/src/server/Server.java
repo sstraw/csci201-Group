@@ -8,13 +8,19 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Server implements Runnable{
+	final static public int WAITINGROOM = 1;
+	final static public int INGAME = 2;
+	final static public int GAMEOVER = 3;
+	
 	private ReentrantLock lock = new ReentrantLock();
 	private Condition newLevel = lock.newCondition();
 	private Vector<ServerThread> playerThreads;
 	private ServerSocket serversocket;
+	private int gamestate;
 
 	public Server(){
 		playerThreads = new Vector<ServerThread>(4);
+		gamestate = Server.WAITINGROOM;
 		try {
 			this.serversocket = new ServerSocket(55555);
 		} catch (IOException e) {
@@ -25,6 +31,10 @@ public class Server implements Runnable{
 	
 	public void addWidgets(Vector <Widget> widgets){
 		
+	}
+	
+	public int getState(){
+		return gamestate;
 	}
 	
 	public Widget getInstruction(){
