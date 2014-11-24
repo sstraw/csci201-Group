@@ -1,6 +1,6 @@
 package client;
 
-import ChatWindow;
+//import ChatWindow;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -25,6 +25,8 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class Client extends Thread {
 	ArrayList<JPanel> levelOneDashboards; //will hold hardcoded set of Dashboards for each level
@@ -70,6 +72,7 @@ public class Client extends Thread {
 		
 	}
 	
+	/*
 	void chooseDashboard(int index) {  //
 		if (currentLevel==1) { 
 			currentDashboard = levelOneDashboards.get(index);
@@ -83,6 +86,7 @@ public class Client extends Thread {
 			currentDashboard = levelFiveDashboards.get(index);
 		}
 	}
+	*/
 	
 	public void run() {
 		try {
@@ -103,6 +107,23 @@ public class Client extends Thread {
 	
 	public static void main(String [] args) {
 		// We will need to get the IP
+		 try {
+	            // Set cross-platform Java L&F (also called "Metal")
+	        UIManager.setLookAndFeel(
+	            UIManager.getCrossPlatformLookAndFeelClassName());
+	    } 
+	    catch (UnsupportedLookAndFeelException e) {
+	       // handle exception
+	    }
+	    catch (ClassNotFoundException e) {
+	       // handle exception
+	    }
+	    catch (InstantiationException e) {
+	       // handle exception
+	    }
+	    catch (IllegalAccessException e) {
+	       // handle exception
+	    }
 		Client cl = new Client("10.123.43.191", 10000);
 		
 	}

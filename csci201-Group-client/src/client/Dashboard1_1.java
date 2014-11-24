@@ -2,7 +2,10 @@ package client;
 
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class Dashboard1_1 extends JPanel{
 	
@@ -108,6 +111,16 @@ public class Dashboard1_1 extends JPanel{
 		sec3.add( phaseText );
 		sec3.add(Box.createRigidArea(new Dimension(0, 70)));
 		JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 4, 0);
+		slider.addChangeListener(new ChangeListener() {
+	        @Override
+	        public void stateChanged(ChangeEvent ce) {
+	        	JSlider source = (JSlider)ce.getSource();
+                if(!source.getValueIsAdjusting())
+                {
+                	System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
+                }
+	        }
+	    });
 		slider.setMajorTickSpacing(1);
 		slider.setPaintTicks(true);
 		slider.setPaintLabels(true);
