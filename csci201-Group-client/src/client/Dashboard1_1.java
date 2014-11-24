@@ -33,11 +33,22 @@ public class Dashboard1_1 extends JPanel{
 		ironText.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		sec1.add(Box.createRigidArea(new Dimension(0, 40)));
 		JButton hot = new JButton ( "HOT" );
+		hot.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				System.out.println("INDUCTION IRON SET TO HOT");
+			}
+		});
+		
 		sec1.add( hot );
 		hot.setMaximumSize( new Dimension(120, 35));
 		hot.setAlignmentX( Component.CENTER_ALIGNMENT );
 		sec1.add(Box.createRigidArea(new Dimension(0, 10)));
 		JButton cold = new JButton ( "COLD" );
+		cold.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				System.out.println("INDUCTION IRON SET TO COLD");
+			}
+		});
 		sec1.add( cold );
 		cold.setAlignmentX( Component.CENTER_ALIGNMENT );
 		cold.setMaximumSize( new Dimension(120, 35));
@@ -62,9 +73,11 @@ public class Dashboard1_1 extends JPanel{
 			public void actionPerformed(ActionEvent ae) {
 				if( cable.getText().equals("LOCK")){
 					cable.setText("UNLOCK");
+					System.out.println("GROOVED CABLE UNLOCKED");
 				}
 				else{
 					cable.setText("LOCK");
+					System.out.println("GROOVED CABLE LOCKED");
 				}
 			}
 		});
