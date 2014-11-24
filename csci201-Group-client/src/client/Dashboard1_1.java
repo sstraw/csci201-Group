@@ -46,8 +46,8 @@ public class Dashboard1_1 extends JPanel{
 		JButton hot = new JButton ( "HOT" );
 		hot.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				System.out.println("INDUCTION IRON SET TO HOT");
-				command.setText("test");
+				//System.out.println("INDUCTION IRON SET TO HOT");
+				command.setText("SET INDUCTION IRON TO HOT");
 			}
 		});
 		
@@ -58,7 +58,8 @@ public class Dashboard1_1 extends JPanel{
 		JButton cold = new JButton ( "COLD" );
 		cold.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				System.out.println("INDUCTION IRON SET TO COLD");
+				//System.out.println("INDUCTION IRON SET TO COLD");
+				command.setText("SET INDUCTION IRON TO COLD");
 			}
 		});
 		sec1.add( cold );
@@ -85,11 +86,13 @@ public class Dashboard1_1 extends JPanel{
 			public void actionPerformed(ActionEvent ae) {
 				if( cable.getText().equals("LOCK")){
 					cable.setText("UNLOCK");
-					System.out.println("GROOVED CABLE UNLOCKED");
+					//System.out.println("GROOVED CABLE UNLOCKED");
+					command.setText("UNLOCK GROOVED CABLE");
 				}
 				else{
 					cable.setText("LOCK");
-					System.out.println("GROOVED CABLE LOCKED");
+					//System.out.println("GROOVED CABLE LOCKED");
+					command.setText("LOCK GROOVED CABLE");
 				}
 			}
 		});

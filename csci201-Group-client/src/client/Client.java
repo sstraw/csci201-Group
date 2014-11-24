@@ -61,7 +61,9 @@ public class Client extends Thread {
 		    }
 
 		    public void insertUpdate(DocumentEvent e) {
-		    	System.out.println( dashCommand.getText() );
+		    	command(dashCommand.getText());
+		    	
+		    	
 		    }
 
 		    public void changedUpdate(DocumentEvent e) {
@@ -145,6 +147,10 @@ public class Client extends Thread {
 	       // handle exception
 	    }
 		new Client("10.123.43.191", 10000);
+	}
+	
+	public void command(String c){
+		System.out.println( c );
 	}
 	
 }
