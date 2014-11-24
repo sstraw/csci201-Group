@@ -192,14 +192,8 @@ public class DashBoard extends JFrame{
 		db1.add( sec2 );
 		db1.add(Box.createRigidArea(new Dimension(10, 0)));
 		
-<<<<<<< HEAD
-		
-		
-		
-		
 		//bottom row
-=======
->>>>>>> branch 'master' of https://github.com/sstraw/csci201-Group
+
 		JPanel db2 = new JPanel();
 		db2.setLayout( new BoxLayout( db2 , BoxLayout.LINE_AXIS) );
 		db2.setBackground( Color.black);
