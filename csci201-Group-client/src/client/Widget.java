@@ -3,7 +3,7 @@ package client;
 import java.io.Serializable;
 
 public class Widget implements Serializable {
-	private static final long serialVersionUID = 1;
+	private static final long serialVersionUID = -4298245903822614337L;
 	private int minVal;
 	private int maxVal;
 	private int val;
