@@ -27,6 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class ClientGUI extends JFrame implements Serializable {
 	
@@ -34,6 +35,15 @@ public class ClientGUI extends JFrame implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	ArrayList<JPanel> levelOneDashboards; //will hold hardcoded set of Dashboards for each level
+	ArrayList<JPanel> levelTwoDashboards;
+	ArrayList<JPanel> levelThreeDashboards;
+	ArrayList<JPanel> levelFourDashboards;
+	ArrayList<JPanel> levelFiveDashboards;
+	
+	protected int currentLevel;
+	
 	
 	private JPanel currentDashboard;
 	private JProgressBar progressBar;
@@ -156,4 +166,19 @@ public class ClientGUI extends JFrame implements Serializable {
 		add(mainLayout);
 		setVisible(true);
 	}	
+	
+	
+	void chooseDashboard(int index) {  //
+		if (currentLevel==1) { 
+			currentDashboard = levelOneDashboards.get(index);
+		} else if (currentLevel==2) {
+			currentDashboard = levelTwoDashboards.get(index);
+		} else if (currentLevel==3) {
+			currentDashboard = levelThreeDashboards.get(index);
+		} else if (currentLevel==4) {
+			currentDashboard = levelFourDashboards.get(index);
+		} else if (currentLevel==5) {
+			currentDashboard = levelFiveDashboards.get(index);
+		}
+	}
 }

@@ -23,8 +23,11 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class Client extends Thread {
+	
 	ArrayList<JPanel> levelOneDashboards; //will hold hardcoded set of Dashboards for each level
 	ArrayList<JPanel> levelTwoDashboards;
 	ArrayList<JPanel> levelThreeDashboards;
@@ -48,7 +51,7 @@ public class Client extends Thread {
 			this.pw = new PrintWriter(s.getOutputStream());
 			this.br = new BufferedReader(new InputStreamReader(s.getInputStream()));
 			this.start();
-				
+		
 			while (true) {
 				semaphore.acquire();
 				if(clientGUI.sendMessage() == true ){
@@ -64,26 +67,23 @@ public class Client extends Thread {
 		}
 	}
 	
-	void setLevel(int level) {
-		
-	}
-	
 	// Still have to figure out how we're sending the dashboards 
-	// to the clientGUIs.
-	/*
-	void chooseDashboard(int index) {  //
-		if (currentLevel==1) { 
-			currentDashboard = levelOneDashboards.get(index);
-		} else if (currentLevel==2) {
-			currentDashboard = levelTwoDashboards.get(index);
-		} else if (currentLevel==3) {
-			currentDashboard = levelThreeDashboards.get(index);
-		} else if (currentLevel==4) {
-			currentDashboard = levelFourDashboards.get(index);
-		} else if (currentLevel==5) {
-			currentDashboard = levelFiveDashboards.get(index);
-		}
-	}*/
+		// to the clientGUIs.
+		/*
+		void chooseDashboard(int index) {  //
+			if (currentLevel==1) { 
+				currentDashboard = levelOneDashboards.get(index);
+			} else if (currentLevel==2) {
+				currentDashboard = levelTwoDashboards.get(index);
+			} else if (currentLevel==3) {
+				currentDashboard = levelThreeDashboards.get(index);
+			} else if (currentLevel==4) {
+				currentDashboard = levelFourDashboards.get(index);
+			} else if (currentLevel==5) {
+				currentDashboard = levelFiveDashboards.get(index);
+			}
+		}*/
+		
 	
 	public void run() {
 		try {
@@ -100,11 +100,27 @@ public class Client extends Thread {
 			System.out.println("ioe in run: " + ioe.getMessage());
 		}
 	}
-
+	
 	public static void main(String [] args) {
 		// We will need to get the IP
-		Client cl = new Client("10.123.43.191", 10000);
-		
+		 try {
+	            // Set cross-platform Java L&F (also called "Metal")
+	        UIManager.setLookAndFeel(
+	            UIManager.getCrossPlatformLookAndFeelClassName());
+	    } 
+	    catch (UnsupportedLookAndFeelException e) {
+	       // handle exception
+	    }
+	    catch (ClassNotFoundException e) {
+	       // handle exception
+	    }
+	    catch (InstantiationException e) {
+	       // handle exception
+	    }
+	    catch (IllegalAccessException e) {
+	       // handle exception
+	    }
+		new Client("10.123.43.191", 10000);
 	}
 	
 }
