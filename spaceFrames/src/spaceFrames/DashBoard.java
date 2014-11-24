@@ -51,9 +51,6 @@ public class DashBoard extends JFrame{
 	    		
 	    		progressBar.setValue( time);
 	    		
-	    		
-	    		
-	    		
 	    		if(time <= 100 && time >= 70){
 	    			progressBar.setForeground( Color.green);
 	    		}
@@ -97,11 +94,13 @@ public class DashBoard extends JFrame{
 		JPanel mainLayout = new JPanel();
 		mainLayout.setLayout( new BorderLayout() );
 		
-		//
+		// panel that contains everything other than text
 		JPanel gamePanel = new JPanel();
 		gamePanel.setLayout( new BoxLayout( gamePanel , BoxLayout.PAGE_AXIS) );
 		//gamePanel.add(Box.createRigidArea(new Dimension(0, 25)));
 		
+		
+		//animation of the ship
 		shipAnimation = new JLabel();
 		JPanel ship = new JPanel();
 		ship.setLayout( new GridLayout (1,1 ));
@@ -114,6 +113,8 @@ public class DashBoard extends JFrame{
 		ship.add( shipAnimation );
 		gamePanel.add( ship );
 		
+		
+		//text field showing the recieved instruction
 		JTextField instruction = new JTextField("INSTRUCTIONS GO HERE");
 		gamePanel.add( instruction );
 		instruction.setMaximumSize( new Dimension (550, 50));
@@ -121,16 +122,20 @@ public class DashBoard extends JFrame{
 		
 		instruction.setHorizontalAlignment(JTextField.CENTER);
 		
+		//progress bar
 		progressBar = new JProgressBar(0, 100);
 		progressBar.setValue(100);
 		progressBar.setForeground( Color.GREEN);
 		
 		gamePanel.add( progressBar );
 		
+		
+		//dashboard that contains all of the widgets
 		JPanel Dashboard =  new JPanel();
 		Dashboard.setLayout( new GridLayout(2 ,1) );
 		gamePanel.add( Dashboard );
 		
+		//top row
 		JPanel db1 = new JPanel();
 		db1.setLayout( new BoxLayout( db1 , BoxLayout.LINE_AXIS) );
 		db1.setBackground( Color.black);
@@ -141,7 +146,7 @@ public class DashBoard extends JFrame{
 		sec1.setLayout( new BoxLayout( sec1 , BoxLayout.PAGE_AXIS) );
 		sec1.setBorder( BorderFactory.createLineBorder(Color.black) );
 		
-		
+
 		sec1.add(Box.createRigidArea(new Dimension(255, 30)));
 		
 		JLabel ironText = new JLabel("INDUCTION IRON");
@@ -197,7 +202,7 @@ public class DashBoard extends JFrame{
 		
 		
 		
-		
+		//bottom row
 		JPanel db2 = new JPanel();
 		db2.setLayout( new BoxLayout( db2 , BoxLayout.LINE_AXIS) );
 		db2.setBackground( Color.black);
