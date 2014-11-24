@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Client extends Thread{
+public class Client extends Thread {
 	ArrayList<Dashboard> levelOneDashboards; //will hold hardcoded set of Dashboards for each level
 	ArrayList<Dashboard> levelTwoDashboards;
 	ArrayList<Dashboard> levelThreeDashboards;
@@ -26,3 +26,4 @@ public class Client extends Thread{
 	
 	
 }
+
