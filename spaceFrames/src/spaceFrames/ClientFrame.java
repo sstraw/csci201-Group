@@ -180,10 +180,8 @@ public class ClientFrame extends JFrame{
 					cable.setText("UNLOCK");
 				}
 				else{
-					
 					cable.setText("LOCK");
 				}
-				
 			}
 		});
 		
