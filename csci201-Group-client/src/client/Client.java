@@ -1,5 +1,28 @@
 package client;
 
-public class Client {
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Scanner;
 
+public class Client extends Thread{
+	ArrayList<Dashboard> levelOneDashboards; //will hold hardcoded set of Dashboards for each level
+	ArrayList<Dashboard> levelTwoDashboards;
+	ArrayList<Dashboard> levelThreeDashboards;
+	ArrayList<Dashboard> levelFourDashboards;
+	ArrayList<Dashboard> levelFiveDashboards;
+	int currentLevel;
+	Dashboard currentDashboard;
+	
+	public Client(String hostname, int port, Scanner scan) {
+		//establish connection with server
+				
+	}
+	
+	
+	
+	
 }
