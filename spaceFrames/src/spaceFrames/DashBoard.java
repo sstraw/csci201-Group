@@ -94,7 +94,7 @@ public class DashBoard extends JFrame{
 		JPanel mainLayout = new JPanel();
 		mainLayout.setLayout( new BorderLayout() );
 		
-		// panel that contains everything other than text
+		//  panel that contains everything other than text 
 		JPanel gamePanel = new JPanel();
 		gamePanel.setLayout( new BoxLayout( gamePanel , BoxLayout.PAGE_AXIS) );
 		//gamePanel.add(Box.createRigidArea(new Dimension(0, 25)));
