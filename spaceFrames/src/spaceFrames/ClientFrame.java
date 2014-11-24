@@ -26,7 +26,7 @@ import javax.swing.JToggleButton;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-public class DashBoard extends JFrame{
+public class ClientFrame extends JFrame{
 	
 	private JProgressBar progressBar;
 	private JLabel shipAnimation;
@@ -57,7 +57,7 @@ public class DashBoard extends JFrame{
 	    		}
 	    		
 	    		try {
-					sleep( 20 );
+					sleep( 10 );
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -80,7 +80,7 @@ public class DashBoard extends JFrame{
 	    }
 	  }
 	
-	public DashBoard(){
+	public ClientFrame(){
 		setSize(750, 700);
 		setLocation(250, 25);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -277,7 +277,7 @@ public class DashBoard extends JFrame{
 	    catch (IllegalAccessException e) {
 	       // handle exception
 	    }
-		new DashBoard();
+		new ClientFrame();
 	}
 	
 }
