@@ -78,19 +78,19 @@ public class Dashboard1_1 extends JPanel{
 		cableText.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		sec2.add( cableText );
 		sec2.add(Box.createRigidArea(new Dimension(0, 60)));
-		final JToggleButton cable = new JToggleButton("LOCK");
+		final JToggleButton cable = new JToggleButton("LOCKED");
 		sec2.add(cable);
 		cable.setAlignmentX( Component.CENTER_ALIGNMENT );
 		cable.setMaximumSize( new Dimension(120, 35));
 		cable.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				if( cable.getText().equals("LOCK")){
-					cable.setText("UNLOCK");
+				if( cable.getText().equals("LOCKED")){
+					cable.setText("UNLOCKED");
 					//System.out.println("GROOVED CABLE UNLOCKED");
 					command.setText("UNLOCK GROOVED CABLE");
 				}
 				else{
-					cable.setText("LOCK");
+					cable.setText("LOCKED");
 					//System.out.println("GROOVED CABLE LOCKED");
 					command.setText("LOCK GROOVED CABLE");
 				}
@@ -129,7 +129,8 @@ public class Dashboard1_1 extends JPanel{
 	        	JSlider source = (JSlider)ce.getSource();
                 if(!source.getValueIsAdjusting())
                 {
-                	System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
+                	//System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
+                	command.setText( "SET PHASON COLLIDER TO " + source.getValue() );
                 }
 	        }
 	    });

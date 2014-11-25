@@ -150,6 +150,8 @@ public class Client extends Thread {
 	}
 	
 	public void command(String c){
+		
+		//this is where you can check if the command matches the instruction that was given
 		System.out.println( c );
 	}
 	
