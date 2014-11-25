@@ -2,6 +2,7 @@ package client;
 
 
 import java.awt.*;
+
 import javax.swing.*;
 
 public class Dashboard1_2 extends JPanel
@@ -9,15 +10,13 @@ public class Dashboard1_2 extends JPanel
 	public Dashboard1_2()
 	{
 		setLayout(null);
+		
 		JPanel topleft = new JPanel();
 		topleft.setLayout(new BoxLayout(topleft, BoxLayout.Y_AXIS));
 		topleft.setBounds(0, 0, 200, 200);
 		topleft.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		
-		topleft.setLayout(new BoxLayout(topleft, BoxLayout.PAGE_AXIS));
-		topleft.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		topleft.add(Box.createRigidArea(new Dimension(0, 30)));
-		
 		JLabel gate = new JLabel("SPACE GATE");
 		topleft.add(gate);
 		gate.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -36,6 +35,70 @@ public class Dashboard1_2 extends JPanel
 		close.setMaximumSize(new Dimension(140, 50));
 		
 		add(topleft);
+		
+		JPanel topright = new JPanel();
+		topright.setLayout(new BoxLayout(topright, BoxLayout.Y_AXIS));
+		topright.setBounds(200, 0, 200, 160);
+		topright.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		
+		topright.add(Box.createRigidArea(new Dimension(0, 30)));
+		JLabel flux = new JLabel("FLUX CAPACITOR");
+		flux.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
+		topright.add(flux);
+		flux.setAlignmentX(Component.CENTER_ALIGNMENT);
+		topright.add(Box.createRigidArea(new Dimension(0, 20)));
+		JRadioButton clean = new JRadioButton("CLEAN");
+		clean.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
+		topright.add(clean);
+		clean.setAlignmentX(Component.CENTER_ALIGNMENT);
+		topright.add(Box.createRigidArea(new Dimension(0, 10)));
+		JRadioButton vent = new JRadioButton("VENT");
+		vent.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
+		topright.add(vent);
+		vent.setAlignmentX(Component.CENTER_ALIGNMENT);
+		ButtonGroup bg = new ButtonGroup();
+		bg.add(clean);
+		bg.add(vent);
+		
+		add(topright);
+		
+		JPanel bottomleft = new JPanel();
+		bottomleft.setLayout(new BoxLayout(bottomleft, BoxLayout.Y_AXIS));
+		bottomleft.setBounds(0, 200, 200, 200);
+		bottomleft.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		
+		bottomleft.add(Box.createRigidArea(new Dimension(0, 40)));
+		JLabel nextron = new JLabel("NEXTRON");
+		nextron.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
+		bottomleft.add(nextron);
+		nextron.setAlignmentX(Component.CENTER_ALIGNMENT);
+		bottomleft.add(Box.createRigidArea(new Dimension(0, 20)));
+		JButton reset = new JButton("RESET");
+		reset.setMaximumSize(new Dimension(120, 50));
+		reset.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
+		bottomleft.add(reset);
+		reset.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		add(bottomleft);
+		
+		JPanel bottomright = new JPanel();
+		bottomright.setLayout(new BoxLayout(bottomright, BoxLayout.Y_AXIS));
+		bottomright.setBounds(200, 160, 200, 240);
+		bottomright.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		
+		bottomright.add(Box.createRigidArea(new Dimension(0, 30)));
+		JLabel laser = new JLabel("LASER BEAM");
+		laser.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
+		bottomright.add(laser);
+		laser.setAlignmentX(Component.CENTER_ALIGNMENT);
+		bottomright.add(Box.createRigidArea(new Dimension(0, 45)));
+		String[] array = new String[] {"0", "1", "2", "3"};
+		JComboBox<String> levels = new JComboBox<String>(array);
+		levels.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
+		levels.setMaximumSize(new Dimension(80, 50));
+		bottomright.add(levels);
+		
+		add(bottomright);
 	}
 
 }
