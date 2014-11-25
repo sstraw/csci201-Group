@@ -124,7 +124,6 @@ public class Dashboard4_2 extends JPanel{
 		db2.add( sec3 );
 		sec3.setLayout( new BoxLayout( sec3 , BoxLayout.PAGE_AXIS) );
 		sec3.setBorder( BorderFactory.createLineBorder(Color.black) );
-		
 		sec3.add(Box.createRigidArea(new Dimension(355, 30)));
 		
 		JLabel phaseText = new JLabel("PHYLON SAUCER");
