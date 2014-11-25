@@ -17,6 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class Dashboard5_1  extends JPanel{
 	
@@ -42,19 +44,19 @@ public class Dashboard5_1  extends JPanel{
 		sec1.setBorder( BorderFactory.createLineBorder(Color.black) );
 		
 
-		sec1.add(Box.createRigidArea(new Dimension(255, 20)));
+		sec1.add(Box.createRigidArea(new Dimension(255 , 20)));
 		
-		JLabel ironText = new JLabel("TRIPLE GRID PLEXER");
-		sec1.add( ironText );
-		ironText.setAlignmentX( Component.CENTER_ALIGNMENT );
-		ironText.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
+		JLabel gridText = new JLabel("TRIPLE GRID PLEXER");
+		sec1.add( gridText );
+		gridText.setAlignmentX( Component.CENTER_ALIGNMENT );
+		gridText.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		JPanel buttonGrid = new JPanel();
-		buttonGrid.setLayout( new GridLayout(3 ,3) );
+		buttonGrid.setLayout( new GridLayout(3,3) );
 		buttonGrid.setMaximumSize( new Dimension(180,180 ));
 		for(int i =0; i < 9; i++){
 			final JButton temp = new JButton( String.valueOf(i+1));
-			buttonGrid.add(temp);
 			temp.setBackground( Color.green);
+			buttonGrid.add(temp);
 			temp.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
 					if(temp.getBackground().equals(Color.green) ){
@@ -62,7 +64,7 @@ public class Dashboard5_1  extends JPanel{
 						command.setText("SET TRIPLE GRID PLEXER " +  temp.getText() + " TO RED");
 					}
 					else{
-						temp.setBackground( Color.green);	
+						temp.setBackground( Color.green);
 						command.setText("SET TRIPLE GRID PLEXER " +  temp.getText() + " TO GREEN");
 					}
 				}
@@ -90,7 +92,7 @@ public class Dashboard5_1  extends JPanel{
 		cable.setMaximumSize( new Dimension(120, 35));
 		cable.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				
+				command.setText( "DISPERSE QUANTUM OMEGIFIER");
 			}
 		});
 		sec2.add(Box.createRigidArea(new Dimension(0, 25)));
@@ -100,7 +102,7 @@ public class Dashboard5_1  extends JPanel{
 		synth.setMaximumSize( new Dimension(120, 35));
 		synth.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				
+				command.setText( "SYNTHESIZE QUANTUM OMEGIFIER");
 			}
 		});
 		
@@ -136,7 +138,17 @@ public class Dashboard5_1  extends JPanel{
 		sec3.add ( slider );
 		slider.setMaximumSize( new Dimension(250, 35));
 		sec3.add(Box.createRigidArea(new Dimension(0, 90)));
-		
+		slider.addChangeListener(new ChangeListener() {
+	        @Override
+	        public void stateChanged(ChangeEvent ce) {
+	        	JSlider source = (JSlider)ce.getSource();
+                if(!source.getValueIsAdjusting())
+                {
+                	//System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
+                	command.setText( "SET ELASTIC ILLUSIONER TO " + source.getValue() );
+                }
+	        }
+	    });
 		//defribilator
 		//hahahaha
 		//Supercalifragilisticexpialidocious
@@ -166,9 +178,11 @@ public class Dashboard5_1  extends JPanel{
 			public void actionPerformed(ActionEvent ae) {
 				if( beamcable.getText().equals("DIRTY")){
 					beamcable.setText("CLEAN");
+					command.setText("SET MILK MOLECULIZER TO CLEAN");
 				}
 				else{
 					beamcable.setText("DIRTY");
+					command.setText("SET MILK MOLECULIZER TO DIRTY");
 				}
 			}
 		});
