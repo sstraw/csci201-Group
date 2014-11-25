@@ -122,7 +122,7 @@ public class ClientGUI extends JFrame implements Serializable {
 		shipPanel.setMaximumSize( new Dimension (550, 100));
 		shipAnimation.setMinimumSize( new Dimension(550, 100));
 		shipAnimation.setAlignmentX(Component.LEFT_ALIGNMENT);
-		shipIcon = new ImageIcon("ShipImages/ship" + 9 + ".jpg");
+		shipIcon = new ImageIcon("Images/ship" + 9 + ".jpg");
 		shipAnimation.setIcon(shipIcon);
 		shipAnimation.setIcon(shipIcon);
 		shipAnimation.setBorder( BorderFactory.createLineBorder(Color.black) );
@@ -170,6 +170,10 @@ public class ClientGUI extends JFrame implements Serializable {
 		add(mainLayout);
 		setVisible(true);
 	}	
+	
+	void displayClientGUI() {
+		setVisible(true);
+	}
 	
 	
 	void chooseDashboard(int index) {  //

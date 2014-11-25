@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Vector;
 import java.util.concurrent.Semaphore;
 
 import javax.swing.BorderFactory;
@@ -19,7 +20,9 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -30,14 +33,14 @@ import javax.swing.event.DocumentListener;
 
 public class Client extends Thread {
 	
-	ArrayList<JPanel> levelOneDashboards; //will hold hardcoded set of Dashboards for each level
-	ArrayList<JPanel> levelTwoDashboards;
-	ArrayList<JPanel> levelThreeDashboards;
-	ArrayList<JPanel> levelFourDashboards;
-	ArrayList<JPanel> levelFiveDashboards;
+	Vector<JPanel> levelOneDashboards; //will hold hardcoded set of Dashboards for each level
+	Vector<JPanel> levelTwoDashboards;
+	Vector<JPanel> levelThreeDashboards;
+	Vector<JPanel> levelFourDashboards;
+	Vector<JPanel> levelFiveDashboards;
 	
-	private int currentLevel;
-	private boolean waitingRoom = true;
+	String hostIP;
+	String username;
 	
 	// Chat variables
 	private static Semaphore semaphore = new Semaphore(4);
@@ -46,11 +49,11 @@ public class Client extends Thread {
 	private BufferedReader br;
 
 	private JTextArea dashCommand = new JTextArea();
-	private ClientGUI clientGUI = new ClientGUI( dashCommand );
+	private ClientGUI clientGUI; 
 	
 
 	
-	public Client(String hostname, int port) {
+	public Client() {
 		
 		
 		//this event gets called whenever an action is done on the dashboard
@@ -69,9 +72,12 @@ public class Client extends Thread {
 		    }
 		});
 		
+		displayLoginGUI();
+		clientGUI = new ClientGUI( dashCommand );
+		
 		// Establish connection to server
 		try {
-			s = new Socket(hostname, port);
+			s = new Socket(hostIP, 10000);
 			this.pw = new PrintWriter(s.getOutputStream());
 			this.br = new BufferedReader(new InputStreamReader(s.getInputStream()));
 			this.start();
@@ -89,6 +95,32 @@ public class Client extends Thread {
 		} catch (IOException | InterruptedException ioe) {
 			System.out.println("ioe in ChatClient: " + ioe.getMessage());
 		}
+	}
+	
+	private void displayLoginGUI() {
+		JPanel loginPanel = new JPanel();
+		loginPanel.setLayout(new BorderLayout());
+		JPanel ipPanel = new JPanel();
+		JLabel hostLab = new JLabel("Host IP: ");
+		ipPanel.add(hostLab);
+		JTextField ipTF = new JTextField(30);
+		ipPanel.add(ipTF);
+		loginPanel.add(ipPanel, BorderLayout.NORTH);
+		JPanel unPanel = new JPanel();
+		JLabel unLab = new JLabel("Username: ");
+		unPanel.add(unLab, BorderLayout.SOUTH);
+		JTextField unTF = new JTextField(30);
+		unPanel.add(unTF, BorderLayout.SOUTH);
+		loginPanel.add(unPanel, BorderLayout.SOUTH);
+		
+		ImageIcon icon = new ImageIcon("Images/rocketicon.jpg");
+		
+		int result = JOptionPane.showConfirmDialog(null, loginPanel, 
+	               "Welcome to Space Team", JOptionPane.DEFAULT_OPTION,  JOptionPane.PLAIN_MESSAGE, icon);
+      if (result == JOptionPane.OK_OPTION) {  	  
+         hostIP = ipTF.getText();
+         username = unTF.getText();
+      }
 	}
 	
 	// Still have to figure out how we're sending the dashboards 
@@ -144,7 +176,7 @@ public class Client extends Thread {
 	    catch (IllegalAccessException e) {
 	       // handle exception
 	    }
-		new Client("10.123.43.191", 10000);
+		new Client();
 	}
 	
 }
