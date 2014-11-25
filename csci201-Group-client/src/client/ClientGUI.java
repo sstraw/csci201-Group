@@ -142,7 +142,7 @@ public class ClientGUI extends JFrame implements Serializable {
 		progressBar.setForeground( Color.GREEN);			
 		gamePanel.add( progressBar );
 		
-		currentDashboard = new Dashboard5_4( dashCommand );
+		currentDashboard = new Dashboard4_2( dashCommand );
 		gamePanel.add(currentDashboard);		
 		mainLayout.add(gamePanel, BorderLayout.CENTER);
 		
