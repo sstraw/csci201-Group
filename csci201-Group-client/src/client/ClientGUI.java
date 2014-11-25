@@ -64,7 +64,7 @@ public class ClientGUI extends JFrame implements Serializable {
 		System.out.println("Creating chat window.");
 		createAndShowGUI();
 		sendMessage = false;
-		// Configure KeyListener for keyboard
+		//Configure KeyListener for keyboard
 		KeyboardFocusManager.getCurrentKeyboardFocusManager()
 		  .addKeyEventDispatcher(new KeyEventDispatcher() {
 		      @Override
@@ -142,8 +142,7 @@ public class ClientGUI extends JFrame implements Serializable {
 		progressBar.setForeground( Color.GREEN);			
 		gamePanel.add( progressBar );
 		
-		currentDashboard = new Dashboard1_1( dashCommand );
-		currentDashboard.setLayout(new GridLayout(2 ,1));
+		currentDashboard = new Dashboard4_2( dashCommand );
 		gamePanel.add(currentDashboard);		
 		mainLayout.add(gamePanel, BorderLayout.CENTER);
 		

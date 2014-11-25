@@ -64,7 +64,9 @@ public class Client extends Thread {
 		    }
 
 		    public void insertUpdate(DocumentEvent e) {
-		    	System.out.println( dashCommand.getText() );
+		    	command(dashCommand.getText());
+		    	
+		    	
 		    }
 
 		    public void changedUpdate(DocumentEvent e) {
@@ -177,6 +179,12 @@ public class Client extends Thread {
 	       // handle exception
 	    }
 		new Client();
+	}
+	
+	public void command(String c){
+		
+		//this is where you can check if the command matches the instruction that was given
+		System.out.println( c );
 	}
 	
 }
