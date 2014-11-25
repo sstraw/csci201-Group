@@ -10,14 +10,14 @@ import javax.swing.event.ChangeListener;
 
 
 
-public class Dashboard1_1 extends JPanel{
+public class Dashboard4_1 extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
 	
 	private JTextArea command;
 	
 
-	public Dashboard1_1( JTextArea d ){
+	public Dashboard4_1( JTextArea d ){
 		
 		command = d;
 		
