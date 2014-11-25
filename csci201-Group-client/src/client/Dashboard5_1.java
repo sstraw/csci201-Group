@@ -81,7 +81,7 @@ public class Dashboard5_1  extends JPanel{
 		sec2.setLayout( new BoxLayout( sec2 , BoxLayout.PAGE_AXIS) );
 		sec2.setBorder( BorderFactory.createLineBorder(Color.black) );
 		sec2.add(Box.createRigidArea(new Dimension(255, 30)));
-		JLabel quantText = new JLabel("SHIFTSANITIZER");
+		JLabel quantText = new JLabel("QUANTUM OMEGIFIER");
 		quantText.setAlignmentX( Component.CENTER_ALIGNMENT );
 		quantText.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		sec2.add( quantText );
