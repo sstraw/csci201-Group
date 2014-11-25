@@ -20,14 +20,14 @@ import javax.swing.JToggleButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class Dashboard4_2 extends JPanel{
+public class Dashboard4_3  extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
 	
 	private JTextArea command;
 	
 
-	public Dashboard4_2( JTextArea d ){
+	public Dashboard4_3( JTextArea d ){
 		
 		command = d;
 		
@@ -48,34 +48,24 @@ public class Dashboard4_2 extends JPanel{
 
 		sec1.add(Box.createRigidArea(new Dimension(255, 30)));
 		
-		JLabel ironText = new JLabel("SUPERSTICIOUS SALAD");
+		JLabel ironText = new JLabel("SHIP'S LOG");
 		sec1.add( ironText );
 		ironText.setAlignmentX( Component.CENTER_ALIGNMENT );
 		ironText.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
-		sec1.add(Box.createRigidArea(new Dimension(0, 40)));
-		JButton hot = new JButton ( "RANCH" );
+		sec1.add(Box.createRigidArea(new Dimension(0, 50)));
+		JButton hot = new JButton ( "UPDATE" );
 		hot.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				//System.out.println("INDUCTION IRON SET TO HOT");
-				command.setText("SET SUPERSTITIOUS SALAD TO RANCH");
+				command.setText("UPDATE THE SHIP'S LOG");
 			}
 		});
 		
 		sec1.add( hot );
-		hot.setMaximumSize( new Dimension(120, 35));
+		hot.setMaximumSize( new Dimension(120, 55));
 		hot.setAlignmentX( Component.CENTER_ALIGNMENT );
-		sec1.add(Box.createRigidArea(new Dimension(0, 10)));
-		JButton cold = new JButton ( "ITALIAN" );
-		cold.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				//System.out.println("INDUCTION IRON SET TO COLD");
-				command.setText("SET SUPERSTICIOUS SALAD TO ITALIAN");
-			}
-		});
-		sec1.add( cold );
-		cold.setAlignmentX( Component.CENTER_ALIGNMENT );
-		cold.setMaximumSize( new Dimension(120, 35));
-		sec1.add(Box.createRigidArea(new Dimension(0, 70)));
+		
+		sec1.add(Box.createRigidArea(new Dimension(0, 85)));
 		
 		db1.add(Box.createRigidArea(new Dimension(12, 0)));
 		
@@ -83,31 +73,41 @@ public class Dashboard4_2 extends JPanel{
 		sec2.setLayout( new BoxLayout( sec2 , BoxLayout.PAGE_AXIS) );
 		sec2.setBorder( BorderFactory.createLineBorder(Color.black) );
 		sec2.add(Box.createRigidArea(new Dimension(255, 30)));
-		JLabel cableText = new JLabel("CROWLEY CLAW");
+		JLabel cableText = new JLabel("GRANULAR PUTTY");
 		cableText.setAlignmentX( Component.CENTER_ALIGNMENT );
 		cableText.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		sec2.add( cableText );
-		sec2.add(Box.createRigidArea(new Dimension(0, 60)));
-		final JToggleButton cable = new JToggleButton("UNHOOKED");
-		sec2.add(cable);
-		cable.setAlignmentX( Component.CENTER_ALIGNMENT );
-		cable.setMaximumSize( new Dimension(120, 35));
-		cable.addActionListener(new ActionListener() {
+		sec2.add(Box.createRigidArea(new Dimension(0, 20)));
+		final JButton zero = new JButton("0");
+		sec2.add(zero);
+		zero.setAlignmentX( Component.CENTER_ALIGNMENT );
+		zero.setMaximumSize( new Dimension(45, 45));
+		zero.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				if( cable.getText().equals("HOOKED")){
-					cable.setText("UNHOOKED");
-					//System.out.println("GROOVED CABLE UNLOCKED");
-					command.setText("UNHOOK CROWLEY CLAW");
-				}
-				else{
-					cable.setText("HOOKED");
-					//System.out.println("GROOVED CABLE LOCKED");
-					command.setText("HOOK CRAWLEY CLAW");
-				}
+				command.setText("SET GRANULAR PUTTY TO 0");	
+			}
+		});
+		final JButton one = new JButton("1");
+		sec2.add(one);
+		one.setAlignmentX( Component.CENTER_ALIGNMENT );
+		one.setMaximumSize( new Dimension(45, 45));
+		one.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				command.setText("SET GRANULAR PUTTY TO 1");	
 			}
 		});
 		
-		sec2.add(Box.createRigidArea(new Dimension(0, 95)));
+		final JButton two = new JButton("2");
+		sec2.add(two);
+		two.setAlignmentX( Component.CENTER_ALIGNMENT );
+		two.setMaximumSize( new Dimension(45, 45));
+		two.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				command.setText("SET GRANULAR PUTTY TO 2");	
+			}
+		});
+		
+		sec2.add(Box.createRigidArea(new Dimension(0, 35)));
 		
 		db1.add( sec2 );
 		db1.add(Box.createRigidArea(new Dimension(10, 0)));
@@ -121,17 +121,17 @@ public class Dashboard4_2 extends JPanel{
 		
 		db2.add(Box.createRigidArea(new Dimension(12, 0)));
 		JPanel sec3 = new JPanel();
-		//db2.add( sec3 );
+		db2.add( sec3 );
 		sec3.setLayout( new BoxLayout( sec3 , BoxLayout.PAGE_AXIS) );
 		sec3.setBorder( BorderFactory.createLineBorder(Color.black) );
 		sec3.add(Box.createRigidArea(new Dimension(355, 30)));
-		
-		JLabel phaseText = new JLabel("PHYLON SAUCER");
+		db2.add( sec3 );
+		JLabel phaseText = new JLabel("SUCTIONGAUGE");
 		phaseText.setAlignmentX( Component.CENTER_ALIGNMENT );
 		phaseText.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		sec3.add( phaseText );
 		sec3.add(Box.createRigidArea(new Dimension(0, 70)));
-		JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 3, 0);
+		JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 5, 0);
 		slider.addChangeListener(new ChangeListener() {
 	        @Override
 	        public void stateChanged(ChangeEvent ce) {
@@ -139,7 +139,7 @@ public class Dashboard4_2 extends JPanel{
                 if(!source.getValueIsAdjusting())
                 {
                 	//System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
-                	command.setText( "SET PHYLON SAUCER TO " + source.getValue() );
+                	command.setText( "SET SUCTIONGAUGE TO " + source.getValue() );
                 }
 	        }
 	    });
@@ -152,37 +152,32 @@ public class Dashboard4_2 extends JPanel{
 		
 		
 		JPanel sec4 = new JPanel();
-		db2.add( sec4 );
+		
 		db2.add(Box.createRigidArea(new Dimension(12, 0)));
-		db2.add( sec3 );
+		db2.add( sec4 );
 		
 		sec4.setLayout( new BoxLayout( sec4 , BoxLayout.PAGE_AXIS) );
 		sec4.setBorder( BorderFactory.createLineBorder(Color.black) );
 		
 		sec4.add(Box.createRigidArea(new Dimension(155, 30)));
-		JLabel beamText = new JLabel("RAY HUE");
+		JLabel beamText = new JLabel("BETA ALERT");
 		beamText.setAlignmentX( Component.CENTER_ALIGNMENT );
 		beamText.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		sec4.add( beamText );
 		sec4.add(Box.createRigidArea(new Dimension(0, 30)));
-		final JButton beamswitch = new JButton();
+		final JToggleButton beamswitch = new JToggleButton("OFF");
 		sec4.add(beamswitch);
 		beamswitch.setAlignmentX( Component.CENTER_ALIGNMENT );
-		beamswitch.setBackground( Color.green);
 		beamswitch.setMaximumSize( new Dimension(100, 135));
 		beamswitch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				if( beamswitch.getBackground().equals(Color.green)){
-					beamswitch.setBackground( Color.blue);
-					command.setText( "SET RAY HUE TO BLUE");
-				}
-				else if(beamswitch.getBackground().equals(Color.blue)){
-					beamswitch.setBackground( Color.red);
-					command.setText( "SET RAY HUE TO RED");
+				if( beamswitch.getText().equals("OFF")){
+					beamswitch.setText("ON");
+					System.out.println("TURN ON BETA ALERT");
 				}
 				else{
-					beamswitch.setBackground( Color.green);
-					command.setText( "SET RAY HUE TO GREEN");
+					beamswitch.setText("OFF");
+					System.out.println("TURN OFF BETA ALERT");
 				}
 			}
 		});
