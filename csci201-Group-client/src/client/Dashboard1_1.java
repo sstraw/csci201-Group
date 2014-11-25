@@ -161,11 +161,11 @@ public class Dashboard1_1 extends JPanel{
 			public void actionPerformed(ActionEvent ae) {
 				if( beamswitch.getText().equals("OFF")){
 					beamswitch.setText("ON");
-					System.out.println("SPECTROBEAM SET TO ON");
+					System.out.println("TURN ON SPECTROBEAM");
 				}
 				else{
 					beamswitch.setText("OFF");
-					System.out.println("SPECTROBEAM SET TO OFF");
+					System.out.println("TURN OFF SPECTROBEAM");
 				}
 			}
 		});

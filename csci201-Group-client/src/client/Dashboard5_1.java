@@ -18,13 +18,13 @@ import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
 
-public class Dashboard4_1  extends JPanel{
+public class Dashboard5_1  extends JPanel{
 	
 	private JTextArea command;
 	
 	
 	private static final long serialVersionUID = 1L;
-	public Dashboard4_1( JTextArea d ){
+	public Dashboard5_1( JTextArea d ){
 		
 		command = d;
 		this.setLayout( new GridLayout(2 ,1) );
