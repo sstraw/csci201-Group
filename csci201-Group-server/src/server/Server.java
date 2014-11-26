@@ -19,6 +19,8 @@ public class Server implements Runnable{
 	private ServerSocket serversocket;
 	private int gamestate;
 	private Socket s;
+	private int currentLevel;
+	private int currentPoints;
 
 	public Server(){
 		playerThreads = new Vector<ServerThread>(4);
@@ -67,8 +69,36 @@ public class Server implements Runnable{
 		//Also notifies all threads if the level is completed
 	}
 	
-	public void playerReady(ServerThread s, Boolean b){
-		//Sets a player value as ready -- How? Going to have to look into implementations to tell everyone to start
+	public void playerReady(){
+		this.lock.lock();
+		for (ServerThread s : playerThreads){
+			//Leave if one of the threads not ready
+			if (!s.isReady()){
+				this.lock.unlock();
+				return;
+			}
+		}
+		startLevel(1);
+		
+		this.lock.unlock();
+	}
+	
+	//Returns how many points needed to "win" the level. Not sure how we want to do it yet so...
+	private int getLevelCap(){
+		return 10 * currentLevel;
+	}
+	
+	public void instructionCompleted(){
+		currentPoints++;
+		if (currentPoints >= getLevelCap()){
+			currentLevel++;
+			startLevel(currentLevel);
+		}
+	}
+	
+	private void startLevel(int i){
+		currentLevel = i;
+		currentPoints = 0;
 	}
 	
 	public ReentrantLock getLock(){
