@@ -3,8 +3,8 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Random;
 import java.util.Vector;
-import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Server implements Runnable{
@@ -13,16 +13,21 @@ public class Server implements Runnable{
 	final static public int GAMEOVER = 3;
 	
 	private ReentrantLock lock = new ReentrantLock();
-	private Condition newLevel = lock.newCondition();
 	private Vector<ServerThread> playerThreads;
 	private Vector<ChatThread> ctVector = new Vector<ChatThread>();
+	private Vector<Widget> currentWidgets;
 	private ServerSocket serversocket;
 	private int gamestate;
-	private Socket s;
+	private int currentLevel;
+	private int currentPoints;
+	private int currentMisses;
+	private Random generator;
 
 	public Server(){
 		playerThreads = new Vector<ServerThread>(4);
+		currentWidgets = new Vector<Widget>();
 		gamestate = Server.WAITINGROOM;
+		generator = new Random();
 		try {
 			this.serversocket = new ServerSocket(55555);
 			
@@ -45,7 +50,9 @@ public class Server implements Runnable{
 	}
 	
 	public void addWidgets(Vector <Widget> widgets){
-		
+		lock.lock();
+		this.currentWidgets.addAll(widgets);
+		lock.unlock();
 	}
 	
 	public int getState(){
@@ -54,9 +61,11 @@ public class Server implements Runnable{
 	
 	public Widget getInstruction(){
 		lock.lock();
-		//Choose new widget
+		//This line generates a random widget from the list of widgets, and then
+		//Uses the widgets getRandomInstruction to generate a new random widget to use
+		Widget w = currentWidgets.get(generator.nextInt(currentWidgets.size())).getRandomInstruction();
 		lock.unlock();
-		return new Widget(5, 5, 5, 5, "Default");
+		return w;
 	}
 	
 	public void widgetChanged(ServerThread s, Widget w){
@@ -65,10 +74,79 @@ public class Server implements Runnable{
 		//Check to see if any of the instructions match the widget change
 		//And notify the server thread if that is the case
 		//Also notifies all threads if the level is completed
+		lock.lock();
+		for (ServerThread st: playerThreads){
+			if (w == st.getInstruction()){
+				s.givePoint();
+				st.givePoint();
+				this.instructionCompleted(st);
+				break;
+			}
+		}
+		lock.unlock();
 	}
 	
-	public void playerReady(ServerThread s, Boolean b){
-		//Sets a player value as ready -- How? Going to have to look into implementations to tell everyone to start
+	public void playerReady(){
+		this.lock.lock();
+		for (ServerThread s : playerThreads){
+			//Leave if one of the threads not ready
+			if (!s.isReady()){
+				this.lock.unlock();
+				return;
+			}
+		}
+		startLevel(1);
+		this.lock.unlock();
+	}
+	
+	//Returns how many points needed to "win" the level. Not sure how we want to do it yet so...
+	private int getLevelCap(){
+		return 10 * currentLevel;
+	}
+	
+	private int getMaxMisses(){
+		return 10 - currentLevel;
+	}
+	
+	//Time each instruction gets
+	public int getTime(){
+		return 3000 - 60 * currentLevel;
+	}
+	
+	private void instructionCompleted(ServerThread s){
+		currentPoints++;
+		if (currentPoints >= getLevelCap() && currentLevel != 5){
+			currentLevel++;
+			startLevel(currentLevel);
+		}
+		else{
+			s.instructionCompleted();
+		}
+	}
+	
+	public void instructionFailed(){
+		lock.lock();
+		currentMisses++;
+		if (currentMisses >= getMaxMisses()){
+			gameOver();
+		}
+		lock.unlock();
+	}
+	
+	private void startLevel(int i){
+		currentLevel = i;
+		currentPoints = 0;
+		currentMisses = 0;
+		currentWidgets.clear();
+		for (ServerThread s : playerThreads){
+			s.startLevel(i);
+		}
+	}
+	
+	private void gameOver(){
+		for (ServerThread s : playerThreads){
+			s.gameOver();
+		}
 	}
 	
 	public ReentrantLock getLock(){

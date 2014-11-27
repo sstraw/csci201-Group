@@ -3,57 +3,180 @@ package server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Vector;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ServerThread implements Runnable {
 	private Socket socket;
 	private Server server;
 	private BufferedReader buffer;
+	private ObjectInputStream objectin;
+	private ObjectOutputStream objectcannon;
 	private PrintWriter printwrite;
+	private String name;
+	private boolean ready;
+	private boolean isRunning;
+	private Widget instruction;
+	private int instructions_completed;
+	private ReentrantLock lock;
+	private Thread timer;
 	
 	public ServerThread(Server server, Socket socket){
 		this.socket = socket;
 		this.server = server;
+		lock = new ReentrantLock();
 		try {
-			buffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			printwrite = new PrintWriter(socket.getOutputStream());
+			buffer = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+			printwrite = new PrintWriter(this.socket.getOutputStream());
+			objectin = new ObjectInputStream(this.socket.getInputStream());
+			objectcannon = new ObjectOutputStream(this.socket.getOutputStream());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		isRunning = true;
+		ready = false;
+		this.instructions_completed = 0;
+	}
+	
+	public void givePoint(){
+		//Adds a point for an instruction completed
+		lock.lock();
+		this.instructions_completed++;
+		lock.unlock();
+	}
+	
+	public void instructionCompleted(){
+		//Server calls this when an instruction is passed
+		//Needs to get a new instruction from the server, and pass it to the player
+		lock.lock();
+		timer.interrupt();
+		printwrite.println("instruction completed");
+		this.giveInstruction();
+		lock.unlock();
+	}
+	
+	//Called by the timer thread when there is no more time
+	public void timerDone(){
+		lock.lock();
+		this.server.instructionFailed();
+		printwrite.println("instruction failed");
+		this.giveInstruction();
+		lock.unlock();
+	}
+	
+	public void gameOver(){
+		lock.lock();
+		printwrite.println("game over");
+		lock.unlock();
+	}
+	
+	public Widget getInstruction(){
+		return instruction;
+	}
+	
+	public String getName(){
+		return name;
+	}
+	
+	public boolean isReady(){
+		return ready;
+	}
+	
+	
+	public void startLevel(int levelnumber){
+		//Notify starting a new level
+		lock.lock();
+		printwrite.println("startLevel");
+		printwrite.print(levelnumber);
+		lock.unlock();
+	}
+	
+	private void giveInstruction(){
+		instruction = this.server.getInstruction();
+		int timeout = this.server.getTime();
+		try {
+			objectcannon.writeObject(instruction);
+			printwrite.print(timeout);
+			timer = new Thread(new Timer(this, timeout));
+			timer.start();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public void instructionCompleted(){
-		//Server calls this when an instruction is passed
-		//Needs to get a new instruction from the server, and pass it to the player
-	}
-	
-	public void newLevel(){
-		//Trigger called when a new level is started
-	}
-	
 	public void run(){
-		//Steps to complete:
-		
-		//1: Wait for ready
-		
-		while (server.getState() == Server.WAITINGROOM){
-			//Check read in buffer
+
+		while (isRunning){
+			//Receive and process input
+			try {
+				String value1 = buffer.readLine().trim();
+				String value2;
+				
+				//Switch values
+				switch(value1){
+				
+				case("setState"):
+					value2 = buffer.readLine().trim();
+					switch(value2){
+					case("ready"):
+						this.ready = true;
+						this.server.playerReady();
+						break;
+					case("notready"):
+						this.ready = false;
+						break;
+					default:
+						//Do nothing.
+					}
+					
+				case("setName"):
+					value2 = buffer.readLine().trim();
+					this.name = value2;
+
+				case("giveWidgets"):
+					Object o = objectin.readObject();
+					if (o instanceof Vector<?>){
+						Vector<Widget> widgets = (Vector<Widget>) o;
+						this.server.addWidgets(widgets);
+					}
+					else{
+						System.out.println("ERR:NOT RECEVING CORRECT WIDGET FORMAT");
+					}
+				}
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		
-		//Game loop:
-			//2: Prepare for level
-				//Aggregate widgets and pass to Server
-			//4: Level loop
-				//Listen for widget changes, pass up to server. Break loop on newLevel()
-			//4: Close out level
-				//Is there anything that needs to be done here?
-		
-		//Do we want to repeat?
-		
 	}
 	
 	
 }
 
+class Timer implements Runnable{
+	private ServerThread serverthread;
+	private int milliseconds;
+	
+	public Timer(ServerThread serverthread, int milliseconds){
+		this.serverthread = serverthread;
+	}
+	
+	public void run(){
+		try {
+			Thread.sleep(milliseconds);
+			serverthread.timerDone();
+		} catch (InterruptedException e) {
+			//No error here because the ServerThread may kill this when it's no longer needed;
+		}
+	}
+}
