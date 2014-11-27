@@ -4,42 +4,79 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Vector;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ServerThread implements Runnable {
 	private Socket socket;
 	private Server server;
 	private BufferedReader buffer;
-	private ObjectInputStream object;
+	private ObjectInputStream objectin;
+	private ObjectOutputStream objectcannon;
 	private PrintWriter printwrite;
 	private String name;
 	private boolean ready;
 	private boolean isRunning;
+	private Widget instruction;
+	private int instructions_completed;
+	private ReentrantLock lock;
+	private Thread timer;
 	
 	public ServerThread(Server server, Socket socket){
 		this.socket = socket;
 		this.server = server;
+		lock = new ReentrantLock();
 		try {
 			buffer = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 			printwrite = new PrintWriter(this.socket.getOutputStream());
-			object = new ObjectInputStream(this.socket.getInputStream());
+			objectin = new ObjectInputStream(this.socket.getInputStream());
+			objectcannon = new ObjectOutputStream(this.socket.getOutputStream());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		isRunning = true;
 		ready = false;
+		this.instructions_completed = 0;
+	}
+	
+	public void givePoint(){
+		//Adds a point for an instruction completed
+		lock.lock();
+		this.instructions_completed++;
+		lock.unlock();
 	}
 	
 	public void instructionCompleted(){
 		//Server calls this when an instruction is passed
 		//Needs to get a new instruction from the server, and pass it to the player
+		lock.lock();
+		timer.interrupt();
+		printwrite.println("instruction completed");
+		this.giveInstruction();
+		lock.unlock();
 	}
 	
-	public void newLevel(){
-		//Trigger called when a new level is started
+	//Called by the timer thread when there is no more time
+	public void timerDone(){
+		lock.lock();
+		this.server.instructionFailed();
+		printwrite.println("instruction failed");
+		this.giveInstruction();
+		lock.unlock();
+	}
+	
+	public void gameOver(){
+		lock.lock();
+		printwrite.println("game over");
+		lock.unlock();
+	}
+	
+	public Widget getInstruction(){
+		return instruction;
 	}
 	
 	public String getName(){
@@ -50,10 +87,27 @@ public class ServerThread implements Runnable {
 		return ready;
 	}
 	
+	
 	public void startLevel(int levelnumber){
 		//Notify starting a new level
+		lock.lock();
 		printwrite.println("startLevel");
 		printwrite.print(levelnumber);
+		lock.unlock();
+	}
+	
+	private void giveInstruction(){
+		instruction = this.server.getInstruction();
+		int timeout = this.server.getTime();
+		try {
+			objectcannon.writeObject(instruction);
+			printwrite.print(timeout);
+			timer = new Thread(new Timer(this, timeout));
+			timer.start();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void run(){
@@ -86,15 +140,16 @@ public class ServerThread implements Runnable {
 					this.name = value2;
 
 				case("giveWidgets"):
-					Object o = object.readObject();
+					Object o = objectin.readObject();
 					if (o instanceof Vector<?>){
 						Vector<Widget> widgets = (Vector<Widget>) o;
 						this.server.addWidgets(widgets);
 					}
 					else{
-						System.out.println("ERR:NOT RECEVING CORRECT WIDGET");
+						System.out.println("ERR:NOT RECEVING CORRECT WIDGET FORMAT");
 					}
 				}
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -108,3 +163,20 @@ public class ServerThread implements Runnable {
 	
 }
 
+class Timer implements Runnable{
+	private ServerThread serverthread;
+	private int milliseconds;
+	
+	public Timer(ServerThread serverthread, int milliseconds){
+		this.serverthread = serverthread;
+	}
+	
+	public void run(){
+		try {
+			Thread.sleep(milliseconds);
+			serverthread.timerDone();
+		} catch (InterruptedException e) {
+			//No error here because the ServerThread may kill this when it's no longer needed;
+		}
+	}
+}
