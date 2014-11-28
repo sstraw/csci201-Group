@@ -1,13 +1,16 @@
 package client;
 import java.awt.*;
+import java.util.Vector;
 
 import javax.swing.*;
 
-public class Dashboard1_1 extends JPanel
+public class Dashboard1_1 implements Dashboard
 {
+	private JPanel panel;
+	
 	public Dashboard1_1()
 	{
-		setLayout(null);
+		panel.setLayout(null);
 		
 		JPanel topleft = new JPanel();
 		topleft.setLayout(new BoxLayout(topleft, BoxLayout.Y_AXIS));
@@ -26,7 +29,7 @@ public class Dashboard1_1 extends JPanel
 		levels.setMaximumSize(new Dimension(80, 50));
 		topleft.add(levels);
 		
-		add(topleft);
+		panel.add(topleft);
 		
 		JPanel topright = new JPanel();
 		topright.setLayout(new BoxLayout(topright, BoxLayout.Y_AXIS));
@@ -52,7 +55,7 @@ public class Dashboard1_1 extends JPanel
 		bg.add(auto);
 		bg.add(manual);
 		
-		add(topright);
+		panel.add(topright);
 		
 		JPanel bottomleft = new JPanel();
 		bottomleft.setLayout(new BoxLayout(bottomleft, BoxLayout.Y_AXIS));
@@ -71,7 +74,7 @@ public class Dashboard1_1 extends JPanel
 		bottomleft.add(refill);
 		refill.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		add(bottomleft);
+		panel.add(bottomleft);
 		
 		JPanel bottomright = new JPanel();
 		bottomright.setLayout(new BoxLayout(bottomright, BoxLayout.Y_AXIS));
@@ -96,7 +99,15 @@ public class Dashboard1_1 extends JPanel
 		ptype.setAlignmentX(Component.CENTER_ALIGNMENT);
 		ptype.setMaximumSize(new Dimension(140, 50));
 		
-		add(bottomright);
+		panel.add(bottomright);
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+
+	public Vector<Widget> getWidgets() {
+		return null;
 	}
 
 }

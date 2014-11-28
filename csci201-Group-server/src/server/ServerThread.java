@@ -24,6 +24,7 @@ public class ServerThread implements Runnable {
 	private int instructions_completed;
 	private ReentrantLock lock;
 	private Thread timer;
+	private Thread thread;
 	
 	public ServerThread(Server server, Socket socket){
 		this.socket = socket;
@@ -41,6 +42,8 @@ public class ServerThread implements Runnable {
 		isRunning = true;
 		ready = false;
 		this.instructions_completed = 0;
+		this.thread = new Thread(this);
+		thread.start();
 	}
 	
 	public void givePoint(){
@@ -83,6 +86,13 @@ public class ServerThread implements Runnable {
 	public void gameOver(){
 		lock.lock();
 		printwrite.println("game over");
+		thread.interrupt();
+		try {
+			socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		lock.unlock();
 	}
 	

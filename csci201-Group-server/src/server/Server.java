@@ -22,6 +22,7 @@ public class Server implements Runnable{
 	private int currentPoints;
 	private int currentMisses;
 	private Random generator;
+	private Thread thread;
 
 	public Server(){
 		playerThreads = new Vector<ServerThread>(4);
@@ -34,6 +35,8 @@ public class Server implements Runnable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		thread = new Thread(this);
+		thread.start();
 	}
 	
 	public static void main(String[] args){
@@ -126,6 +129,7 @@ public class Server implements Runnable{
 		currentMisses++;
 		if (currentMisses >= getMaxMisses()){
 			gameOver();
+			this.thread.interrupt();
 		}
 		lock.unlock();
 	}
