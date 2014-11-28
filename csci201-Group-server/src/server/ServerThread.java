@@ -50,6 +50,17 @@ public class ServerThread implements Runnable {
 		lock.unlock();
 	}
 	
+	public int getPoints(){
+		return instructions_completed;
+	}
+	
+	public void sendMessage(String msg){
+		lock.lock();
+		printwrite.println("message");
+		printwrite.println(msg);
+		lock.unlock();
+	}
+	
 	public void instructionCompleted(){
 		//Server calls this when an instruction is passed
 		//Needs to get a new instruction from the server, and pass it to the player
@@ -134,20 +145,28 @@ public class ServerThread implements Runnable {
 					default:
 						//Do nothing.
 					}
+					break;
 					
 				case("setName"):
 					value2 = buffer.readLine().trim();
 					this.name = value2;
+					break;
 
 				case("giveWidgets"):
 					Object o = objectin.readObject();
 					if (o instanceof Vector<?>){
-						Vector<Widget> widgets = (Vector<Widget>) o;
-						this.server.addWidgets(widgets);
+						Vector<?> widgets = (Vector<?>) o;
+						this.server.addWidgetsFromNetwork(widgets);
 					}
 					else{
 						System.out.println("ERR:NOT RECEVING CORRECT WIDGET FORMAT");
 					}
+					break;
+					
+				case("message"):
+					value2 = buffer.readLine().trim();
+					this.server.sendMessage(this, value2);
+					break;
 				}
 				
 			} catch (IOException e) {
