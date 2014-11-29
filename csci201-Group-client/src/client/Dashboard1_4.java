@@ -86,17 +86,17 @@ public class Dashboard1_4 extends JPanel
 		flamethrower.setAlignmentX(Component.CENTER_ALIGNMENT);
 		flamethrower.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		bottomright.add(Box.createRigidArea(new Dimension(0, 20)));
-		JButton on = new JButton ("ON");
-		on.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
-		bottomright.add(on);
-		on.setMaximumSize(new Dimension(140, 50));
-		on.setAlignmentX(Component.CENTER_ALIGNMENT);
+		JButton point = new JButton ("POINT");
+		point.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
+		bottomright.add(point);
+		point.setMaximumSize(new Dimension(140, 50));
+		point.setAlignmentX(Component.CENTER_ALIGNMENT);
 		bottomright.add(Box.createRigidArea(new Dimension(0, 10)));
-		JButton off = new JButton ("OFF");
-		off.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
-		bottomright.add(off);
-		off.setAlignmentX(Component.CENTER_ALIGNMENT);
-		off.setMaximumSize(new Dimension(140, 50));
+		JButton shoot = new JButton ("SHOOT");
+		shoot.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
+		bottomright.add(shoot);
+		shoot.setAlignmentX(Component.CENTER_ALIGNMENT);
+		shoot.setMaximumSize(new Dimension(140, 50));
 		
 		add(bottomright);
 	}
