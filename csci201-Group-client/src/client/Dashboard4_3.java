@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -20,25 +21,22 @@ import javax.swing.JToggleButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class Dashboard4_3  extends JPanel{
-	
-	private static final long serialVersionUID = 1L;
-	
+public class Dashboard4_3  implements Dashboard{
 	private JTextArea command;
-	
+	private JPanel panel;
 
 	public Dashboard4_3( JTextArea d ){
 		
 		command = d;
-		
-		this.setLayout( new GridLayout(2 ,1) );
+		panel = new JPanel();
+		panel.setLayout( new GridLayout(2 ,1) );
 		
 		
 		//top row
 		JPanel db1 = new JPanel();
 		db1.setLayout( new BoxLayout( db1 , BoxLayout.LINE_AXIS) );
 		db1.setBackground( Color.black);
-		this.add( db1 );
+		panel.add( db1 );
 		db1.add(Box.createRigidArea(new Dimension(12, 0)));
 		JPanel sec1 = new JPanel();
 		db1.add( sec1 );
@@ -117,7 +115,7 @@ public class Dashboard4_3  extends JPanel{
 		JPanel db2 = new JPanel();
 		db2.setLayout( new BoxLayout( db2 , BoxLayout.LINE_AXIS) );
 		db2.setBackground( Color.black);
-		this.add( db2 );
+		panel.add( db2 );
 		
 		db2.add(Box.createRigidArea(new Dimension(12, 0)));
 		JPanel sec3 = new JPanel();
@@ -183,6 +181,16 @@ public class Dashboard4_3  extends JPanel{
 		});
 		sec4.add(Box.createRigidArea(new Dimension(0, 30)));
 		
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+
+	@Override
+	public Vector<Widget> getWidgets() {
+		// TODO Auto-generated method stub
+		return null;
 	}	
 
 

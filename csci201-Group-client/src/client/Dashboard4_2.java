@@ -28,7 +28,7 @@ public class Dashboard4_2 implements Dashboard{
 	public Dashboard4_2( JTextArea d ){
 		
 		command = d;
-		
+		panel = new JPanel();
 		panel.setLayout( new GridLayout(2 ,1) );
 		
 		
