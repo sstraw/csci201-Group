@@ -24,12 +24,10 @@ import javax.swing.event.ChangeListener;
 
 public class Dashboard5_4 implements Dashboard{
 	
-	private JTextArea command;
 	private JPanel panel;
 	
-	public Dashboard5_4( JTextArea d ){
+	public Dashboard5_4(Client c){
 		
-		command = d;
 		panel = new JPanel();
 		panel.setLayout( new GridLayout(2 ,1) );
 		
@@ -60,11 +58,11 @@ public class Dashboard5_4 implements Dashboard{
 			final JToggleButton temp = new JToggleButton( String.valueOf(i+1));
 			bg.add(temp);
 			buttonGrid.add(temp);
-			temp.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent ae) {
-					command.setText("SET PENTOSE TO " +  temp.getText() );
-				}
-			});
+//			temp.addActionListener(new ActionListener() {
+//				public void actionPerformed(ActionEvent ae) {
+//					command.setText("SET PENTOSE TO " +  temp.getText() );
+//				}
+//			});
 		}
 		sec1.add(Box.createRigidArea(new Dimension(0, 10)));
 		sec1.add ( buttonGrid );
@@ -86,21 +84,21 @@ public class Dashboard5_4 implements Dashboard{
 		sec2.add(cable);
 		cable.setAlignmentX( Component.CENTER_ALIGNMENT );
 		cable.setMaximumSize( new Dimension(120, 35));
-		cable.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				command.setText( "QUELL TACHYON ADAPTER");
-			}
-		});
+//		cable.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent ae) {
+//				command.setText( "QUELL TACHYON ADAPTER");
+//			}
+//		});
 		sec2.add(Box.createRigidArea(new Dimension(0, 25)));
 		JButton synth = new JButton("SYNTHESIZE");
 		sec2.add(synth);
 		synth.setAlignmentX( Component.CENTER_ALIGNMENT );
 		synth.setMaximumSize( new Dimension(120, 35));
-		synth.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				command.setText( "SYNTHESIZE TACHYON ADAPTER");
-			}
-		});
+//		synth.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent ae) {
+//				command.setText( "SYNTHESIZE TACHYON ADAPTER");
+//			}
+//		});
 		
 		sec2.add(Box.createRigidArea(new Dimension(0, 55)));
 		
@@ -134,17 +132,17 @@ public class Dashboard5_4 implements Dashboard{
 		sec3.add ( slider );
 		slider.setMaximumSize( new Dimension(450, 35));
 		sec3.add(Box.createRigidArea(new Dimension(0, 90)));
-		slider.addChangeListener(new ChangeListener() {
-	        @Override
-	        public void stateChanged(ChangeEvent ce) {
-	        	JSlider source = (JSlider)ce.getSource();
-                if(!source.getValueIsAdjusting())
-                {
-                	//System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
-                	command.setText( "SET SUPERCALIFRAGILISTICEXPIALIDOCIOUS TO " + source.getValue() );
-                }
-	        }
-	    });
+//		slider.addChangeListener(new ChangeListener() {
+//	        @Override
+//	        public void stateChanged(ChangeEvent ce) {
+//	        	JSlider source = (JSlider)ce.getSource();
+//                if(!source.getValueIsAdjusting())
+//                {
+//                	//System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
+//                	command.setText( "SET SUPERCALIFRAGILISTICEXPIALIDOCIOUS TO " + source.getValue() );
+//                }
+//	        }
+//	    });
 		//defribilator
 		//hahahaha
 		//Supercalifragilisticexpialidocious

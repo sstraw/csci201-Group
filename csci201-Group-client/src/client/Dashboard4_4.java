@@ -22,12 +22,10 @@ import javax.swing.event.ChangeListener;
 
 public class Dashboard4_4 implements Dashboard{
 	
-	private JTextArea command;
 	private JPanel panel;
 	
-	public Dashboard4_4( JTextArea d ){
+	public Dashboard4_4(Client c){
 		panel = new JPanel();
-		command = d;
 		panel.setLayout( new GridLayout(2 ,1) );
 		
 		
@@ -56,18 +54,18 @@ public class Dashboard4_4 implements Dashboard{
 			final JButton temp = new JButton( String.valueOf(i+1));
 			temp.setBackground( Color.green);
 			buttonGrid.add(temp);
-			temp.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent ae) {
-					if(temp.getBackground().equals(Color.green) ){
-						temp.setBackground( Color.red);
-						command.setText("SET GRIDLOCK " +  temp.getText() + " TO RED");
-					}
-					else{
-						temp.setBackground( Color.green);
-						command.setText("SET GRIDLOCK " +  temp.getText() + " TO GREEN");
-					}
-				}
-			});
+//			temp.addActionListener(new ActionListener() {
+//				public void actionPerformed(ActionEvent ae) {
+//					if(temp.getBackground().equals(Color.green) ){
+//						temp.setBackground( Color.red);
+//						command.setText("SET GRIDLOCK " +  temp.getText() + " TO RED");
+//					}
+//					else{
+//						temp.setBackground( Color.green);
+//						command.setText("SET GRIDLOCK " +  temp.getText() + " TO GREEN");
+//					}
+//				}
+//			});
 		}
 		sec1.add(Box.createRigidArea(new Dimension(0, 10)));
 		sec1.add ( buttonGrid );
@@ -89,12 +87,12 @@ public class Dashboard4_4 implements Dashboard{
 		sec2.add(cable);
 		cable.setAlignmentX( Component.CENTER_ALIGNMENT );
 		cable.setMaximumSize( new Dimension(120, 55));
-		cable.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				command.setText( "REWIND DISC LOOP");
-			}
-		});
-		
+//		cable.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent ae) {
+//				command.setText( "REWIND DISC LOOP");
+//			}
+//		});
+//		
 		
 		
 		sec2.add(Box.createRigidArea(new Dimension(0, 85)));
@@ -131,20 +129,20 @@ public class Dashboard4_4 implements Dashboard{
 		sec3.add ( slider );
 		slider.setMaximumSize( new Dimension(250, 35));
 		sec3.add(Box.createRigidArea(new Dimension(0, 90)));
-		slider.addChangeListener(new ChangeListener() {
-	        @Override
-	        public void stateChanged(ChangeEvent ce) {
-	        	JSlider source = (JSlider)ce.getSource();
-                if(!source.getValueIsAdjusting())
-                {
-                	//System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
-                	command.setText( "SET MOLECULAR MAGNIFIER TO " + source.getValue() );
-                }
-	        }
-	    });
-		//defribilator
-		//hahahaha
-		//Supercalifragilisticexpialidocious
+//		slider.addChangeListener(new ChangeListener() {
+//	        @Override
+//	        public void stateChanged(ChangeEvent ce) {
+//	        	JSlider source = (JSlider)ce.getSource();
+//                if(!source.getValueIsAdjusting())
+//                {
+//                	//System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
+//                	command.setText( "SET MOLECULAR MAGNIFIER TO " + source.getValue() );
+//                }
+//	        }
+//	    });
+//		//defribilator
+//		//hahahaha
+//		//Supercalifragilisticexpialidocious
 		
 		db2.add(Box.createRigidArea(new Dimension(12, 0)));
 		JPanel sec4 = new JPanel();
@@ -163,11 +161,11 @@ public class Dashboard4_4 implements Dashboard{
 		beamcable.setAlignmentX( Component.CENTER_ALIGNMENT );
 		beamcable.setMaximumSize( new Dimension(100, 110));
 		
-		beamcable.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				command.setText("BOOST POWER-CYCLE");
-			}
-		});
+//		beamcable.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent ae) {
+//				command.setText("BOOST POWER-CYCLE");
+//			}
+//		});
 		sec4.add(Box.createRigidArea(new Dimension(0, 50)));
 		
 	}

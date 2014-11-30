@@ -7,7 +7,7 @@ import javax.swing.*;
 public class Dashboard2_4 implements Dashboard
 {
 	private JPanel panel;
-	public Dashboard2_4()
+	public Dashboard2_4(Client c)
 	{
 		panel = new JPanel();
 		panel.setLayout(null);

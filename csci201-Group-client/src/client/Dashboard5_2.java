@@ -23,12 +23,10 @@ import javax.swing.event.ChangeListener;
 
 public class Dashboard5_2 implements Dashboard{
 
-private JTextArea command;
 private JPanel panel;
 	
-	public Dashboard5_2( JTextArea d ){
+	public Dashboard5_2(Client c){
 		
-		command = d;
 		panel = new JPanel();
 		panel.setLayout( new GridLayout(2 ,1) );
 		
@@ -53,16 +51,16 @@ private JPanel panel;
 		JPanel buttonGrid = new JPanel();
 		buttonGrid.setLayout( new GridLayout(3 ,3) );
 		buttonGrid.setMaximumSize( new Dimension(400,180 ));
-		for(int i =0; i < 9; i++){
-			final JToggleButton temp = new JToggleButton( String.valueOf(i+1));
-			buttonGrid.add(temp);
-			
-			temp.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent ae) {
-					command.setText("SELECT LOGIC CONTROL BOARD " +  temp.getText() );	
-				}
-			});
-		}
+//		for(int i =0; i < 9; i++){
+//			final JToggleButton temp = new JToggleButton( String.valueOf(i+1));
+//			buttonGrid.add(temp);
+//			
+//			temp.addActionListener(new ActionListener() {
+//				public void actionPerformed(ActionEvent ae) {
+//					command.setText("SELECT LOGIC CONTROL BOARD " +  temp.getText() );	
+//				}
+//			});
+//		}
 		sec1.add(Box.createRigidArea(new Dimension(0, 10)));
 		sec1.add ( buttonGrid );
 		sec1.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -98,17 +96,17 @@ private JPanel panel;
 		sec3.add ( slider );
 		slider.setMaximumSize( new Dimension(250, 35));
 		sec3.add(Box.createRigidArea(new Dimension(0, 90)));
-		slider.addChangeListener(new ChangeListener() {
-	        @Override
-	        public void stateChanged(ChangeEvent ce) {
-	        	JSlider source = (JSlider)ce.getSource();
-                if(!source.getValueIsAdjusting())
-                {
-                	//System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
-                	command.setText( "SET EPSILON TRAP TO " + source.getValue() );
-                }
-	        }
-	    });
+//		slider.addChangeListener(new ChangeListener() {
+//	        @Override
+//	        public void stateChanged(ChangeEvent ce) {
+//	        	JSlider source = (JSlider)ce.getSource();
+//                if(!source.getValueIsAdjusting())
+//                {
+//                	//System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
+//                	command.setText( "SET EPSILON TRAP TO " + source.getValue() );
+//                }
+//	        }
+//	    });
 		
 		//defribilator
 		//hahahaha
@@ -139,22 +137,22 @@ private JPanel panel;
 		baste.setAlignmentX( Component.CENTER_ALIGNMENT );
 		baste.setMaximumSize( new Dimension(100, 50));
 		
-		baste.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				command.setText( "BASTE THE EMERGENCY WHITTLER" );
-			}
-		});
+//		baste.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent ae) {
+//				command.setText( "BASTE THE EMERGENCY WHITTLER" );
+//			}
+//		});
 		sec4.add(Box.createRigidArea(new Dimension(0, 20)));
 		final JButton jiggle = new JButton("JIGGLE");
 		sec4.add(jiggle);
 		jiggle.setAlignmentX( Component.CENTER_ALIGNMENT );
 		jiggle.setMaximumSize( new Dimension(100, 50));
 		
-		jiggle.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				command.setText( "JIGGLE THE EMERGENCY WHITTLER" );
-			}
-		});
+//		jiggle.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent ae) {
+//				command.setText( "JIGGLE THE EMERGENCY WHITTLER" );
+//			}
+//		});
 		
 		sec4.add(Box.createRigidArea(new Dimension(0, 24)));
 		

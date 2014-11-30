@@ -21,13 +21,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class Dashboard5_3 implements Dashboard{
-
-private JTextArea command;
 	private JPanel panel;
 	
-	public Dashboard5_3( JTextArea d ){
+	public Dashboard5_3(Client c){
 		
-		command = d;
 		panel = new JPanel();
 		panel.setLayout( new GridLayout(1,1) );
 		
@@ -60,31 +57,31 @@ private JTextArea command;
 		sec2.add(cable);
 		cable.setAlignmentX( Component.CENTER_ALIGNMENT );
 		cable.setMaximumSize( new Dimension(120, 75));
-		cable.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				command.setText( "BLIGE AIR ENGINES");
-			}
-		});
+//		cable.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent ae) {
+//				command.setText( "BLIGE AIR ENGINES");
+//			}
+//		});
 		sec2.add(Box.createRigidArea(new Dimension(0, 30)));
 		JButton plan = new JButton("PLAN");
 		sec2.add(plan);
 		plan.setAlignmentX( Component.CENTER_ALIGNMENT );
 		plan.setMaximumSize( new Dimension(120, 75));
-		plan.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				command.setText( "PLAN AIR ENGINES");
-			}
-		});
+//		plan.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent ae) {
+//				command.setText( "PLAN AIR ENGINES");
+//			}
+//		});
 		sec2.add(Box.createRigidArea(new Dimension(0, 30)));
 		JButton humid = new JButton("HUMIDIFY");
 		sec2.add(humid);
 		humid.setAlignmentX( Component.CENTER_ALIGNMENT );
 		humid.setMaximumSize( new Dimension(120, 75));
-		humid.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				command.setText( "HUMIDIFY AIR ENGINES");
-			}
-		});
+//		humid.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent ae) {
+//				command.setText( "HUMIDIFY AIR ENGINES");
+//			}
+//		});
 		sec2.add(Box.createRigidArea(new Dimension(0, 30)));
 		
 		
@@ -103,21 +100,21 @@ private JTextArea command;
 		sec4.add(cable2);
 		cable2.setAlignmentX( Component.CENTER_ALIGNMENT );
 		cable2.setMaximumSize( new Dimension(120, 35));
-		cable2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				command.setText( "UNCORK SHIFTSANITIZER");
-			}
-		});
+//		cable2.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent ae) {
+//				command.setText( "UNCORK SHIFTSANITIZER");
+//			}
+//		});
 		sec4.add(Box.createRigidArea(new Dimension(0, 30)));
 		JButton cable3 = new JButton("ENGORGE");
 		sec4.add(cable3);
 		cable3.setAlignmentX( Component.CENTER_ALIGNMENT );
 		cable3.setMaximumSize( new Dimension(120, 35));
-		cable3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				command.setText( "ENGORGE SHIFTSANITIZER");
-			}
-		});
+//		cable3.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent ae) {
+//				command.setText( "ENGORGE SHIFTSANITIZER");
+//			}
+//		});
 		sec4.add(Box.createRigidArea(new Dimension(0, 30)));
 		
 		sec1.add(Box.createRigidArea(new Dimension( 0 , 30)));
@@ -151,17 +148,17 @@ private JTextArea command;
 		sec3.add ( slider );
 		slider.setMaximumSize( new Dimension(40, 300));
 		sec3.add(Box.createRigidArea(new Dimension(0, 90)));
-		slider.addChangeListener(new ChangeListener() {
-	        @Override
-	        public void stateChanged(ChangeEvent ce) {
-	        	JSlider source = (JSlider)ce.getSource();
-                if(!source.getValueIsAdjusting())
-                {
-                	//System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
-                	command.setText( "SET EAVSTROUGH TO " + source.getValue() );
-                }
-	        }
-	    });
+//		slider.addChangeListener(new ChangeListener() {
+//	        @Override
+//	        public void stateChanged(ChangeEvent ce) {
+//	        	JSlider source = (JSlider)ce.getSource();
+//                if(!source.getValueIsAdjusting())
+//                {
+//                	//System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
+//                	command.setText( "SET EAVSTROUGH TO " + source.getValue() );
+//                }
+//	        }
+//	    });
 		
 		//defribilator
 		//hahahaha
