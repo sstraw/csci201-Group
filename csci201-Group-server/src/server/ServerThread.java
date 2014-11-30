@@ -112,6 +112,7 @@ public class ServerThread implements Runnable {
 	public void startLevel(int levelnumber){
 		//Notify starting a new level
 		lock.lock();
+		printwrite.println("startLevel");
 		printwrite.flush();
 		printwrite.println(levelnumber);
 		printwrite.flush();
