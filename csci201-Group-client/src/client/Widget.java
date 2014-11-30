@@ -484,6 +484,225 @@ class Holowheel extends SingleValueWidget{
 		}
 	}
 }
+//Dashboard 3-1
+class DirectOrders extends SingleButtonPress{
+	public DirectOrders() {
+		super("Direct Orders", 1, 0);
+	}
+	public Widget getRandomInstruction(){
+		return new DirectOrders();
+	}
+	public String getInstructionString(){
+		return "Disobey Direct Orders";
+	}
+}
+class Onions extends SingleButtonPress{
+	public Onions() {
+		super("Onions", 1, 0);
+	}
+	public Widget getRandomInstruction(){
+		return new Onions();
+	}
+	public String getInstructionString(){
+		return "Caramelize Onions";
+	}
+}
+class Flexbolt extends SingleValueWidget{
+	public Flexbolt(int init_val) {
+		super("Flexbolt", 0, 3, init_val);
+	}
+	public Widget getRandomInstruction() {
+		Random r = new Random();
+		int i = r.nextInt(max);
+		while(i == val){
+			i = r.nextInt(max);
+		}
+		return new Flexbolt(i);
+	}
+	public String getInstructionString() {
+		switch(val){
+		case(0):
+			return "Connect Flexbolt";
+		case(1):
+			return "Spark Flexbolt";
+		default:
+			return "Cut Flexbolt";
+		}
+	}
+}
+class TachyonAdapter extends SingleButtonPress{
+	public TachyonAdapter(int val) {super("Tachyon Adapter", 3, val);}
+	public Widget getRandomInstruction() {
+		return new TachyonAdapter((new Random().nextInt(buttons)));
+	}
+	public String getInstructionString() {
+		return String.format("Set Tachyon Adapter to %d", val-1);
+	}
+}
+//Dashboard 3-2
+class Spacehorn extends SingleButtonPress{
+	public Spacehorn() {
+		super("Spacehorn", 1, 0);
+	}
+	public Widget getRandomInstruction(){
+		return new Spacehorn();
+	}
+	public String getInstructionString(){
+		return "Honk Spacehorn";
+	}
+}
+class RobotUprising extends SingleButtonPress{
+	public RobotUprising() {
+		super("Robot Uprising", 1, 0);
+	}
+	public Widget getRandomInstruction(){
+		return new RobotUprising();
+	}
+	public String getInstructionString(){
+		return "Quell Robot Uprising";
+	}
+}
+class Powercyclone extends SingleValueWidget{
+	public Powercyclone(int init_val) {
+		super("Powercyclone", 0, 2, init_val);
+	}
+	public Widget getRandomInstruction() {
+		Random r = new Random();
+		int i = r.nextInt(max);
+		while(i == val){
+			i = r.nextInt(max);
+		}
+		return new Powercyclone(i);
+	}
+	public String getInstructionString() {
+		switch(val){
+		case(0):
+			return "Kick powercyclone";
+		default:
+			return "Release powercyclone";
+		}
+	}
+}
+//Dashboard 3-3
+class Gigamill extends SingleButtonPress{
+	public Gigamill(int val) {super("Gigamill", 4, val);}
+	public Widget getRandomInstruction() {
+		return new Gigamill((new Random().nextInt(buttons)));
+	}
+	public String getInstructionString() {
+		return String.format("Set Gigamill to %d", val);
+	}
+}
+class GeigerPowerlantern extends SingleButtonPress{
+	public GeigerPowerlantern() {
+		super("Geiger Powerlantern", 1, 0);
+	}
+	public Widget getRandomInstruction(){
+		return new GeigerPowerlantern();
+	}
+	public String getInstructionString(){
+		return "Light Geiger Powerlantern";
+	}
+}
+class Transmission extends SingleButtonPress{
+	public Transmission() {
+		super("Transmission", 1, 0);
+	}
+	public Widget getRandomInstruction(){
+		return new Transmission();
+	}
+	public String getInstructionString(){
+		return "Decrypt Transmission";
+	}
+}
+class MillerMonoray extends SingleValueWidget{
+	public MillerMonoray(int init_val) {
+		super("Miller Monoray", 0, 2, init_val);
+	}
+	public Widget getRandomInstruction() {
+		Random r = new Random();
+		int i = r.nextInt(max);
+		while(i == val){
+			i = r.nextInt(max);
+		}
+		return new MillerMonoray(i);
+	}
+	public String getInstructionString() {
+		switch(val){
+		case(0):
+			return "Aim Miller Monoray";
+		default:
+			return "Fire Miller Monoray";
+		}
+	}
+}
+//Dashboard 3-4
+class EvasiveManeuvers extends SingleButtonPress{
+	public EvasiveManeuvers() {
+		super("Evasive Maneuvers", 1, 0);
+	}
+	public Widget getRandomInstruction(){
+		return new EvasiveManeuvers();
+	}
+	public String getInstructionString(){
+		return "Take Evasive Maneuvers";
+	}
+}
+class Recycling extends SingleButtonPress{
+	public Recycling() {
+		super("Recycling", 1, 0);
+	}
+	public Widget getRandomInstruction(){
+		return new Recycling();
+	}
+	public String getInstructionString(){
+		return "Empty Recycling";
+	}
+}
+class Hextrack extends SingleButtonPress{
+	public Hextrack() {
+		super("Hextrack", 1, 0);
+	}
+	public Widget getRandomInstruction(){
+		return new Hextrack();
+	}
+	public String getInstructionString(){
+		return "Turn on Hextrack";
+	}
+}
+class Bank extends SingleValueWidget{
+	public Bank(int init_val) {
+		super("Bank", 0, 2, init_val);
+	}
+	public Widget getRandomInstruction() {
+		Random r = new Random();
+		int i = r.nextInt(max);
+		while(i == val){
+			i = r.nextInt(max);
+		}
+		return new Bank(i);
+	}
+	public String getInstructionString() {
+		switch(val){
+		case(0):
+			return "Balance Bank";
+		case(1):
+			return "Withdraw from Bank";
+		default:
+			return "Deposit into Bank";
+		}
+	}
+}
+class BilgeAirengines extends SingleButtonPress{
+	public BilgeAirengines(int val) {super("Bilge Airengines", 2, val);}
+	public Widget getRandomInstruction() {
+		return new BilgeAirengines((new Random().nextInt(buttons)));
+	}
+	public String getInstructionString() {
+		return String.format("Set Bilge Airengines to %d", val);
+	}
+}
+
 //public abstract class Widget implements Serializable {
 //	private static final long serialVersionUID = -4298245903822614337L;
 //	private Vector<Integer> val;

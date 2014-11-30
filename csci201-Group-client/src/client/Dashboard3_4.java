@@ -7,6 +7,7 @@ import javax.swing.*;
 public class Dashboard3_4 implements Dashboard
 {
 	private JPanel panel;
+	private Vector<Widget> widgets;
 	public Dashboard3_4(Client c)
 	{
 		panel = new JPanel();
@@ -146,6 +147,13 @@ public class Dashboard3_4 implements Dashboard
 		on.setMaximumSize(new Dimension(100, 80));
 		
 		panel.add(six);
+		widgets = new Vector<Widget>(6);
+		widgets.add(new Slider("Plectroblade", 0, 4, 0));
+		widgets.add(new EvasiveManeuvers());
+		widgets.add(new BilgeAirengines(0));
+		widgets.add(new Bank(0));
+		widgets.add(new Recycling());
+		widgets.add(new Hextrack());
 	}
 
 	public JPanel getPanel() {
@@ -153,6 +161,6 @@ public class Dashboard3_4 implements Dashboard
 	}
 
 	public Vector<Widget> getWidgets() {
-		return null;
+		return widgets;
 	}
 }

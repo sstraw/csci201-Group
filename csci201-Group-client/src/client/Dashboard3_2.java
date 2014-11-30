@@ -7,6 +7,7 @@ import javax.swing.*;
 public class Dashboard3_2 implements Dashboard
 {
 	private JPanel panel;
+	private Vector<Widget> widgets;
 	public Dashboard3_2(Client c)
 	{
 		panel = new JPanel();
@@ -136,6 +137,14 @@ public class Dashboard3_2 implements Dashboard
 		six.add(robot);
 		
 		panel.add(six);
+		
+		widgets = new Vector<Widget>(6);
+		widgets.add(new Slider("Chokefulorum", 0, 4, 0));
+		widgets.add(new Slider("Newtonian Photomist", 0, 4, 0));
+		widgets.add(new Powercyclone(0));
+		widgets.add(new Slider("Flight Barometer", 0, 6, 0));
+		widgets.add(new Spacehorn());
+		widgets.add(new RobotUprising());
 	}
 
 	public JPanel getPanel() {
@@ -143,6 +152,6 @@ public class Dashboard3_2 implements Dashboard
 	}
 
 	public Vector<Widget> getWidgets() {
-		return null;
+		return widgets;
 	}
 }
