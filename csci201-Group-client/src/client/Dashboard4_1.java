@@ -2,6 +2,7 @@ package client;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Vector;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -10,25 +11,21 @@ import javax.swing.event.ChangeListener;
 
 
 
-public class Dashboard4_1 extends JPanel{
-	
-	private static final long serialVersionUID = 1L;
-	
-	private JTextArea command;
-	
+public class Dashboard4_1 implements Dashboard{
+	private JPanel panel;
 
-	public Dashboard4_1( JTextArea d ){
+	public Dashboard4_1(Client c){
+		panel = new JPanel();
 		
-		command = d;
 		
-		this.setLayout( new GridLayout(2 ,1) );
+		panel.setLayout( new GridLayout(2 ,1) );
 		
 		
 		//top row
 		JPanel db1 = new JPanel();
 		db1.setLayout( new BoxLayout( db1 , BoxLayout.LINE_AXIS) );
 		db1.setBackground( Color.black);
-		this.add( db1 );
+		panel.add( db1 );
 		db1.add(Box.createRigidArea(new Dimension(12, 0)));
 		JPanel sec1 = new JPanel();
 		db1.add( sec1 );
@@ -44,24 +41,24 @@ public class Dashboard4_1 extends JPanel{
 		ironText.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		sec1.add(Box.createRigidArea(new Dimension(0, 40)));
 		JButton hot = new JButton ( "HOT" );
-		hot.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				//System.out.println("INDUCTION IRON SET TO HOT");
-				command.setText("SET INDUCTION IRON TO HOT");
-			}
-		});
+//		hot.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent ae) {
+//				//System.out.println("INDUCTION IRON SET TO HOT");
+//				command.setText("SET INDUCTION IRON TO HOT");
+//			}
+//		});
 		
 		sec1.add( hot );
 		hot.setMaximumSize( new Dimension(120, 35));
 		hot.setAlignmentX( Component.CENTER_ALIGNMENT );
 		sec1.add(Box.createRigidArea(new Dimension(0, 10)));
 		JButton cold = new JButton ( "COLD" );
-		cold.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				//System.out.println("INDUCTION IRON SET TO COLD");
-				command.setText("SET INDUCTION IRON TO COLD");
-			}
-		});
+//		cold.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent ae) {
+//				//System.out.println("INDUCTION IRON SET TO COLD");
+//				command.setText("SET INDUCTION IRON TO COLD");
+//			}
+//		});
 		sec1.add( cold );
 		cold.setAlignmentX( Component.CENTER_ALIGNMENT );
 		cold.setMaximumSize( new Dimension(120, 35));
@@ -82,20 +79,20 @@ public class Dashboard4_1 extends JPanel{
 		sec2.add(cable);
 		cable.setAlignmentX( Component.CENTER_ALIGNMENT );
 		cable.setMaximumSize( new Dimension(120, 35));
-		cable.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				if( cable.getText().equals("LOCKED")){
-					cable.setText("UNLOCKED");
-					//System.out.println("GROOVED CABLE UNLOCKED");
-					command.setText("UNLOCK GROOVED CABLE");
-				}
-				else{
-					cable.setText("LOCKED");
-					//System.out.println("GROOVED CABLE LOCKED");
-					command.setText("LOCK GROOVED CABLE");
-				}
-			}
-		});
+//		cable.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent ae) {
+//				if( cable.getText().equals("LOCKED")){
+//					cable.setText("UNLOCKED");
+//					//System.out.println("GROOVED CABLE UNLOCKED");
+//					command.setText("UNLOCK GROOVED CABLE");
+//				}
+//				else{
+//					cable.setText("LOCKED");
+//					//System.out.println("GROOVED CABLE LOCKED");
+//					command.setText("LOCK GROOVED CABLE");
+//				}
+//			}
+//		});
 		
 		sec2.add(Box.createRigidArea(new Dimension(0, 95)));
 		
@@ -107,7 +104,7 @@ public class Dashboard4_1 extends JPanel{
 		JPanel db2 = new JPanel();
 		db2.setLayout( new BoxLayout( db2 , BoxLayout.LINE_AXIS) );
 		db2.setBackground( Color.black);
-		this.add( db2 );
+		panel.add( db2 );
 		
 		db2.add(Box.createRigidArea(new Dimension(12, 0)));
 		JPanel sec3 = new JPanel();
@@ -123,17 +120,17 @@ public class Dashboard4_1 extends JPanel{
 		sec3.add( phaseText );
 		sec3.add(Box.createRigidArea(new Dimension(0, 70)));
 		JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 4, 0);
-		slider.addChangeListener(new ChangeListener() {
-	        @Override
-	        public void stateChanged(ChangeEvent ce) {
-	        	JSlider source = (JSlider)ce.getSource();
-                if(!source.getValueIsAdjusting())
-                {
-                	//System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
-                	command.setText( "SET PHASON COLLIDER TO " + source.getValue() );
-                }
-	        }
-	    });
+//		slider.addChangeListener(new ChangeListener() {
+//	        @Override
+//	        public void stateChanged(ChangeEvent ce) {
+//	        	JSlider source = (JSlider)ce.getSource();
+//                if(!source.getValueIsAdjusting())
+//                {
+//                	//System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
+//                	command.setText( "SET PHASON COLLIDER TO " + source.getValue() );
+//                }
+//	        }
+//	    });
 		slider.setMajorTickSpacing(1);
 		slider.setPaintTicks(true);
 		slider.setPaintLabels(true);
@@ -157,20 +154,30 @@ public class Dashboard4_1 extends JPanel{
 		sec4.add(beamswitch);
 		beamswitch.setAlignmentX( Component.CENTER_ALIGNMENT );
 		beamswitch.setMaximumSize( new Dimension(100, 135));
-		beamswitch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				if( beamswitch.getText().equals("OFF")){
-					beamswitch.setText("ON");
-					System.out.println("TURN ON SPECTROBEAM");
-				}
-				else{
-					beamswitch.setText("OFF");
-					System.out.println("TURN OFF SPECTROBEAM");
-				}
-			}
-		});
+//		beamswitch.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent ae) {
+//				if( beamswitch.getText().equals("OFF")){
+//					beamswitch.setText("ON");
+//					System.out.println("TURN ON SPECTROBEAM");
+//				}
+//				else{
+//					beamswitch.setText("OFF");
+//					System.out.println("TURN OFF SPECTROBEAM");
+//				}
+//			}
+//		});
 		sec4.add(Box.createRigidArea(new Dimension(0, 30)));
 		
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+
+	@Override
+	public Vector<Widget> getWidgets() {
+		// TODO Auto-generated method stub
+		return null;
 	}	
 
 

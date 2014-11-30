@@ -1,13 +1,15 @@
 package client;
 import java.awt.*;
+import java.util.Vector;
 
 import javax.swing.*;
 
-public class Dashboard2_1 extends JPanel
+public class Dashboard2_1 implements Dashboard
 {
-	public Dashboard2_1()
+	private JPanel panel;
+	public Dashboard2_1(Client c)
 	{
-		setLayout(null);
+		panel.setLayout(null);
 		
 		JPanel one = new JPanel();
 		one.setLayout(new BoxLayout(one, BoxLayout.Y_AXIS));
@@ -28,7 +30,7 @@ public class Dashboard2_1 extends JPanel
 		one.add(setting);
 		setting.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		add(one);
+		panel.add(one);
 		
 		JPanel two = new JPanel();
 		two.setLayout(new BoxLayout(two, BoxLayout.Y_AXIS));
@@ -54,7 +56,7 @@ public class Dashboard2_1 extends JPanel
 		engage.setMaximumSize(new Dimension(100, 50));
 		two.add(side);
 		
-		add(two);
+		panel.add(two);
 		
 		JPanel three = new JPanel();
 		three.setLayout(new BoxLayout(three, BoxLayout.Y_AXIS));
@@ -73,7 +75,7 @@ public class Dashboard2_1 extends JPanel
 		three.add(freeze);
 		freeze.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		add(three);
+		panel.add(three);
 		
 		JPanel four = new JPanel();
 		four.setLayout(new BoxLayout(four, BoxLayout.Y_AXIS));
@@ -104,7 +106,7 @@ public class Dashboard2_1 extends JPanel
 		uncork.setAlignmentX(Component.CENTER_ALIGNMENT);
 		uncork.setMaximumSize(new Dimension(140, 50));
 		
-		add(four);
+		panel.add(four);
 		
 		JPanel five = new JPanel();
 		five.setLayout(new BoxLayout(five, BoxLayout.Y_AXIS));
@@ -123,6 +125,14 @@ public class Dashboard2_1 extends JPanel
 		levels.setMaximumSize(new Dimension(80, 50));
 		five.add(levels);
 		
-		add(five);
+		panel.add(five);
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+
+	public Vector<Widget> getWidgets() {
+		return null;
 	}
 }

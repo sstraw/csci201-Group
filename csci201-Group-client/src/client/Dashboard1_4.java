@@ -1,13 +1,17 @@
 package client;
 import java.awt.*;
+import java.util.Vector;
 
 import javax.swing.*;
 
-public class Dashboard1_4 extends JPanel
+public class Dashboard1_4 implements Dashboard
 {
-	public Dashboard1_4()
+	private JPanel panel;
+	private Vector<Widget> widgets;
+	public Dashboard1_4(Client c)
 	{
-		setLayout(null);
+		panel = new JPanel();
+		panel.setLayout(null);
 		
 		JPanel topleft = new JPanel();
 		topleft.setLayout(new BoxLayout(topleft, BoxLayout.Y_AXIS));
@@ -28,7 +32,7 @@ public class Dashboard1_4 extends JPanel
 		topleft.add(setting);
 		setting.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		add(topleft);
+		panel.add(topleft);
 		
 		JPanel topright = new JPanel();
 		topright.setLayout(new BoxLayout(topright, BoxLayout.Y_AXIS));
@@ -54,7 +58,7 @@ public class Dashboard1_4 extends JPanel
 		bg.add(high);
 		bg.add(low);
 		
-		add(topright);
+		panel.add(topright);
 		
 		JPanel bottomleft = new JPanel();
 		bottomleft.setLayout(new BoxLayout(bottomleft, BoxLayout.Y_AXIS));
@@ -73,7 +77,7 @@ public class Dashboard1_4 extends JPanel
 		bottomleft.add(activate);
 		activate.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		add(bottomleft);
+		panel.add(bottomleft);
 		
 		JPanel bottomright = new JPanel();
 		bottomright.setLayout(new BoxLayout(bottomright, BoxLayout.Y_AXIS));
@@ -98,6 +102,20 @@ public class Dashboard1_4 extends JPanel
 		shoot.setAlignmentX(Component.CENTER_ALIGNMENT);
 		shoot.setMaximumSize(new Dimension(140, 50));
 		
-		add(bottomright);
+		panel.add(bottomright);
+		
+		widgets = new Vector<Widget>(4);
+		widgets.add(new Slider("Alarm Siren", 0, 6, 5));
+		widgets.add(new SelfDestruct());
+		widgets.add(new Flamethrower(0));
+		widgets.add(new Technograph(0));
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+
+	public Vector<Widget> getWidgets() {
+		return widgets;
 	}
 }

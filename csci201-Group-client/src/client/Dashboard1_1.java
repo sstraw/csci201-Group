@@ -7,9 +7,11 @@ import javax.swing.*;
 public class Dashboard1_1 implements Dashboard
 {
 	private JPanel panel;
+	private Vector<Widget> widgets;
 	
-	public Dashboard1_1()
+	public Dashboard1_1(Client c)
 	{
+		panel = new JPanel();
 		panel.setLayout(null);
 		
 		JPanel topleft = new JPanel();
@@ -52,6 +54,7 @@ public class Dashboard1_1 implements Dashboard
 		topright.add(manual);
 		manual.setAlignmentX(Component.CENTER_ALIGNMENT);
 		ButtonGroup bg = new ButtonGroup();
+		auto.setSelected(true);
 		bg.add(auto);
 		bg.add(manual);
 		
@@ -100,14 +103,21 @@ public class Dashboard1_1 implements Dashboard
 		ptype.setMaximumSize(new Dimension(140, 50));
 		
 		panel.add(bottomright);
+		
+		widgets = new Vector<Widget>(4);
+		widgets.add(new Slider("Hydraflex", 0, 4, 0));
+		widgets.add(new CrowleyCoke());
+		widgets.add(new TransmissionWidget(0));
+		widgets.add(new Mosfet(0));
+		
 	}
-
+	
 	public JPanel getPanel() {
 		return panel;
 	}
 
 	public Vector<Widget> getWidgets() {
-		return null;
+		return widgets;
 	}
 
 }

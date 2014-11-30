@@ -1,12 +1,18 @@
 package client;
 import java.awt.*;
+import java.util.Vector;
+
 import javax.swing.*;
 
-public class Dashboard1_2 extends JPanel
+public class Dashboard1_2 implements Dashboard
 {
-	public Dashboard1_2()
+	private JPanel panel;
+	private Vector<Widget> widgets;
+	
+	public Dashboard1_2(Client c)
 	{
-		setLayout(null);
+		panel = new JPanel();
+		panel.setLayout(null);
 		
 		JPanel topleft = new JPanel();
 		topleft.setLayout(new BoxLayout(topleft, BoxLayout.Y_AXIS));
@@ -31,7 +37,7 @@ public class Dashboard1_2 extends JPanel
 		close.setAlignmentX(Component.CENTER_ALIGNMENT);
 		close.setMaximumSize(new Dimension(140, 50));
 		
-		add(topleft);
+		panel.add(topleft);
 		
 		JPanel topright = new JPanel();
 		topright.setLayout(new BoxLayout(topright, BoxLayout.Y_AXIS));
@@ -57,7 +63,7 @@ public class Dashboard1_2 extends JPanel
 		bg.add(clean);
 		bg.add(vent);
 		
-		add(topright);
+		panel.add(topright);
 		
 		JPanel bottomleft = new JPanel();
 		bottomleft.setLayout(new BoxLayout(bottomleft, BoxLayout.Y_AXIS));
@@ -76,7 +82,7 @@ public class Dashboard1_2 extends JPanel
 		bottomleft.add(reset);
 		reset.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		add(bottomleft);
+		panel.add(bottomleft);
 		
 		JPanel bottomright = new JPanel();
 		bottomright.setLayout(new BoxLayout(bottomright, BoxLayout.Y_AXIS));
@@ -95,6 +101,20 @@ public class Dashboard1_2 extends JPanel
 		levels.setMaximumSize(new Dimension(80, 50));
 		bottomright.add(levels);
 		
-		add(bottomright);
+		panel.add(bottomright);
+		
+		widgets = new Vector<Widget>(4);
+		widgets.add(new SpaceGate(0));
+		widgets.add(new Nextron());
+		widgets.add(new FluxCapacitor(0));
+		widgets.add(new Slider("Laser Beam", 0, 4, 0));
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+
+	public Vector<Widget> getWidgets() {
+		return widgets;
 	}
 }

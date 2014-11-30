@@ -1,13 +1,16 @@
 package client;
 import java.awt.*;
+import java.util.Vector;
 
 import javax.swing.*;
 
-public class Dashboard2_3 extends JPanel
+public class Dashboard2_3 implements Dashboard
 {
-	public Dashboard2_3()
+	private JPanel panel;
+	public Dashboard2_3(Client c)
 	{
-		setLayout(null);
+		panel = new JPanel();
+		panel.setLayout(null);
 		
 		JPanel one = new JPanel();
 		one.setLayout(new BoxLayout(one, BoxLayout.Y_AXIS));
@@ -26,7 +29,7 @@ public class Dashboard2_3 extends JPanel
 		levels.setMaximumSize(new Dimension(80, 50));
 		one.add(levels);
 		
-		add(one);
+		panel.add(one);
 		
 		JPanel two = new JPanel();
 		two.setLayout(new BoxLayout(two, BoxLayout.Y_AXIS));
@@ -52,7 +55,7 @@ public class Dashboard2_3 extends JPanel
 		bg.add(run);
 		bg.add(analysis);
 		
-		add(two);
+		panel.add(two);
 		
 		JPanel three = new JPanel();
 		three.setLayout(new BoxLayout(three, BoxLayout.Y_AXIS));
@@ -73,7 +76,7 @@ public class Dashboard2_3 extends JPanel
 		three.add(settings);
 		settings.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		add(three);
+		panel.add(three);
 		
 		JPanel four = new JPanel();
 		four.setLayout(new BoxLayout(four, BoxLayout.Y_AXIS));
@@ -94,7 +97,7 @@ public class Dashboard2_3 extends JPanel
 		four.add(setting);
 		setting.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		add(four);
+		panel.add(four);
 		
 		JPanel five = new JPanel();
 		five.setLayout(new BoxLayout(five, BoxLayout.X_AXIS));
@@ -111,6 +114,15 @@ public class Dashboard2_3 extends JPanel
 		infratoxin.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		five.add(infratoxin);
 		
-		add(five);
+		panel.add(five);
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+
+	public Vector<Widget> getWidgets() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -2,14 +2,19 @@ package client;
 
 
 import java.awt.*;
+import java.util.Vector;
 
 import javax.swing.*;
 
-public class Dashboard1_3 extends JPanel
+public class Dashboard1_3 implements Dashboard
 {
-	public Dashboard1_3()
+	private JPanel panel;
+	private Vector<Widget> widgets;
+	
+	public Dashboard1_3(Client c)
 	{
-		setLayout(null);
+		panel = new JPanel();
+		panel.setLayout(null);
 		
 		JPanel topleft = new JPanel();
 		topleft.setLayout(new BoxLayout(topleft, BoxLayout.Y_AXIS));
@@ -30,7 +35,7 @@ public class Dashboard1_3 extends JPanel
 		topleft.add(setting);
 		setting.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		add(topleft);
+		panel.add(topleft);
 		
 		JPanel topright = new JPanel();
 		topright.setLayout(new BoxLayout(topright, BoxLayout.Y_AXIS));
@@ -56,7 +61,7 @@ public class Dashboard1_3 extends JPanel
 		bg.add(allow);
 		bg.add(deny);
 		
-		add(topright);
+		panel.add(topright);
 		
 		JPanel bottomleft = new JPanel();
 		bottomleft.setLayout(new BoxLayout(bottomleft, BoxLayout.Y_AXIS));
@@ -75,7 +80,7 @@ public class Dashboard1_3 extends JPanel
 		bottomleft.add(brew);
 		brew.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		add(bottomleft);
+		panel.add(bottomleft);
 		
 		JPanel bottomright = new JPanel();
 		bottomright.setLayout(new BoxLayout(bottomright, BoxLayout.Y_AXIS));
@@ -94,6 +99,20 @@ public class Dashboard1_3 extends JPanel
 		points.setMaximumSize(new Dimension(80, 50));
 		bottomright.add(points);
 		
-		add(bottomright);
+		panel.add(bottomright);
+		
+		widgets = new Vector<Widget>(4);
+		widgets.add(new Slider("Massage Chair", 0, 5, 2));
+		widgets.add(new Hitchhiker(1));
+		widgets.add(new CoffeeMaker());
+		widgets.add(new GPA(0));
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+
+	public Vector<Widget> getWidgets() {
+		return widgets;
 	}
 }
