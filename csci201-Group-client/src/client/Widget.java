@@ -112,9 +112,6 @@ abstract class SingleValueWidget implements Widget{
 }
 
 class Slider extends SingleValueWidget{
-
-	private static final long serialVersionUID = 2467286323078940573L;
-
 	public Slider(String name, int min, int max, int init_val) {
 		super(name, min, max, init_val);
 	}
@@ -139,9 +136,6 @@ class Slider extends SingleValueWidget{
 
 //Dashboard1_1
 class TransmissionWidget extends SingleValueWidget{
-
-	private static final long serialVersionUID = -8736650004890706239L;
-
 	public TransmissionWidget(int init_val) {
 		super("Transmission", 0, 2, init_val);
 	}
@@ -169,7 +163,6 @@ class TransmissionWidget extends SingleValueWidget{
 }
 
 class CrowleyCoke extends SingleButtonPress{
-	private static final long serialVersionUID = -5357064506459382322L;
 	public CrowleyCoke() {
 		super("Crowley Coke", 1, 0);
 	}
@@ -183,7 +176,6 @@ class CrowleyCoke extends SingleButtonPress{
 }
 
 class Mosfet extends SingleButtonPress{
-	private static final long serialVersionUID = -6910617819805233446L;
 	public Mosfet(int init){
 		super("Mosfet", 2, init);
 	}
@@ -202,7 +194,6 @@ class Mosfet extends SingleButtonPress{
 
 //Dashboard 1_2
 class SpaceGate extends SingleButtonPress{
-	private static final long serialVersionUID = -156256557296860257L;
 	public SpaceGate(int val) {super("Space Gate", 2, val);}
 	public Widget getRandomInstruction() {
 		return new SpaceGate((new Random().nextInt(buttons)));
@@ -218,7 +209,6 @@ class SpaceGate extends SingleButtonPress{
 	}
 }
 class Nextron extends SingleButtonPress{
-	private static final long serialVersionUID = -2028498420433459612L;
 	public Nextron(){super("Nextron", 1, 0);}
 	public Widget getRandomInstruction(){
 		return new Nextron();
@@ -226,7 +216,6 @@ class Nextron extends SingleButtonPress{
 	public String getInstructionString(){return "Reset the Nextron";}
 }
 class FluxCapacitor extends SingleValueWidget{
-	private static final long serialVersionUID = -3674135814018327313L;
 	public FluxCapacitor(int init_val) {
 		super("Flux Capacitor", 0, 2, init_val);
 	}
@@ -258,7 +247,6 @@ class CoffeeMaker extends SingleButtonPress{
 	public String getInstructionString(){return "Brew the Coffee";}
 }
 class Hitchhiker extends SingleValueWidget{
-	private static final long serialVersionUID = -2547599328339340031L;
 	public Hitchhiker(int init_val) {
 		super("Hitchhiker", 0, 2, init_val);
 	}
@@ -280,7 +268,6 @@ class Hitchhiker extends SingleValueWidget{
 	}
 }
 class GPA extends Slider{
-	private static final long serialVersionUID = -7374408602736874755L;
 	public GPA(int init_val) {
 		super("GPA", 0, 3, 0);
 	}
@@ -300,7 +287,6 @@ class GPA extends Slider{
 }
 //Dashboard 1_4
 class SelfDestruct extends SingleButtonPress{
-	private static final long serialVersionUID = -5169146801936305954L;
 	public SelfDestruct() {
 		super("Self Destruct", 1, 0);
 	}
@@ -312,7 +298,6 @@ class SelfDestruct extends SingleButtonPress{
 	}
 }
 class Technograph extends SingleValueWidget{
-	private static final long serialVersionUID = -7404621332294188960L;
 	public Technograph(int init_val) {
 		super("Technograph", 0, 2, init_val);
 	}
@@ -334,7 +319,6 @@ class Technograph extends SingleValueWidget{
 	}
 }
 class Flamethrower extends SingleButtonPress{
-	private static final long serialVersionUID = -156256557296860257L;
 	public Flamethrower(int val) {super("Flamethrower", 2, val);}
 	public Widget getRandomInstruction() {
 		return new Flamethrower((new Random().nextInt(buttons)));
@@ -345,6 +329,158 @@ class Flamethrower extends SingleButtonPress{
 			return "Point the Flamethrower";
 		default:
 			return "Shoot the Flamethrower";
+		}
+	}
+}
+
+//Dashboard 2-1
+class Leftovers extends SingleButtonPress{
+	public Leftovers() {
+		super("Leftovers", 1, 0);
+	}
+	public Widget getRandomInstruction(){
+		return new Leftovers();
+	}
+	public String getInstructionString(){
+		return "Freeze Leftovers";
+	}
+}
+class TurboJumper extends SingleButtonPress{
+	public TurboJumper(int val) {super("TurboJumper", 2, val);}
+	public Widget getRandomInstruction() {
+		return new TurboJumper((new Random().nextInt(buttons)));
+	}
+	public String getInstructionString() {
+		return String.format("Set TurboJumper to %d", val);
+	}
+}
+class IonTissue extends SingleButtonPress{
+	public IonTissue(int val) {super("IonTissue", 3, val);}
+	public Widget getRandomInstruction() {
+		return new IonTissue((new Random().nextInt(buttons)));
+	}
+	public String getInstructionString() {
+		switch(val){
+		case(0):
+			return "Engorge the IonTissue";
+		case(1):
+			return "Wipe the IonTissue";
+		default:
+			return "Uncork the IonTissue";
+		}
+	}
+}
+//Dashboard 2-2
+class RepulsionLocator extends SingleButtonPress{
+	public RepulsionLocator(int val) {super("Repulsion Locator", 4, val);}
+	public Widget getRandomInstruction() {
+		return new RepulsionLocator((new Random().nextInt(buttons)));
+	}
+	public String getInstructionString() {
+		return String.format("Set Repulsion Locator to %d", val);
+	}
+}
+class EmergencyWhittler extends SingleButtonPress{
+	public EmergencyWhittler(int val) {super("Emergency Whittler", 2, val);}
+	public Widget getRandomInstruction() {
+		return new EmergencyWhittler((new Random().nextInt(buttons)));
+	}
+	public String getInstructionString() {
+		switch(val){
+		case(0):
+			return "Baste the Emergency Whittler";
+		default:
+			return "Jiggle the Emergency Whittler";
+		}
+	}
+}
+class Accelerator extends SingleButtonPress{
+	public Accelerator() {
+		super("Accelerator", 1, 0);
+	}
+	public Widget getRandomInstruction(){
+		return new Accelerator();
+	}
+	public String getInstructionString(){
+		return "Start Accelerator";
+	}
+}
+//Dashboard 2-3
+class Infratoxin extends SingleButtonPress{
+	public Infratoxin() {
+		super("Infratoxin", 1, 0);
+	}
+	public Widget getRandomInstruction(){
+		return new Infratoxin();
+	}
+	public String getInstructionString(){
+		return "Initialize Infratoxin";
+	}
+}
+class Monodish extends SingleValueWidget{
+	public Monodish(int init_val) {
+		super("Monodish", 0, 2, init_val);
+	}
+	public Widget getRandomInstruction() {
+		if (val == 0){
+			return new Monodish(1);
+		}
+		else{
+			return new Monodish(0);
+		}
+	}
+	public String getInstructionString() {
+		if (val == 0){
+			return "Set Monodish to run";
+		}
+		else{
+			return "Set Monodish to analyze";
+		}
+	}
+}
+//Dashboard 2-4
+class ForeignDignitaries extends SingleButtonPress{
+	public ForeignDignitaries() {
+		super("Foreign Dignitaries", 1, 0);
+	}
+	public Widget getRandomInstruction(){
+		return new ForeignDignitaries();
+	}
+	public String getInstructionString(){
+		return "Entertain Foreign Dignitaries";
+	}
+}
+class Progyro extends SingleButtonPress{
+	public Progyro(int val) {super("Progyro", 3, val);}
+	public Widget getRandomInstruction() {
+		return new Progyro((new Random().nextInt(buttons)));
+	}
+	public String getInstructionString() {
+		return String.format("Set Progyro to %d", val);
+	}
+}
+class Holowheel extends SingleValueWidget{
+	public Holowheel(int init_val) {
+		super("Holowheel", 0, 4, init_val);
+	}
+	public Widget getRandomInstruction() {
+		Random r = new Random();
+		int i = r.nextInt(max);
+		while(i == val){
+			i = r.nextInt(max);
+		}
+		return new Holowheel(i);
+	}
+	public String getInstructionString() {
+		switch(val){
+		case(0):
+			return "Set Holowheel to Cast";
+		case(1):
+			return "Set Holowheel to Reel";
+		case(2):
+			return "Set Holowheel to Roll";
+		default:
+			return "Set Holowheel to Flip";
 		}
 	}
 }

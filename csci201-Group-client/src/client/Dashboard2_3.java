@@ -7,6 +7,7 @@ import javax.swing.*;
 public class Dashboard2_3 implements Dashboard
 {
 	private JPanel panel;
+	private Vector<Widget> widgets;
 	public Dashboard2_3(Client c)
 	{
 		panel = new JPanel();
@@ -115,6 +116,13 @@ public class Dashboard2_3 implements Dashboard
 		five.add(infratoxin);
 		
 		panel.add(five);
+		
+		widgets = new Vector<Widget>(5);
+		widgets.add(new Slider("Sloping Solution", 0, 4, 0));
+		widgets.add(new Monodish(0));
+		widgets.add(new Slider("Induction Iron", 0, 4, 0));
+		widgets.add(new Slider("Flange Exhaust", 0, 6, 0));
+		widgets.add(new Infratoxin());
 	}
 
 	public JPanel getPanel() {
@@ -122,7 +130,6 @@ public class Dashboard2_3 implements Dashboard
 	}
 
 	public Vector<Widget> getWidgets() {
-		// TODO Auto-generated method stub
-		return null;
+		return widgets;
 	}
 }
