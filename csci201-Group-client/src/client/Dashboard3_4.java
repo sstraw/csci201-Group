@@ -1,13 +1,16 @@
 package client;
 import java.awt.*;
+import java.util.Vector;
 
 import javax.swing.*;
 
-public class Dashboard3_4 extends JPanel
+public class Dashboard3_4 implements Dashboard
 {
+	private JPanel panel;
 	public Dashboard3_4()
 	{
-		setLayout(null);
+		panel = new JPanel();
+		panel.setLayout(null);
 
 		JPanel one = new JPanel();
 		one.setLayout(new BoxLayout(one, BoxLayout.Y_AXIS));
@@ -28,7 +31,7 @@ public class Dashboard3_4 extends JPanel
 		one.add(setting);
 		setting.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		add(one);
+		panel.add(one);
 		
 		JPanel two = new JPanel();
 		two.setLayout(new BoxLayout(two, BoxLayout.Y_AXIS));
@@ -54,7 +57,7 @@ public class Dashboard3_4 extends JPanel
 		engage.setMaximumSize(new Dimension(100, 50));
 		two.add(side);
 		
-		add(two);
+		panel.add(two);
 		
 		JPanel three = new JPanel();
 		three.setLayout(new BoxLayout(three, BoxLayout.Y_AXIS));
@@ -73,7 +76,7 @@ public class Dashboard3_4 extends JPanel
 		three.add(take);
 		take.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		add(three);
+		panel.add(three);
 		
 		JPanel four = new JPanel();
 		four.setLayout(new BoxLayout(four, BoxLayout.Y_AXIS));
@@ -104,7 +107,7 @@ public class Dashboard3_4 extends JPanel
 		deposit.setAlignmentX(Component.CENTER_ALIGNMENT);
 		deposit.setMaximumSize(new Dimension(140, 50));
 		
-		add(four);
+		panel.add(four);
 		
 		JPanel five = new JPanel();
 		five.setLayout(new BoxLayout(five, BoxLayout.Y_AXIS));
@@ -123,7 +126,7 @@ public class Dashboard3_4 extends JPanel
 		empty.setAlignmentX(Component.CENTER_ALIGNMENT);
 		empty.setMaximumSize(new Dimension(100, 80));
 		
-		add(five);
+		panel.add(five);
 		
 		JPanel six = new JPanel();
 		six.setLayout(new BoxLayout(six, BoxLayout.Y_AXIS));
@@ -142,6 +145,14 @@ public class Dashboard3_4 extends JPanel
 		on.setAlignmentX(Component.CENTER_ALIGNMENT);
 		on.setMaximumSize(new Dimension(100, 80));
 		
-		add(six);
+		panel.add(six);
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+
+	public Vector<Widget> getWidgets() {
+		return null;
 	}
 }

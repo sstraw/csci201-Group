@@ -1,13 +1,16 @@
 package client;
 import java.awt.*;
+import java.util.Vector;
 
 import javax.swing.*;
 
-public class Dashboard3_3 extends JPanel
+public class Dashboard3_3 implements Dashboard
 {
+	private JPanel panel;
 	public Dashboard3_3()
 	{
-		setLayout(null);
+		panel = new JPanel();
+		panel.setLayout(null);
 		
 		JPanel one = new JPanel();
 		one.setLayout(new BoxLayout(one, BoxLayout.Y_AXIS));
@@ -28,7 +31,7 @@ public class Dashboard3_3 extends JPanel
 		one.add(setting);
 		setting.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		add(one);
+		panel.add(one);
 		
 		JPanel two = new JPanel();
 		two.setLayout(new BoxLayout(two, BoxLayout.Y_AXIS));
@@ -67,7 +70,7 @@ public class Dashboard3_3 extends JPanel
 		num3.setMaximumSize(new Dimension(100, 50));
 		two.add(sidebottom);
 		
-		add(two);
+		panel.add(two);
 		
 		JPanel three = new JPanel();
 		three.setLayout(new BoxLayout(three, BoxLayout.Y_AXIS));
@@ -92,7 +95,7 @@ public class Dashboard3_3 extends JPanel
 		fire.setAlignmentX(Component.CENTER_ALIGNMENT);
 		fire.setMaximumSize(new Dimension(120, 50));
 		
-		add(three);
+		panel.add(three);
 		
 		JPanel four = new JPanel();
 		four.setLayout(new BoxLayout(four, BoxLayout.Y_AXIS));
@@ -111,7 +114,7 @@ public class Dashboard3_3 extends JPanel
 		light.setAlignmentX(Component.CENTER_ALIGNMENT);
 		light.setMaximumSize(new Dimension(100, 80));
 		
-		add(four);
+		panel.add(four);
 		
 		JPanel five = new JPanel();
 		five.setLayout(new BoxLayout(five, BoxLayout.Y_AXIS));
@@ -130,7 +133,7 @@ public class Dashboard3_3 extends JPanel
 		decrypt.setAlignmentX(Component.CENTER_ALIGNMENT);
 		decrypt.setMaximumSize(new Dimension(100, 80));
 		
-		add(five);
+		panel.add(five);
 		
 		JPanel six = new JPanel();
 		six.setLayout(new BoxLayout(six, BoxLayout.X_AXIS));
@@ -148,6 +151,15 @@ public class Dashboard3_3 extends JPanel
 		beacon.setFont(new Font("DejaVu Sans", Font.BOLD, 12));
 		six.add(beacon);
 		
-		add(six);
+		panel.add(six);
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+
+	@Override
+	public Vector<Widget> getWidgets() {
+		return null;
 	}
 }

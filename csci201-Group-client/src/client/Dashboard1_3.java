@@ -2,14 +2,17 @@ package client;
 
 
 import java.awt.*;
+import java.util.Vector;
 
 import javax.swing.*;
 
-public class Dashboard1_3 extends JPanel
+public class Dashboard1_3 implements Dashboard
 {
+	private JPanel panel;
 	public Dashboard1_3()
 	{
-		setLayout(null);
+		panel = new JPanel();
+		panel.setLayout(null);
 		
 		JPanel topleft = new JPanel();
 		topleft.setLayout(new BoxLayout(topleft, BoxLayout.Y_AXIS));
@@ -30,7 +33,7 @@ public class Dashboard1_3 extends JPanel
 		topleft.add(setting);
 		setting.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		add(topleft);
+		panel.add(topleft);
 		
 		JPanel topright = new JPanel();
 		topright.setLayout(new BoxLayout(topright, BoxLayout.Y_AXIS));
@@ -56,7 +59,7 @@ public class Dashboard1_3 extends JPanel
 		bg.add(allow);
 		bg.add(deny);
 		
-		add(topright);
+		panel.add(topright);
 		
 		JPanel bottomleft = new JPanel();
 		bottomleft.setLayout(new BoxLayout(bottomleft, BoxLayout.Y_AXIS));
@@ -75,7 +78,7 @@ public class Dashboard1_3 extends JPanel
 		bottomleft.add(brew);
 		brew.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		add(bottomleft);
+		panel.add(bottomleft);
 		
 		JPanel bottomright = new JPanel();
 		bottomright.setLayout(new BoxLayout(bottomright, BoxLayout.Y_AXIS));
@@ -94,6 +97,16 @@ public class Dashboard1_3 extends JPanel
 		points.setMaximumSize(new Dimension(80, 50));
 		bottomright.add(points);
 		
-		add(bottomright);
+		panel.add(bottomright);
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+
+	@Override
+	public Vector<Widget> getWidgets() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
