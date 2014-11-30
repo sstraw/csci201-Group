@@ -112,8 +112,9 @@ public class ServerThread implements Runnable {
 	public void startLevel(int levelnumber){
 		//Notify starting a new level
 		lock.lock();
-		printwrite.println("startLevel");
-		printwrite.print(levelnumber);
+		printwrite.flush();
+		printwrite.println(levelnumber);
+		printwrite.flush();
 		lock.unlock();
 	}
 	
@@ -138,6 +139,7 @@ public class ServerThread implements Runnable {
 			try {
 				String value1 = buffer.readLine().trim();
 				String value2;
+				
 				
 				//Switch values
 				switch(value1){
