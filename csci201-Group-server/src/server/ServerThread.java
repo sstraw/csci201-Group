@@ -24,6 +24,7 @@ public class ServerThread implements Runnable {
 	private int instructions_completed;
 	private ReentrantLock lock;
 	private Thread timer;
+	private Thread thread;
 	
 	public ServerThread(Server server, Socket socket){
 		this.socket = socket;
@@ -41,12 +42,25 @@ public class ServerThread implements Runnable {
 		isRunning = true;
 		ready = false;
 		this.instructions_completed = 0;
+		this.thread = new Thread(this);
+		thread.start();
 	}
 	
 	public void givePoint(){
 		//Adds a point for an instruction completed
 		lock.lock();
 		this.instructions_completed++;
+		lock.unlock();
+	}
+	
+	public int getPoints(){
+		return instructions_completed;
+	}
+	
+	public void sendMessage(String msg){
+		lock.lock();
+		printwrite.println("message");
+		printwrite.println(msg);
 		lock.unlock();
 	}
 	
@@ -72,6 +86,13 @@ public class ServerThread implements Runnable {
 	public void gameOver(){
 		lock.lock();
 		printwrite.println("game over");
+		thread.interrupt();
+		try {
+			socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		lock.unlock();
 	}
 	
@@ -134,20 +155,28 @@ public class ServerThread implements Runnable {
 					default:
 						//Do nothing.
 					}
+					break;
 					
 				case("setName"):
 					value2 = buffer.readLine().trim();
 					this.name = value2;
+					break;
 
 				case("giveWidgets"):
 					Object o = objectin.readObject();
 					if (o instanceof Vector<?>){
-						Vector<Widget> widgets = (Vector<Widget>) o;
-						this.server.addWidgets(widgets);
+						Vector<?> widgets = (Vector<?>) o;
+						this.server.addWidgetsFromNetwork(widgets);
 					}
 					else{
 						System.out.println("ERR:NOT RECEVING CORRECT WIDGET FORMAT");
 					}
+					break;
+					
+				case("message"):
+					value2 = buffer.readLine().trim();
+					this.server.sendMessage(this, value2);
+					break;
 				}
 				
 			} catch (IOException e) {

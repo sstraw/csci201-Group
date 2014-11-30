@@ -8,6 +8,8 @@ import java.awt.GridLayout;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -47,7 +49,9 @@ public class Client extends Thread {
 	private Socket s;
 	private PrintWriter pw;
 	private BufferedReader br;
-
+	private ObjectOutputStream objectcannon;
+	private ObjectInputStream objectin;
+	
 	private JTextArea dashCommand = new JTextArea();
 	private ClientGUI clientGUI; 
 	
@@ -82,19 +86,21 @@ public class Client extends Thread {
 			s = new Socket(hostIP, 10000);
 			this.pw = new PrintWriter(s.getOutputStream());
 			this.br = new BufferedReader(new InputStreamReader(s.getInputStream()));
+			this.objectcannon = new ObjectOutputStream(s.getOutputStream());
+			this.objectin = new ObjectInputStream(s.getInputStream());
 			this.start();
 		
-			while (true) {
-				semaphore.acquire();
-				if(clientGUI.sendMessage() == true ){
-					String line = clientGUI.getChatMessage();
-					System.out.println("YOUR LINE: " + line);
-					pw.println(line);
-					pw.flush();
-				}
-				semaphore.release();
-			}
-		} catch (IOException | InterruptedException ioe) {
+//			while (true) {
+//				semaphore.acquire();
+//				if(clientGUI.sendMessage() == true ){
+//					String line = clientGUI.getChatMessage();
+//					System.out.println("YOUR LINE: " + line);
+//					pw.println(line);
+//					pw.flush();
+//				}
+//				semaphore.release();
+//			}
+		} catch (IOException ioe) {
 			System.out.println("ioe in ChatClient: " + ioe.getMessage());
 		}
 	}
@@ -187,5 +193,93 @@ public class Client extends Thread {
 		System.out.println( c );
 	}
 	
+	
+	//Server communications:
+	
+	//Suggested server run
+	public void Otherrun() {
+		try {
+			while(true){
+				String value1 = br.readLine().trim();
+				String value2; Object o;
+				switch(value1){
+				case("instruction completed"):
+					//Handle it?
+					o = objectin.readObject();
+					if (o instanceof Widget){
+						Widget w = (Widget) o;
+						//Assign instruction
+					}
+					else{
+						System.out.println("WRONG OBJECT RECEIVED");
+					}
+					break;
+					
+				case("instruction failed"):
+					//Handle it?
+					o = objectin.readObject();
+					if (o instanceof Widget){
+						Widget w = (Widget) o;
+						//Assign instruction
+					}
+					else{
+						System.out.println("WRONG OBJECT RECEIVED");
+					}
+					break;
+				
+				case("message"):
+					value2 = br.readLine().trim();
+					//Handle the string? Show it in the box.
+				
+				case("startLevel"):
+					int level = Integer.parseInt(br.readLine().trim());
+					//Handle what to do with the level number,
+					//Start a new level
+				
+				case("game over"):
+					//Do whatever needs to be done
+					break;
+				}
+			}
+		} catch (IOException ioe) {
+			System.out.println("ioe in run: " + ioe.getMessage());
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	//Changes the players name on the server (Should be handled only in lobby)
+	
+	private void setServerName(String s){
+		this.pw.println("setName");
+		this.pw.println(s);
+	}
+	
+	private void setReady(boolean ready){
+		this.pw.println("setState");
+		if (ready){
+			this.pw.println("ready");
+		}
+		if (ready){
+			this.pw.println("notready");
+		}
+	}
+	
+	//Gives the server the list of widgets in use in the current dashboard
+	private void giveWidgets(Vector<Widget> widgets){
+		try {
+			this.pw.println("giveWidgets");
+			this.objectcannon.writeObject(widgets);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void sendMessage(String msg){
+		this.pw.println("message");
+		this.pw.println(msg);
+	}
 }
 

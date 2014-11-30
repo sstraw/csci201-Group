@@ -22,6 +22,7 @@ public class Server implements Runnable{
 	private int currentPoints;
 	private int currentMisses;
 	private Random generator;
+	private Thread thread;
 
 	public Server(){
 		playerThreads = new Vector<ServerThread>(4);
@@ -30,28 +31,27 @@ public class Server implements Runnable{
 		generator = new Random();
 		try {
 			this.serversocket = new ServerSocket(55555);
-			
-			// My test chat server had this code here instead of in run,
-			// so if it doesn't work in run(), we can try uncommenting this.
-			/*while(true){
-				System.out.println("Waiting for connections...");
-				s = serversocket.accept();
-				System.out.println("Connection from " + s.getInetAddress());
-				if(s != null){
-					ChatThread ct = new ChatThread(s, this);
-					ctVector.add(ct);
-					ct.start();
-				}
-			}*/
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		thread = new Thread(this);
+		thread.start();
 	}
 	
-	public void addWidgets(Vector <Widget> widgets){
+	public static void main(String[] args){
+		Server s = new Server();
+		s.run();
+	}
+	
+	//Because it's over the network, need to check first everything is a widget before adding
+	public void addWidgetsFromNetwork(Vector <?> widgets){
 		lock.lock();
-		this.currentWidgets.addAll(widgets);
+		for (Object o : widgets){
+			if (o instanceof Widget){
+				currentWidgets.addElement((Widget) o);
+			}
+		}
 		lock.unlock();
 	}
 	
@@ -129,6 +129,7 @@ public class Server implements Runnable{
 		currentMisses++;
 		if (currentMisses >= getMaxMisses()){
 			gameOver();
+			this.thread.interrupt();
 		}
 		lock.unlock();
 	}
@@ -163,6 +164,35 @@ public class Server implements Runnable{
 		ctVector.remove(ct);
 	}
 	
+	public void sendMessage(ServerThread serverthread, String msg){
+		this.lock.lock();
+		if (msg.startsWith("/")){
+			//Indicates some sort of command
+			if (msg.startsWith("/msg") && msg.contains(" ")){
+				String player = msg.split(" ")[1];
+				for (ServerThread s : playerThreads){
+					if (s.getName().equals(player)){
+						msg = msg.substring(msg.indexOf(" ")+1);
+						if (msg.contains(" ")){
+							//Has a message following, extract
+							msg = serverthread.getName() + " says <private>: " + msg.substring(msg.indexOf(" ")+1);
+							s.sendMessage(msg);
+							this.lock.unlock();
+							return;
+						}
+					}
+				}
+			}
+			serverthread.sendMessage("Err: Message not formatted correctly");
+		}
+		else{
+			for (ServerThread s : playerThreads){
+				s.sendMessage(msg);
+			}
+		}
+		this.lock.unlock();
+	}
+	
 	public void run() {
 		//Main server loop to receive new connections?
 		while (true){
@@ -170,15 +200,6 @@ public class Server implements Runnable{
 				Socket s = serversocket.accept();
 				if (playerThreads.size() < 4){
 					playerThreads.add(new ServerThread(this, s));
-				}
-				// If ChatThread doesn't work here, uncomment the code in the constructor
-				if(s != null){
-					ChatThread ct = new ChatThread(s, this);
-					ctVector.add(ct);
-					ct.start();
-				}
-				else{
-					s.close();
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

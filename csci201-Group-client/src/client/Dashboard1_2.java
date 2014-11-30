@@ -1,8 +1,5 @@
 package client;
-
-
 import java.awt.*;
-
 import javax.swing.*;
 
 public class Dashboard1_2 extends JPanel
@@ -100,5 +97,4 @@ public class Dashboard1_2 extends JPanel
 		
 		add(bottomright);
 	}
-
 }
