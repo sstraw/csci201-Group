@@ -7,6 +7,7 @@ import javax.swing.*;
 public class Dashboard1_2 implements Dashboard
 {
 	private JPanel panel;
+	private Vector<Widget> widgets;
 	
 	public Dashboard1_2(Client c)
 	{
@@ -101,6 +102,12 @@ public class Dashboard1_2 implements Dashboard
 		bottomright.add(levels);
 		
 		panel.add(bottomright);
+		
+		widgets = new Vector<Widget>(4);
+		widgets.add(new SpaceGate(0));
+		widgets.add(new Nextron());
+		widgets.add(new FluxCapacitor(0));
+		widgets.add(new Slider("Laser Beam", 0, 4, 0));
 	}
 
 	public JPanel getPanel() {
@@ -108,7 +115,6 @@ public class Dashboard1_2 implements Dashboard
 	}
 
 	public Vector<Widget> getWidgets() {
-		// TODO Auto-generated method stub
-		return null;
+		return widgets;
 	}
 }

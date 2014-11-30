@@ -9,6 +9,8 @@ import javax.swing.*;
 public class Dashboard1_3 implements Dashboard
 {
 	private JPanel panel;
+	private Vector<Widget> widgets;
+	
 	public Dashboard1_3(Client c)
 	{
 		panel = new JPanel();
@@ -98,15 +100,19 @@ public class Dashboard1_3 implements Dashboard
 		bottomright.add(points);
 		
 		panel.add(bottomright);
+		
+		widgets = new Vector<Widget>(4);
+		widgets.add(new Slider("Massage Chair", 0, 5, 2));
+		widgets.add(new Hitchhiker(1));
+		widgets.add(new CoffeeMaker());
+		widgets.add(new GPA(0));
 	}
 
 	public JPanel getPanel() {
 		return panel;
 	}
 
-	@Override
 	public Vector<Widget> getWidgets() {
-		// TODO Auto-generated method stub
-		return null;
+		return widgets;
 	}
 }
