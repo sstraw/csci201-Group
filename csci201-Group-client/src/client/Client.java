@@ -309,7 +309,7 @@ public class Client implements Runnable {
 					/*
 					o = objectIn.readObject();
 					if (o instanceof Widget){
-						Widget w = (Widget) o;
+						Widget w = (Widget) o;s
 					//Assign instruction
 					}
 					else{
