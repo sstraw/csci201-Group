@@ -232,6 +232,19 @@ public class ServerThread implements Runnable {
 					
 					break; 
 					
+				case("widget changed"):
+					try {
+						System.out.println("ST: Widget changed: reading object");
+						Object o = objectin.readObject();
+						if (o instanceof Widget) {
+							Widget w = (Widget) o;
+							System.out.println("widget read");
+							//server.widgetChanged(this, w);
+						}
+					} catch (ClassNotFoundException cnfe) {
+						cnfe.printStackTrace();
+					}
+					
 				case("message"):
 					value2 = buffer.readLine().trim();
 					this.server.sendMessage(this, value2);

@@ -85,7 +85,7 @@ public class Client extends Thread {
 		// Establish connection to server
 		try {
 			System.out.println("trying to connect");
-			s = new Socket("10.123.160.76", 10000);
+			s = new Socket("localhost", 10000);
 			System.out.println("connected");
 			this.printWriter = new PrintWriter(s.getOutputStream());
 			this.buffer = new BufferedReader(new InputStreamReader(s.getInputStream()));
@@ -246,6 +246,8 @@ public class Client extends Thread {
 	
 	public void updateWidget(Widget w) {
 		try {
+			printWriter.println("widget change");
+			printWriter.flush();
 			objectCannon.writeObject(w);
 			objectCannon.flush();
 		} catch (IOException e) {
