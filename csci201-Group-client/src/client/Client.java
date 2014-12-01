@@ -87,11 +87,8 @@ public class Client implements Runnable {
 		// Establish connection to server
 		try {
 			System.out.println("trying to connect");
-<<<<<<< HEAD
-			s = new Socket("localhost", 10000);
-=======
+			//s = new Socket("localhost", 10000);
 			s = new Socket("localhost", 55555);
->>>>>>> branch 'master' of https://github.com/sstraw/csci201-Group
 			System.out.println("connected");
 			this.printWriter = new PrintWriter(s.getOutputStream());
 			this.buffer = new BufferedReader(new InputStreamReader(s.getInputStream()));
