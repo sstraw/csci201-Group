@@ -2,6 +2,7 @@ package client;
 
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.*;
@@ -103,9 +104,9 @@ public class Dashboard1_3 implements Dashboard
 		
 		widgets = new Vector<Widget>(4);
 		widgets.add(new Slider("Massage Chair", 0, 5, 2));
-		widgets.add(new Hitchhiker(1));
-		widgets.add(new CoffeeMaker());
-		widgets.add(new GPA(0));
+		widgets.add(new AnyButtonStored("Hitchhikers", 2, 0, new Vector<String>(Arrays.asList("Allow Hitchhikers", "Deny Hitchhikers"))));
+		widgets.add(new AnyButton("Coffee Maker", 1, 0, new Vector<String>(Arrays.asList("Brew Coffee"))));
+		widgets.add(new AnyButton("GPA", 4, 0, new Vector<String>(Arrays.asList("Set GPA to 2.5", "Set GPA to 3", "Set GPA to 3.5", "Set GPA to 4"))));
 	}
 
 	public JPanel getPanel() {
