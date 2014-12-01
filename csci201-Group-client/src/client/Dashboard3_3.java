@@ -1,9 +1,13 @@
 package client;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class Dashboard3_3 implements Dashboard
 {
@@ -32,6 +36,19 @@ public class Dashboard3_3 implements Dashboard
 		setting.setPaintLabels(true);
 		one.add(setting);
 		setting.setAlignmentX(Component.CENTER_ALIGNMENT);
+		setting.addChangeListener(new ChangeListener() 
+		{
+	        public void stateChanged(ChangeEvent ce) 
+	        {
+	        	JSlider source = (JSlider)ce.getSource();
+                if(!source.getValueIsAdjusting())
+                {
+                	int newval = source.getValue();
+                	Slider currentwidget = (Slider)widgets.get(0);
+                	currentwidget.setVal(newval);
+                }
+	        }
+	    });
 		
 		panel.add(one);
 		
@@ -52,11 +69,29 @@ public class Dashboard3_3 implements Dashboard
 		num0.setFont(new Font("DejaVu Sans", Font.BOLD, 12));
 		sidetop.add(num0);
 		num0.setMaximumSize(new Dimension(100, 50));
+		num0.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				int newval = 0;
+				AnyButton currentwidget = (AnyButton)widgets.get(1);
+				currentwidget.setVal(newval);
+			}
+		});
 		sidetop.add(Box.createRigidArea(new Dimension(10, 0)));
 		JButton num1 = new JButton ("1");
 		num1.setFont(new Font("DejaVu Sans", Font.BOLD, 12));
 		sidetop.add(num1);
 		num1.setMaximumSize(new Dimension(100, 50));
+		num1.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				int newval = 1;
+				AnyButton currentwidget = (AnyButton)widgets.get(1);
+				currentwidget.setVal(newval);
+			}
+		});
 		two.add(sidetop);
 		two.add(Box.createRigidArea(new Dimension(0, 10)));
 		JPanel sidebottom = new JPanel();
@@ -65,11 +100,29 @@ public class Dashboard3_3 implements Dashboard
 		num2.setFont(new Font("DejaVu Sans", Font.BOLD, 12));
 		sidebottom.add(num2);
 		num2.setMaximumSize(new Dimension(100, 50));
+		num2.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				int newval = 2;
+				AnyButton currentwidget = (AnyButton)widgets.get(1);
+				currentwidget.setVal(newval);
+			}
+		});
 		sidebottom.add(Box.createRigidArea(new Dimension(10, 0)));
 		JButton num3 = new JButton ("3");
 		num3.setFont(new Font("DejaVu Sans", Font.BOLD, 12));
 		sidebottom.add(num3);
 		num3.setMaximumSize(new Dimension(100, 50));
+		num3.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				int newval = 3;
+				AnyButton currentwidget = (AnyButton)widgets.get(1);
+				currentwidget.setVal(newval);
+			}
+		});
 		two.add(sidebottom);
 		
 		panel.add(two);
@@ -90,12 +143,30 @@ public class Dashboard3_3 implements Dashboard
 		three.add(aim);
 		aim.setMaximumSize(new Dimension(120, 50));
 		aim.setAlignmentX(Component.CENTER_ALIGNMENT);
+		aim.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				int newval = 0;
+				AnyButton currentwidget = (AnyButton)widgets.get(2);
+				currentwidget.setVal(newval);
+			}
+		});
 		three.add(Box.createRigidArea(new Dimension(0, 20)));
 		JButton fire = new JButton ("FIRE");
 		fire.setFont(new Font("DejaVu Sans", Font.BOLD, 12));
 		three.add(fire);
 		fire.setAlignmentX(Component.CENTER_ALIGNMENT);
 		fire.setMaximumSize(new Dimension(120, 50));
+		fire.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				int newval = 1;
+				AnyButton currentwidget = (AnyButton)widgets.get(2);
+				currentwidget.setVal(newval);
+			}
+		});
 		
 		panel.add(three);
 		
@@ -115,6 +186,15 @@ public class Dashboard3_3 implements Dashboard
 		four.add(light);
 		light.setAlignmentX(Component.CENTER_ALIGNMENT);
 		light.setMaximumSize(new Dimension(100, 80));
+		light.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				int newval = 0;
+				AnyButton currentwidget = (AnyButton)widgets.get(3);
+				currentwidget.setVal(newval);
+			}
+		});
 		
 		panel.add(four);
 		
@@ -134,6 +214,15 @@ public class Dashboard3_3 implements Dashboard
 		five.add(decrypt);
 		decrypt.setAlignmentX(Component.CENTER_ALIGNMENT);
 		decrypt.setMaximumSize(new Dimension(100, 80));
+		decrypt.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				int newval = 0;
+				AnyButton currentwidget = (AnyButton)widgets.get(4);
+				currentwidget.setVal(newval);
+			}
+		});
 		
 		panel.add(five);
 		
@@ -147,6 +236,34 @@ public class Dashboard3_3 implements Dashboard
 		JComboBox<String> levels = new JComboBox<String>(array);
 		levels.setFont(new Font("DejaVu Sans", Font.BOLD, 12));
 		levels.setMaximumSize(new Dimension(80, 50));
+		levels.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				JComboBox<String> source = (JComboBox<String>)ae.getSource();
+				int newval = 0;
+				Slider currentwidget = (Slider)widgets.get(5);
+				
+				String newselection = (String)source.getSelectedItem();
+				if(newselection.equals("0"))
+				{
+					newval = 0;
+				}
+				else if(newselection.equals("1"))
+				{
+					newval = 1;
+				}
+				else if(newselection.equals("2"))
+				{
+					newval = 2;
+				}
+				else if(newselection.equals("3"))
+				{
+					newval = 3;
+				}
+				currentwidget.setVal(newval);
+			}
+		});
 		six.add(levels);
 		six.add(Box.createRigidArea(new Dimension(40, 0)));
 		JLabel beacon = new JLabel("B-BEACON");
@@ -159,7 +276,7 @@ public class Dashboard3_3 implements Dashboard
 		widgets.add(new AnyButton("Gigamill", 4, 0, new Vector<String>(Arrays.asList("Set Gigamill to 0", "Set Gigamill to 1", "Set Gigamill to 2", "Set Gigamill to 3"))));
 		widgets.add(new AnyButton("Miller Monoray", 2, 0, new Vector<String>(Arrays.asList("Aim the Miller Monoray", "Fire the Miller Monoray"))));
 		widgets.add(new AnyButton("Geiger Powerlantern", 1, 0, new Vector<String>(Arrays.asList("Light the Geiger Powerlantern"))));
-		widgets.add(new AnyButton("Transmission", 1, 0, new Vector<String>(Arrays.asList("Decrypt the transmission"))));
+		widgets.add(new AnyButton("Transmission", 1, 0, new Vector<String>(Arrays.asList("Decrypt the Transmission"))));
 		widgets.add(new Slider("B-Beacon", 0, 4, 0));
 	}
 

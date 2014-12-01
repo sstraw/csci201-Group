@@ -1,9 +1,13 @@
 package client;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class Dashboard3_2 implements Dashboard
 {
@@ -29,6 +33,34 @@ public class Dashboard3_2 implements Dashboard
 		JComboBox<String> levels = new JComboBox<String>(array);
 		levels.setFont(new Font("DejaVu Sans", Font.BOLD, 12));
 		levels.setMaximumSize(new Dimension(80, 50));
+		levels.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				JComboBox<String> source = (JComboBox<String>)ae.getSource();
+				int newval = 0;
+				Slider currentwidget = (Slider)widgets.get(0);
+				
+				String newselection = (String)source.getSelectedItem();
+				if(newselection.equals("0"))
+				{
+					newval = 0;
+				}
+				else if(newselection.equals("1"))
+				{
+					newval = 1;
+				}
+				else if(newselection.equals("2"))
+				{
+					newval = 2;
+				}
+				else if(newselection.equals("3"))
+				{
+					newval = 3;
+				}
+				currentwidget.setVal(newval);
+			}
+		});
 		one.add(levels);
 		
 		panel.add(one);
@@ -48,11 +80,29 @@ public class Dashboard3_2 implements Dashboard
 		kick.setFont(new Font("DejaVu Sans", Font.BOLD, 12));
 		two.add(kick);
 		kick.setAlignmentX(Component.CENTER_ALIGNMENT);
+		kick.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				int newval = 0;
+				AnyButtonStored currentwidget = (AnyButtonStored)widgets.get(1);
+				currentwidget.setVal(newval);
+			}
+		});
 		two.add(Box.createRigidArea(new Dimension(0, 10)));
 		JRadioButton release = new JRadioButton("RELEASE");
 		release.setFont(new Font("DejaVu Sans", Font.BOLD, 12));
 		two.add(release);
 		release.setAlignmentX(Component.CENTER_ALIGNMENT);
+		release.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				int newval = 1;
+				AnyButtonStored currentwidget = (AnyButtonStored)widgets.get(1);
+				currentwidget.setVal(newval);
+			}
+		});
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(kick);
 		bg.add(release);
@@ -77,6 +127,19 @@ public class Dashboard3_2 implements Dashboard
 		settings.setPaintLabels(true);
 		three.add(settings);
 		settings.setAlignmentX(Component.CENTER_ALIGNMENT);
+		settings.addChangeListener(new ChangeListener() 
+		{
+	        public void stateChanged(ChangeEvent ce) 
+	        {
+	        	JSlider source = (JSlider)ce.getSource();
+                if(!source.getValueIsAdjusting())
+                {
+                	int newval = source.getValue();
+                	Slider currentwidget = (Slider)widgets.get(2);
+                	currentwidget.setVal(newval);
+                }
+	        }
+	    });
 		
 		panel.add(three);
 		
@@ -98,6 +161,19 @@ public class Dashboard3_2 implements Dashboard
 		setting.setPaintLabels(true);
 		four.add(setting);
 		setting.setAlignmentX(Component.CENTER_ALIGNMENT);
+		setting.addChangeListener(new ChangeListener() 
+		{
+	        public void stateChanged(ChangeEvent ce) 
+	        {
+	        	JSlider source = (JSlider)ce.getSource();
+                if(!source.getValueIsAdjusting())
+                {
+                	int newval = source.getValue();
+                	Slider currentwidget = (Slider)widgets.get(3);
+                	currentwidget.setVal(newval);
+                }
+	        }
+	    });
 		
 		panel.add(four);
 		
@@ -117,6 +193,15 @@ public class Dashboard3_2 implements Dashboard
 		five.add(honk);
 		honk.setAlignmentX(Component.CENTER_ALIGNMENT);
 		honk.setMaximumSize(new Dimension(80, 80));
+		honk.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				int newval = 0;
+				AnyButton currentwidget = (AnyButton)widgets.get(4);
+				currentwidget.setVal(newval);
+			}
+		});
 		
 		panel.add(five);
 		
@@ -131,6 +216,15 @@ public class Dashboard3_2 implements Dashboard
 		six.add(quell);
 		quell.setAlignmentX(Component.CENTER_ALIGNMENT);
 		quell.setMaximumSize(new Dimension(80, 80));
+		quell.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				int newval = 0;
+				AnyButton currentwidget = (AnyButton)widgets.get(5);
+				currentwidget.setVal(newval);
+			}
+		});
 		six.add(Box.createRigidArea(new Dimension(0, 10)));
 		JLabel robot = new JLabel("ROBOT UPRISING");
 		robot.setAlignmentX(Component.CENTER_ALIGNMENT);
