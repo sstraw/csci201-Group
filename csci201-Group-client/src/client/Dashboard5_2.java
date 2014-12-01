@@ -101,13 +101,12 @@ private JPanel panel;
 		slider.setMaximumSize( new Dimension(250, 35));
 		sec3.add(Box.createRigidArea(new Dimension(0, 90)));
 		slider.addChangeListener(new ChangeListener() {
-	        
 			public void stateChanged(ChangeEvent ce) {
 	        	JSlider source = (JSlider)ce.getSource();
                 if(!source.getValueIsAdjusting())
                 {
                 	int newval = source.getValue();
-                	Slider currentwidget = (Slider)widgets.get(1);
+                	Slider currentwidget = (Slider)widgets.get(9);
                 	currentwidget.setVal(newval);
                 }
 	        }
@@ -139,7 +138,7 @@ private JPanel panel;
 		baste.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				int newVal = 0;
-				AnyButton currentWidget = (AnyButton)widgets.get(2);
+				AnyButton currentWidget = (AnyButton)widgets.get(10);
 				currentWidget.setVal(newVal);
 			}
 		});
@@ -148,11 +147,10 @@ private JPanel panel;
 		sec4.add(jiggle);
 		jiggle.setAlignmentX( Component.CENTER_ALIGNMENT );
 		jiggle.setMaximumSize( new Dimension(100, 50));
-		
 		jiggle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				int newVal = 0;
-				AnyButton currentWidget = (AnyButton)widgets.get(3);
+				int newVal = 1;
+				AnyButton currentWidget = (AnyButton)widgets.get(10);
 				currentWidget.setVal(newVal);
 			}
 		});
