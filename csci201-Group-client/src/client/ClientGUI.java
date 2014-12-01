@@ -28,12 +28,12 @@ import javax.swing.JToggleButton;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class ClientGUI extends JFrame implements Serializable {
 	
-	/**
-	 * 
-	 */
+	Client client;
+	
 	private static final long serialVersionUID = 1L;
 	
 	ArrayList<JPanel> levelOneDashboards; //will hold hardcoded set of Dashboards for each level
@@ -43,9 +43,13 @@ public class ClientGUI extends JFrame implements Serializable {
 	ArrayList<JPanel> levelFiveDashboards;
 	
 	protected int currentLevel;
+	JTextField instruction;
 	
 	
+	//private JPanel currentDashboard;
+	private DashboardFactory dbFactory = new DashboardFactory();
 	private JPanel currentDashboard;
+	private JPanel dbContainer;
 	private JProgressBar progressBar;
 	private JLabel shipAnimation;
 	private ImageIcon shipIcon;
@@ -57,12 +61,13 @@ public class ClientGUI extends JFrame implements Serializable {
 	private JPanel dashboard; 
 	private JTextArea dashCommand;
 	
-	public ClientGUI( JTextArea d){
-		
+	public ClientGUI(JTextArea d, Client cl) {
+		client = cl;
 		dashCommand = d;
 		
+		
 		System.out.println("Creating chat window.");
-		createAndShowGUI();
+		createGUI();
 		sendMessage = false;
 		//Configure KeyListener for keyboard
 		KeyboardFocusManager.getCurrentKeyboardFocusManager()
@@ -98,11 +103,11 @@ public class ClientGUI extends JFrame implements Serializable {
 		return sendMessage;
 	}
 	
-	public void setDashboard(JPanel dashboard){
+	/*public void setDashboard(JPanel dashboard){
 		this.dashboard = dashboard;
 		add(this.dashboard, BorderLayout.CENTER);
-	}
-	public void createAndShowGUI(){
+	}*/
+	public void createGUI(){
 		setSize(750, 700);
 		setLocation(250, 25); 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -122,7 +127,7 @@ public class ClientGUI extends JFrame implements Serializable {
 		shipPanel.setMaximumSize( new Dimension (550, 100));
 		shipAnimation.setMinimumSize( new Dimension(550, 100));
 		shipAnimation.setAlignmentX(Component.LEFT_ALIGNMENT);
-		shipIcon = new ImageIcon("ShipImages/ship" + 9 + ".jpg");
+		shipIcon = new ImageIcon("Images/ship" + 9 + ".jpg");
 		shipAnimation.setIcon(shipIcon);
 		shipAnimation.setIcon(shipIcon);
 		shipAnimation.setBorder( BorderFactory.createLineBorder(Color.black) );
@@ -130,8 +135,8 @@ public class ClientGUI extends JFrame implements Serializable {
 		gamePanel.add(shipPanel);
 		
 		//text field showing the recieved instruction
-		JTextField instruction = new JTextField("INSTRUCTIONS GO HERE");
-		gamePanel.add( instruction );
+		instruction = new JTextField("INSTRUCTIONS GO HERE");
+		gamePanel.add(instruction);
 		instruction.setMaximumSize( new Dimension (550, 50));
 		instruction.setEditable(false);	
 		instruction.setHorizontalAlignment(JTextField.CENTER);
@@ -140,10 +145,13 @@ public class ClientGUI extends JFrame implements Serializable {
 		progressBar = new JProgressBar(0, 100);
 		progressBar.setValue(100);
 		progressBar.setForeground( Color.GREEN);			
-		gamePanel.add( progressBar );
+		gamePanel.add(progressBar);
 		
-		currentDashboard = new Dashboard4_4( dashCommand );
-		gamePanel.add(currentDashboard);		
+		dbContainer = new JPanel();
+		dbContainer.setLayout(new BorderLayout());
+		currentDashboard = new Dashboard1_1(client).getPanel();
+		dbContainer.add(currentDashboard, BorderLayout.CENTER);
+		gamePanel.add(dbContainer);		
 		mainLayout.add(gamePanel, BorderLayout.CENTER);
 		
 		// Chat Panel:
@@ -169,6 +177,30 @@ public class ClientGUI extends JFrame implements Serializable {
 		add(mainLayout);
 		setVisible(true);
 	}	
+	
+	public void setDashboard(int lvl, int ind) {
+		Dashboard temp = dbFactory.getDashboard(client, lvl, ind);	
+		Vector<Widget> wVect = temp.getWidgets();
+		System.out.println("widgets sent");
+		client.giveWidgets(wVect);
+		currentDashboard = temp.getPanel();
+		dbContainer.removeAll();
+		dbContainer.add(currentDashboard);
+		repaint();
+	}
+	
+	public void updateInstruction(String inst, int timeLimit) {
+		instruction.setText(inst);
+	}
+	
+	public void showGUI() {
+		repaint();
+		//setVisible(true);
+	}
+	
+	void displayClientGUI() {
+		setVisible(true);
+	}
 	
 	
 	void chooseDashboard(int index) {  //

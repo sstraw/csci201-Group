@@ -1,9 +1,16 @@
 package client;
 import java.awt.*;
+<<<<<<< HEAD
 import java.util.Arrays;
+=======
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+>>>>>>> branch 'master' of https://github.com/sstraw/csci201-Group
 import java.util.Vector;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class Dashboard2_4 implements Dashboard
 {
@@ -30,7 +37,13 @@ public class Dashboard2_4 implements Dashboard
 		entertain.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		one.add(entertain);
 		entertain.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
+		entertain.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				
+			}
+		});
 		
 		panel.add(one);
 		
@@ -49,21 +62,49 @@ public class Dashboard2_4 implements Dashboard
 		cast.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		two.add(cast);
 		cast.setAlignmentX(Component.CENTER_ALIGNMENT);
+		cast.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				
+			}
+		});
 		two.add(Box.createRigidArea(new Dimension(0, 15)));
 		JRadioButton reel = new JRadioButton("REEL");
 		reel.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		two.add(reel);
 		reel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		reel.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				
+			}
+		});
 		two.add(Box.createRigidArea(new Dimension(0, 15)));
 		JRadioButton roll = new JRadioButton("ROLL");
 		roll.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		two.add(roll);
 		roll.setAlignmentX(Component.CENTER_ALIGNMENT);
+		roll.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				
+			}
+		});
 		two.add(Box.createRigidArea(new Dimension(0, 15)));
 		JRadioButton flip = new JRadioButton("FLIP");
 		flip.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		two.add(flip);
 		flip.setAlignmentX(Component.CENTER_ALIGNMENT);
+		flip.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				
+			}
+		});
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(cast);
 		bg.add(reel);
@@ -90,6 +131,17 @@ public class Dashboard2_4 implements Dashboard
 		settings.setPaintLabels(true);
 		three.add(settings);
 		settings.setAlignmentX(Component.CENTER_ALIGNMENT);
+		settings.addChangeListener(new ChangeListener() 
+		{
+	        public void stateChanged(ChangeEvent ce) 
+	        {
+	        	JSlider source = (JSlider)ce.getSource();
+                if(!source.getValueIsAdjusting())
+                {
+                	
+                }
+	        }
+	    });
 		
 		panel.add(three);
 		
@@ -108,6 +160,13 @@ public class Dashboard2_4 implements Dashboard
 		JComboBox<String> levels = new JComboBox<String>(array);
 		levels.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		levels.setMaximumSize(new Dimension(80, 50));
+		levels.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				
+			}
+		});
 		four.add(levels);
 		
 		panel.add(four);
@@ -129,16 +188,37 @@ public class Dashboard2_4 implements Dashboard
 		num0.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		side.add(num0);
 		num0.setMaximumSize(new Dimension(100, 50));
+		num0.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				
+			}
+		});
 		side.add(Box.createRigidArea(new Dimension(10, 0)));
 		JButton num1 = new JButton ("1");
 		num1.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		side.add(num1);
 		num1.setMaximumSize(new Dimension(100, 50));
+		num1.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				
+			}
+		});
 		side.add(Box.createRigidArea(new Dimension(10, 0)));
 		JButton num2 = new JButton ("2");
 		num2.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		side.add(num2);
 		num2.setMaximumSize(new Dimension(100, 50));
+		num2.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				
+			}
+		});
 		five.add(side);
 		
 		panel.add(five);
@@ -156,6 +236,10 @@ public class Dashboard2_4 implements Dashboard
 	}
 
 	public Vector<Widget> getWidgets() {
+<<<<<<< HEAD
 		return widgets;
+=======
+		return null;
+>>>>>>> branch 'master' of https://github.com/sstraw/csci201-Group
 	}
 }

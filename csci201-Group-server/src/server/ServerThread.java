@@ -60,9 +60,20 @@ public class ServerThread implements Runnable {
 	public void sendMessage(String msg){
 		lock.lock();
 		printwrite.println("message");
+		printwrite.flush();
 		printwrite.println(msg);
+		printwrite.flush();
 		lock.unlock();
 	}
+	
+	/*public void sendConnectedUser(String un) {
+		lock.lock();
+		printwrite.println("connected user");
+		printwrite.flush();
+		printwrite.println(un);
+		printwrite.flush();
+		lock.unlock();
+	}*/
 	
 	public void instructionCompleted(){
 		//Server calls this when an instruction is passed
@@ -70,6 +81,7 @@ public class ServerThread implements Runnable {
 		lock.lock();
 		timer.interrupt();
 		printwrite.println("instruction completed");
+		printwrite.flush();
 		this.giveInstruction();
 		lock.unlock();
 	}
@@ -113,16 +125,23 @@ public class ServerThread implements Runnable {
 		//Notify starting a new level
 		lock.lock();
 		printwrite.println("startLevel");
-		printwrite.print(levelnumber);
+		printwrite.flush();
+		printwrite.println(levelnumber);
+		printwrite.flush();
+		printwrite.println("2");	//should be a randomly generate index
+		printwrite.flush();
+		//giveInstruction();
 		lock.unlock();
 	}
 	
-	private void giveInstruction(){
+	public void giveInstruction(){
 		instruction = this.server.getInstruction();
 		int timeout = this.server.getTime();
 		try {
 			objectcannon.writeObject(instruction);
-			printwrite.print(timeout);
+			objectcannon.flush();
+			printwrite.println(timeout);
+			printwrite.flush();
 			timer = new Thread(new Timer(this, timeout));
 			timer.start();
 		} catch (IOException e) {
@@ -138,6 +157,7 @@ public class ServerThread implements Runnable {
 			try {
 				String value1 = buffer.readLine().trim();
 				String value2;
+				
 				
 				//Switch values
 				switch(value1){

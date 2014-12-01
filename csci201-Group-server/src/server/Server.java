@@ -30,7 +30,7 @@ public class Server implements Runnable{
 		gamestate = Server.WAITINGROOM;
 		generator = new Random();
 		try {
-			this.serversocket = new ServerSocket(55555);
+			this.serversocket = new ServerSocket(10000);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -88,7 +88,7 @@ public class Server implements Runnable{
 	
 	public void playerReady(){
 		this.lock.lock();
-		for (ServerThread s : playerThreads){
+		for (ServerThread s : playerThreads){			
 			//Leave if one of the threads not ready
 			if (!s.isReady()){
 				this.lock.unlock();
@@ -97,6 +97,10 @@ public class Server implements Runnable{
 		}
 		startLevel(1);
 		this.lock.unlock();
+	}
+	
+	public void updateConnectedPlayers() {
+		
 	}
 	
 	//Returns how many points needed to "win" the level. Not sure how we want to do it yet so...
@@ -141,6 +145,9 @@ public class Server implements Runnable{
 		currentWidgets.clear();
 		for (ServerThread s : playerThreads){
 			s.startLevel(i);
+		}
+		for (ServerThread s : playerThreads){
+			//s.giveInstruction();
 		}
 	}
 	
