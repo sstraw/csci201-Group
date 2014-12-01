@@ -1,11 +1,8 @@
 package client;
 import java.awt.*;
-<<<<<<< HEAD
 import java.util.Arrays;
-=======
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
->>>>>>> branch 'master' of https://github.com/sstraw/csci201-Group
 import java.util.Vector;
 
 import javax.swing.*;
@@ -40,7 +37,28 @@ public class Dashboard2_3 implements Dashboard
 		{
 			public void actionPerformed(ActionEvent ae) 
 			{
+				JComboBox<String> source = (JComboBox<String>)ae.getSource();
+				int newval = 0;
+				AnyButton currentwidget = (AnyButton)widgets.get(0);
 				
+				String newselection = (String)source.getSelectedItem();
+				if(newselection.equals("0"))
+				{
+					newval = 0;
+				}
+				else if(newselection.equals("1"))
+				{
+					newval = 1;
+				}
+				else if(newselection.equals("2"))
+				{
+					newval = 2;
+				}
+				else if(newselection.equals("3"))
+				{
+					newval = 3;
+				}
+				currentwidget.setVal(newval);
 			}
 		});
 		one.add(levels);
@@ -66,7 +84,9 @@ public class Dashboard2_3 implements Dashboard
 		{
 			public void actionPerformed(ActionEvent ae) 
 			{
-				
+				int newval = 0;
+				AnyButtonStored currentwidget = (AnyButtonStored)widgets.get(1);
+				currentwidget.setVal(newval);
 			}
 		});
 		two.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -78,7 +98,9 @@ public class Dashboard2_3 implements Dashboard
 		{
 			public void actionPerformed(ActionEvent ae) 
 			{
-				
+				int newval = 1;
+				AnyButtonStored currentwidget = (AnyButtonStored)widgets.get(1);
+				currentwidget.setVal(newval);
 			}
 		});
 		ButtonGroup bg = new ButtonGroup();
@@ -112,7 +134,9 @@ public class Dashboard2_3 implements Dashboard
 	        	JSlider source = (JSlider)ce.getSource();
                 if(!source.getValueIsAdjusting())
                 {
-                	
+                	int newval = source.getValue();
+                	Slider currentwidget = (Slider)widgets.get(2);
+                	currentwidget.setVal(newval);
                 }
 	        }
 	    });
@@ -144,7 +168,9 @@ public class Dashboard2_3 implements Dashboard
 	        	JSlider source = (JSlider)ce.getSource();
                 if(!source.getValueIsAdjusting())
                 {
-                	
+                	int newval = source.getValue();
+                	Slider currentwidget = (Slider)widgets.get(3);
+                	currentwidget.setVal(newval);
                 }
 	        }
 	    });
@@ -165,7 +191,9 @@ public class Dashboard2_3 implements Dashboard
 		{
 			public void actionPerformed(ActionEvent ae) 
 			{
-				
+				int newval = 0;
+				AnyButton currentwidget = (AnyButton)widgets.get(4);
+				currentwidget.setVal(newval);
 			}
 		});
 		five.add(Box.createRigidArea(new Dimension(30, 0)));
@@ -188,10 +216,6 @@ public class Dashboard2_3 implements Dashboard
 	}
 
 	public Vector<Widget> getWidgets() {
-<<<<<<< HEAD
 		return widgets;
-=======
-		return null;
->>>>>>> branch 'master' of https://github.com/sstraw/csci201-Group
 	}
 }

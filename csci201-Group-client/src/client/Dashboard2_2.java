@@ -1,11 +1,8 @@
 package client;
 import java.awt.*;
-<<<<<<< HEAD
 import java.util.Arrays;
-=======
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
->>>>>>> branch 'master' of https://github.com/sstraw/csci201-Group
 import java.util.Vector;
 
 import javax.swing.*;
@@ -46,7 +43,9 @@ public class Dashboard2_2 implements Dashboard
 	        	JSlider source = (JSlider)ce.getSource();
                 if(!source.getValueIsAdjusting())
                 {
-                	
+                	int newval = source.getValue();
+                	Slider currentwidget = (Slider)widgets.get(0);
+                	currentwidget.setVal(newval);
                 }
 	        }
 	    });
@@ -74,7 +73,9 @@ public class Dashboard2_2 implements Dashboard
 		{
 			public void actionPerformed(ActionEvent ae) 
 			{
-				
+				int newval = 0;
+				AnyButton currentwidget = (AnyButton)widgets.get(1);
+				currentwidget.setVal(newval);
 			}
 		});
 		sidetop.add(Box.createRigidArea(new Dimension(10, 0)));
@@ -86,7 +87,9 @@ public class Dashboard2_2 implements Dashboard
 		{
 			public void actionPerformed(ActionEvent ae) 
 			{
-				
+				int newval = 1;
+				AnyButton currentwidget = (AnyButton)widgets.get(1);
+				currentwidget.setVal(newval);
 			}
 		});
 		two.add(sidetop);
@@ -101,7 +104,9 @@ public class Dashboard2_2 implements Dashboard
 		{
 			public void actionPerformed(ActionEvent ae) 
 			{
-				
+				int newval = 2;
+				AnyButton currentwidget = (AnyButton)widgets.get(1);
+				currentwidget.setVal(newval);
 			}
 		});
 		sidebottom.add(Box.createRigidArea(new Dimension(10, 0)));
@@ -113,7 +118,9 @@ public class Dashboard2_2 implements Dashboard
 		{
 			public void actionPerformed(ActionEvent ae) 
 			{
-				
+				int newval = 3;
+				AnyButton currentwidget = (AnyButton)widgets.get(1);
+				currentwidget.setVal(newval);
 			}
 		});
 		two.add(sidebottom);
@@ -140,7 +147,9 @@ public class Dashboard2_2 implements Dashboard
 		{
 			public void actionPerformed(ActionEvent ae) 
 			{
-				
+				int newval = 0;
+				AnyButton currentwidget = (AnyButton)widgets.get(2);
+				currentwidget.setVal(newval);
 			}
 		});
 		three.add(Box.createRigidArea(new Dimension(0, 20)));
@@ -153,7 +162,9 @@ public class Dashboard2_2 implements Dashboard
 		{
 			public void actionPerformed(ActionEvent ae) 
 			{
-				
+				int newval = 1;
+				AnyButton currentwidget = (AnyButton)widgets.get(2);
+				currentwidget.setVal(newval);
 			}
 		});
 		
@@ -178,7 +189,9 @@ public class Dashboard2_2 implements Dashboard
 		{
 			public void actionPerformed(ActionEvent ae) 
 			{
-				
+				int newval = 0;
+				AnyButton currentwidget = (AnyButton)widgets.get(3);
+				currentwidget.setVal(newval);
 			}
 		});
 		
@@ -198,7 +211,28 @@ public class Dashboard2_2 implements Dashboard
 		{
 			public void actionPerformed(ActionEvent ae) 
 			{
+				JComboBox<String> source = (JComboBox<String>)ae.getSource();
+				int newval = 0;
+				Slider currentwidget = (Slider)widgets.get(4);
 				
+				String newselection = (String)source.getSelectedItem();
+				if(newselection.equals("0"))
+				{
+					newval = 0;
+				}
+				else if(newselection.equals("1"))
+				{
+					newval = 1;
+				}
+				else if(newselection.equals("2"))
+				{
+					newval = 2;
+				}
+				else if(newselection.equals("3"))
+				{
+					newval = 3;
+				}
+				currentwidget.setVal(newval);
 			}
 		});
 		five.add(levels);
@@ -211,10 +245,10 @@ public class Dashboard2_2 implements Dashboard
 		
 		widgets = new Vector<Widget>(5);
 		widgets.add(new Slider("Holospectrum", 0, 5, 2));
-		widgets.add(new Slider("Flushclamp", 0, 4, 0));
-		widgets.add(new AnyButton("Emergency Whittler", 2, 0, new Vector<String>(Arrays.asList("Baste the Emergency Whittler", "Juggle the Emergency Whittler"))));
 		widgets.add(new AnyButton("Repulsion Locator", 4, 0, new Vector<String>(Arrays.asList("Set Repulsion Locator to 0","Set Repulsion Locator to 1","Set Repulsion Locator to 2","Set Repulsion Locator to 3"))));
-		widgets.add(new AnyButton("Accelerator", 1, 0, new Vector<String>(Arrays.asList("Start the Accelerator"))));
+		widgets.add(new AnyButton("Emergency Whittler", 2, 0, new Vector<String>(Arrays.asList("Baste the Emergency Whittler", "Jiggle the Emergency Whittler"))));
+		widgets.add(new AnyButton("Accelerator", 1, 0, new Vector<String>(Arrays.asList("Rev the Accelerator"))));
+		widgets.add(new Slider("Flushclamp", 0, 4, 0));	
 	}
 
 	public JPanel getPanel() {

@@ -1,11 +1,8 @@
 package client;
 import java.awt.*;
-<<<<<<< HEAD
 import java.util.Arrays;
-=======
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
->>>>>>> branch 'master' of https://github.com/sstraw/csci201-Group
 import java.util.Vector;
 
 import javax.swing.*;
@@ -236,10 +233,6 @@ public class Dashboard2_4 implements Dashboard
 	}
 
 	public Vector<Widget> getWidgets() {
-<<<<<<< HEAD
 		return widgets;
-=======
-		return null;
->>>>>>> branch 'master' of https://github.com/sstraw/csci201-Group
 	}
 }

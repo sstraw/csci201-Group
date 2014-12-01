@@ -46,6 +46,10 @@ abstract class SingleButtonPress implements Widget{
 		return this.val;
 	}
 	
+	public void setVal(int i){
+		val = i;
+	}
+	
 	public boolean equals(Object other){
 		if (other instanceof SingleButtonPress){
 			if (((SingleButtonPress) other).getVal() == this.val){
