@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Vector;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -59,6 +60,8 @@ public class Client extends Thread {
 	JFrame wrFrame;
 	JTextArea playerTA;
 	JButton readyButton; //waiting room button
+	
+	private ReentrantLock lock = new ReentrantLock();
 	
 	// Chat variables
 	private static Semaphore semaphore = new Semaphore(4);
@@ -222,6 +225,7 @@ public class Client extends Thread {
 	
 	//Gives the server the list of widgets in use in the current dashboard
 	public void giveWidgets(Vector<Widget> widgets){
+		lock.lock();
 		try {
 			System.out.println("Client: widgets size: " + widgets.size());
 			this.printWriter.println("giveWidgets");
@@ -232,6 +236,7 @@ public class Client extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		lock.unlock();
 	}
 	
 	private void sendMessage(String msg){
@@ -270,8 +275,6 @@ public class Client extends Thread {
 					System.out.println("start level");
 					int level = Integer.parseInt(buffer.readLine().trim());
 					int ind = Integer.parseInt(buffer.readLine().trim());
-					System.out.println("level:" + level);
-					System.out.println("ind:" + ind);
 					if (clientState == WAITINGROOM) {
 						wrFrame.dispose();
 						clientGUI = new ClientGUI(dashCommand, this);

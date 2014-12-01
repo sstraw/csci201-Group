@@ -58,7 +58,13 @@ public class Server implements Runnable{
 			}
 		}
 		System.out.println("Server: currentWidgets size: " + currentWidgets.size());
-		incrementStartedLvls();
+		lvlsStarted++;
+		System.out.println("playerThreads.size()");
+		if (lvlsStarted == playerThreads.size()) {
+			System.out.println("signalling");
+			allLvlsStarted.signal();
+		}
+		//incrementStartedLvls();
 		lock.unlock();
 	}
 	
@@ -70,6 +76,9 @@ public class Server implements Runnable{
 		lock.lock();
 		//This line generates a random widget from the list of widgets, and then
 		//Uses the widgets getRandomInstruction to generate a new random widget to use
+		System.out.println("check");
+		System.out.println("currentWidgets size: " + currentWidgets.size());
+	    System.out.println("rando widget index: " + generator.nextInt(currentWidgets.size()));
 		Widget w = currentWidgets.get(generator.nextInt(currentWidgets.size())).getRandomInstruction();
 		lock.unlock();
 		return w;
@@ -154,18 +163,19 @@ public class Server implements Runnable{
 			s.startLevel(i);
 		}
 		System.out.println("beginning all level starts");
-		//try {
-		lock.lock();	
-		System.out.println("waiting for all levels to finish starting");
-			//allLvlsStarted.await();
+		
+		lock.lock();
+		try {
+			System.out.println("waiting for all levels to finish starting");
+			allLvlsStarted.await();
 			System.out.println("sending instructions");
 			for (ServerThread s : playerThreads){
 				s.giveInstruction();
 			}
-		//} /*catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-		//	e.printStackTrace();
-		//} finally {*/
+		} catch (InterruptedException e) {
+			//TODO Auto-generated catch block
+			e.printStackTrace();
+		} //finally {*/
 			lock.unlock();
 		//}
 	}

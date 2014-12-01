@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Vector;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 import client.Widget;
@@ -24,7 +25,8 @@ public class ServerThread implements Runnable {
 	private boolean isRunning;
 	private Widget instruction;
 	private int instructions_completed;
-	private ReentrantLock lock;
+	private ReentrantLock lock = new ReentrantLock();;
+	private Condition receivingWidgets = lock.newCondition();
 	private Thread timer;
 	private Thread thread;
 	
@@ -129,24 +131,31 @@ public class ServerThread implements Runnable {
 		printwrite.flush();
 		printwrite.println(1); //level: should be based on Server variable
 		printwrite.flush();
-		printwrite.println(2);	//index: should be a randomly generate index
+		printwrite.println(3);	//index: should be a randomly generate index
 		printwrite.flush();
 		
 		//waits for Widget vector to be returned
-		try {
-			String value = buffer.readLine().trim();
-			if (value.equals("giveWidgets")) {
-				Vector v = (Vector) objectin.readObject();
-				System.out.println("adding vector");
-				this.server.addWidgetsFromNetwork(v); //sends vector to be stored in Server
-			}
+		
+	/*	try {
+			receivingWidgets.await();
+			//String value = buffer.readLine().trim();
+			//if (value.equals("giveWidgets")) {
+				Object o = objectin.readObject();
+				if (o instanceof Vector) {
+					Vector v = (Vector) o;
+					System.out.println("object read");
+					//this.server.addWidgetsFromNetwork(v); //sends vector to be stored in Server
+				}
+			//}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException cnfe) {
 			cnfe.printStackTrace();
+		} catch (InterruptedException ie) {
+			ie.printStackTrace();
 		}
-		
+		*/
 		//giveInstruction();
 		lock.unlock();
 	}
@@ -205,16 +214,21 @@ public class ServerThread implements Runnable {
 					this.name = value2;
 					break;
 
-				/*case("giveWidgets"):
-					Object o = objectin.readObject();
-					if (o instanceof Vector<?>){
-						Vector<?> widgets = (Vector<?>) o;
-						this.server.addWidgetsFromNetwork(widgets);
+				case("giveWidgets"):
+					try {
+						System.out.println("Trying to read object");
+						Object o = objectin.readObject();
+						if (o instanceof Vector) {
+							Vector v = (Vector) o;
+							System.out.println("object read");
+							this.server.addWidgetsFromNetwork(v); //sends vector to be stored in Server
+						}
+					} catch (ClassNotFoundException cnfe) {
+						cnfe.printStackTrace();
 					}
-					else{
-						System.out.println("ERR:NOT RECEVING CORRECT WIDGET FORMAT");
-					}
-					break; */
+					
+					
+					break; 
 					
 				case("message"):
 					value2 = buffer.readLine().trim();
