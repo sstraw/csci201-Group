@@ -9,15 +9,13 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-
-
-
 public class Dashboard4_1 implements Dashboard{
 	private JPanel panel;
 	private Vector<Widget> widgets;
+	private Client client;
 	public Dashboard4_1(Client c){
+		client = c;
 		panel = new JPanel();
-		
 		
 		panel.setLayout( new GridLayout(2 ,1) );
 		
@@ -42,24 +40,23 @@ public class Dashboard4_1 implements Dashboard{
 		ironText.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		sec1.add(Box.createRigidArea(new Dimension(0, 40)));
 		JButton hot = new JButton ( "HOT" );
-//		hot.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent ae) {
-//				//System.out.println("INDUCTION IRON SET TO HOT");
-//				command.setText("SET INDUCTION IRON TO HOT");
-//			}
-//		});
-		
+		hot.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				widgets.get(0).setVal(0);
+				client.updateWidget(widgets.get(0));
+			}
+		});
 		sec1.add( hot );
 		hot.setMaximumSize( new Dimension(120, 35));
 		hot.setAlignmentX( Component.CENTER_ALIGNMENT );
 		sec1.add(Box.createRigidArea(new Dimension(0, 10)));
 		JButton cold = new JButton ( "COLD" );
-//		cold.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent ae) {
-//				//System.out.println("INDUCTION IRON SET TO COLD");
-//				command.setText("SET INDUCTION IRON TO COLD");
-//			}
-//		});
+		cold.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				widgets.get(0).setVal(1);
+				client.updateWidget(widgets.get(0));
+			}
+		});
 		sec1.add( cold );
 		cold.setAlignmentX( Component.CENTER_ALIGNMENT );
 		cold.setMaximumSize( new Dimension(120, 35));
@@ -80,20 +77,19 @@ public class Dashboard4_1 implements Dashboard{
 		sec2.add(cable);
 		cable.setAlignmentX( Component.CENTER_ALIGNMENT );
 		cable.setMaximumSize( new Dimension(120, 35));
-//		cable.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent ae) {
-//				if( cable.getText().equals("LOCKED")){
-//					cable.setText("UNLOCKED");
-//					//System.out.println("GROOVED CABLE UNLOCKED");
-//					command.setText("UNLOCK GROOVED CABLE");
-//				}
-//				else{
-//					cable.setText("LOCKED");
-//					//System.out.println("GROOVED CABLE LOCKED");
-//					command.setText("LOCK GROOVED CABLE");
-//				}
-//			}
-//		});
+		cable.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				if( cable.getText().equals("LOCKED")){
+					cable.setText("UNLOCKED");
+					widgets.get(1).setVal(1);
+				}
+				else{
+					cable.setText("LOCKED");
+					widgets.get(1).setVal(0);
+				}
+				client.updateWidget(widgets.get(1));
+			}
+		});
 		
 		sec2.add(Box.createRigidArea(new Dimension(0, 95)));
 		
@@ -121,17 +117,16 @@ public class Dashboard4_1 implements Dashboard{
 		sec3.add( phaseText );
 		sec3.add(Box.createRigidArea(new Dimension(0, 70)));
 		JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 4, 0);
-//		slider.addChangeListener(new ChangeListener() {
-//	        @Override
-//	        public void stateChanged(ChangeEvent ce) {
-//	        	JSlider source = (JSlider)ce.getSource();
-//                if(!source.getValueIsAdjusting())
-//                {
-//                	//System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
-//                	command.setText( "SET PHASON COLLIDER TO " + source.getValue() );
-//                }
-//	        }
-//	    });
+		slider.addChangeListener(new ChangeListener() {
+	        public void stateChanged(ChangeEvent ce) {
+	        	JSlider source = (JSlider)ce.getSource();
+                if(!source.getValueIsAdjusting())
+                {
+                	widgets.get(2).setVal(source.getValue());
+                	client.updateWidget(widgets.get(2));
+                }
+	        }
+	    });
 		slider.setMajorTickSpacing(1);
 		slider.setPaintTicks(true);
 		slider.setPaintLabels(true);
@@ -155,18 +150,20 @@ public class Dashboard4_1 implements Dashboard{
 		sec4.add(beamswitch);
 		beamswitch.setAlignmentX( Component.CENTER_ALIGNMENT );
 		beamswitch.setMaximumSize( new Dimension(100, 135));
-//		beamswitch.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent ae) {
-//				if( beamswitch.getText().equals("OFF")){
-//					beamswitch.setText("ON");
-//					System.out.println("TURN ON SPECTROBEAM");
-//				}
-//				else{
-//					beamswitch.setText("OFF");
-//					System.out.println("TURN OFF SPECTROBEAM");
-//				}
-//			}
-//		});
+		beamswitch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				if( beamswitch.getText().equals("OFF")){
+					beamswitch.setText("ON");
+					widgets.get(3).setVal(1);
+				}
+				else{
+					beamswitch.setText("OFF");
+					System.out.println("TURN OFF SPECTROBEAM");
+					widgets.get(3).setVal(0);
+				}
+				client.updateWidget(widgets.get(3));
+			}
+		});
 		sec4.add(Box.createRigidArea(new Dimension(0, 30)));
 		
 		widgets = new Vector<Widget>(4);
