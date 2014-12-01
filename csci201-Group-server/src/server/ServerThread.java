@@ -142,8 +142,8 @@ public class ServerThread implements Runnable {
 		lock.lock();
 		try {
 			objectcannon.writeObject(new String("startLevel"));
-			objectcannon.writeObject(1); //level: should be based on Server variable
-			objectcannon.writeObject(1);	//index: should be a randomly generate index
+			objectcannon.writeObject(server.getLevel()); //level: should be based on Server variable
+			objectcannon.writeObject(server.getDashboardIndex());	//index: should be a randomly generate index
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

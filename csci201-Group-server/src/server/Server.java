@@ -3,6 +3,8 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 import java.util.Vector;
 import java.util.concurrent.locks.Condition;
@@ -20,6 +22,7 @@ public class Server implements Runnable{
 	private Vector<ServerThread> playerThreads;
 	private Vector<ChatThread> ctVector = new Vector<ChatThread>();
 	private Vector<Widget> currentWidgets;
+	private Vector<Integer> dashboardIndexes;
 	private ServerSocket serversocket;
 	private int gamestate;
 	private int currentLevel;
@@ -74,7 +77,18 @@ public class Server implements Runnable{
 		lock.lock();
 		//This line generates a random widget from the list of widgets, and then
 		//Uses the widgets getRandomInstruction to generate a new random widget to use
+		boolean valid = false;
 		Widget w = currentWidgets.get(generator.nextInt(currentWidgets.size())).getRandomInstruction();
+		while(!valid){
+			valid = true;
+			for (ServerThread s : playerThreads){
+				if (w.equals(s.getInstruction())){
+					valid = false;
+					w = currentWidgets.get(generator.nextInt(currentWidgets.size())).getRandomInstruction();
+					break;
+				};
+			}
+		}
 		lock.unlock();
 		return w;
 	}
@@ -160,6 +174,8 @@ public class Server implements Runnable{
 		currentPoints = 0;
 		currentMisses = 0;
 		currentWidgets.clear();
+		dashboardIndexes = new Vector<Integer>(Arrays.asList(1, 2, 3, 4));
+		Collections.shuffle(dashboardIndexes);
 		lvlsStarted=0;
 		for (ServerThread s : playerThreads){
 			s.startLevel(i);
@@ -185,6 +201,14 @@ public class Server implements Runnable{
 	
 	public ReentrantLock getLock(){
 		return lock;
+	}
+	
+	public int getLevel(){
+		return currentLevel;
+	}
+	
+	public int getDashboardIndex(){
+		return dashboardIndexes.remove(0);
 	}
 	
 	public void sendMessage(String message, ChatThread ct) {
