@@ -39,7 +39,7 @@ public class Dashboard2_3 implements Dashboard
 			{
 				JComboBox<String> source = (JComboBox<String>)ae.getSource();
 				int newval = 0;
-				AnyButton currentwidget = (AnyButton)widgets.get(0);
+				Slider currentwidget = (Slider)widgets.get(0);
 				
 				String newselection = (String)source.getSelectedItem();
 				if(newselection.equals("0"))
