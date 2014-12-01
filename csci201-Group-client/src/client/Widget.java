@@ -30,15 +30,15 @@ public interface Widget extends Serializable{
 }
 
 abstract class SingleButtonPress implements Widget{
-	private static final long serialVersionUID = 251334623591367419L;
+	private static final long serialVersionUID = -598831850307548727L;
 	protected String name;
-	protected int buttons;
-	protected int val;
+	protected Integer buttons;
+	protected Integer value;
 	
 	public SingleButtonPress(String name, int buttons, int val){
 		this.name = name;
 		this.buttons = buttons;
-		this.val = val;
+		this.value = val;
 	}
 	
 	public String getName(){
@@ -46,16 +46,16 @@ abstract class SingleButtonPress implements Widget{
 	}
 	
 	public int getVal(){
-		return this.val;
+		return this.value;
 	}
 	
 	public void setVal(int i){
-		val = i;
+		value = i;
 	}
 	
 	public boolean equals(Object other){
 		if (other instanceof SingleButtonPress){
-			if (((SingleButtonPress) other).getVal() == this.val){
+			if (((SingleButtonPress) other).getVal() == this.value){
 				if (((SingleButtonPress) other).getName() == this.name){
 					return true;
 				}
@@ -71,16 +71,16 @@ abstract class SingleButtonPress implements Widget{
 }
 
 abstract class SingleValueWidget implements Widget{
+	private static final long serialVersionUID = -5390721212992473322L;
 	//Base class for any widget which only have one value out of a collection
-	private static final long serialVersionUID = -1921593644005787609L;
 	protected String name;
-	protected int val;
-	protected int min;
-	protected int max;
+	protected Integer value;
+	protected Integer min;
+	protected Integer max;
 	
 	public SingleValueWidget(String name, int min, int max, int init_val){
 		this.name = name;
-		this.val = init_val;
+		this.value = init_val;
 		this.min = min;
 		this.max = max;
 	}
@@ -90,17 +90,17 @@ abstract class SingleValueWidget implements Widget{
 	}
 	
 	public int getVal(){
-		return this.val;
+		return this.value;
 	}
 	
 	public void setVal(int i){
-		val = i;
+		value = i;
 	}
 	
 	public void update(Widget w){
 		if (w instanceof SingleValueWidget){
 			SingleValueWidget widget = (SingleValueWidget) w;
-			this.val = widget.getVal();
+			this.value = widget.getVal();
 		}
 	}
 	
@@ -119,7 +119,7 @@ abstract class SingleValueWidget implements Widget{
 }
 
 class Slider extends SingleValueWidget{
-	private static final long serialVersionUID = -2296919106897840561L;
+	private static final long serialVersionUID = 4326644852039982431L;
 	public Slider(String name, int min, int max, int init_val) {
 		super(name, min, max, init_val);
 	}
@@ -127,17 +127,17 @@ class Slider extends SingleValueWidget{
 	public Widget getRandomInstruction() {
 		Random r = new Random();
 		int random_init = r.nextInt(max - min) + min;
-		while(random_init == val){
+		while(random_init == value){
 			random_init = r.nextInt(max - min) + min;
 		}
 		return new Slider(this.name, this.min, this.max, random_init);
 	}
 	
 	public void setVal(int i){
-		val = i;
+		value = i;
 	}
 	public String getInstructionString() {
-		return String.format("Set %s to %d", this.name, this.val);
+		return String.format("Set %s to %d", this.name, this.value);
 	}
 	
 }
@@ -154,7 +154,7 @@ class AnyButton extends SingleButtonPress{
 		return new AnyButton(name, buttons, (new Random()).nextInt(buttons), printoutValues);
 	}
 	public String getInstructionString() {
-		return printoutValues.get(val);
+		return printoutValues.get(value);
 	}
 	
 }
@@ -170,14 +170,14 @@ class AnyButtonStored extends AnyButton{
 	public Widget getRandomInstruction(){
 		Random r = new Random();
 		int i = r.nextInt(buttons);
-		while (i == val){
+		while (i == value){
 			i = r.nextInt(buttons);
 		}
 		return new AnyButton(name, buttons, i, printoutValues);
 	}
 	public void update(Widget w){
 		if (w instanceof AnyButtonStored){
-			val = ((AnyButtonStored) w).getVal();
+			value = ((AnyButtonStored) w).getVal();
 		}
 	}
 }

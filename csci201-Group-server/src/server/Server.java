@@ -57,11 +57,8 @@ public class Server implements Runnable{
 				currentWidgets.addElement((Widget) o);
 			}
 		}
-		System.out.println("Server: currentWidgets size: " + currentWidgets.size());
 		lvlsStarted++;
-		System.out.println("playerThreads.size()");
 		if (lvlsStarted == playerThreads.size()) {
-			System.out.println("signalling");
 			for (ServerThread s : playerThreads){
 				s.giveInstruction();
 			}
@@ -77,9 +74,6 @@ public class Server implements Runnable{
 		lock.lock();
 		//This line generates a random widget from the list of widgets, and then
 		//Uses the widgets getRandomInstruction to generate a new random widget to use
-		System.out.println("check");
-		System.out.println("currentWidgets size: " + currentWidgets.size());
-	    System.out.println("rando widget index: " + generator.nextInt(currentWidgets.size()));
 		Widget w = currentWidgets.get(generator.nextInt(currentWidgets.size())).getRandomInstruction();
 		lock.unlock();
 		return w;
@@ -92,8 +86,14 @@ public class Server implements Runnable{
 		//And notify the server thread if that is the case
 		//Also notifies all threads if the level is completed
 		lock.lock();
+		for(Widget w2 : currentWidgets){
+			if (w2.getName().equals(w.getName())){
+				w2.update(w);
+				break;
+			}
+		}
 		for (ServerThread st: playerThreads){
-			if (w == st.getInstruction()){
+			if (w.equals(st.getInstruction())){
 				s.givePoint();
 				st.givePoint();
 				this.instructionCompleted(st);
@@ -164,18 +164,17 @@ public class Server implements Runnable{
 		for (ServerThread s : playerThreads){
 			s.startLevel(i);
 		}
-		System.out.println("beginning all level starts");
 	}
 	
 	public void incrementStartedLvls() {
-		System.out.println("incrementing");
+		lock.lock();
 		lvlsStarted++;
 		if (lvlsStarted == playerThreads.size()) {
-			System.out.println("signalling");
 			for (ServerThread s : playerThreads){
 				s.giveInstruction();
 			}
 		}
+		lock.unlock();
 	}
 	
 	private void gameOver() {

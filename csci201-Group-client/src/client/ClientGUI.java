@@ -66,7 +66,6 @@ public class ClientGUI extends JFrame implements Serializable {
 		dashCommand = d;
 		
 		
-		System.out.println("Creating chat window.");
 		createGUI();
 		sendMessage = false;
 		//Configure KeyListener for keyboard
@@ -185,7 +184,6 @@ public class ClientGUI extends JFrame implements Serializable {
 		dbContainer.add(currentDashboard);
 		this.repaint();
 		Vector<Widget> wVect = temp.getWidgets();
-		System.out.println("wVect size; " + wVect.size());
 		client.giveWidgets(wVect);
 	}
 	

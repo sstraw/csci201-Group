@@ -69,7 +69,7 @@ public class Dashboard1_1 implements Dashboard
 		auto.setAlignmentX(Component.CENTER_ALIGNMENT);
 		topright.add(Box.createRigidArea(new Dimension(0, 10)));
 		JRadioButton manual = new JRadioButton("MANUAL");
-		auto.addActionListener(new ActionListener(){
+		manual.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				widgets.get(2).setVal(1);
 				client.updateWidget(widgets.get(2));

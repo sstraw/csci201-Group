@@ -16,6 +16,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Vector;
@@ -62,15 +63,9 @@ public class Client implements Runnable {
 	JButton readyButton; //waiting room button
 	
 	private ReentrantLock lock = new ReentrantLock();
-	
-	// Chat variables
-	private static Semaphore semaphore = new Semaphore(4);
 	private Socket s;
-	private PrintWriter printWriter;
-	private BufferedReader buffer;
 	private ObjectOutputStream objectCannon;
 	private ObjectInputStream objectIn;
-	
 	private JTextArea dashCommand = new JTextArea();
 	private ClientGUI clientGUI; 
 	
@@ -86,11 +81,7 @@ public class Client implements Runnable {
 		displayLoginGUI();
 		// Establish connection to server
 		try {
-			System.out.println("trying to connect");
 			s = new Socket("localhost", 55555);
-			System.out.println("connected");
-			this.printWriter = new PrintWriter(s.getOutputStream());
-			this.buffer = new BufferedReader(new InputStreamReader(s.getInputStream()));
 			this.objectCannon = new ObjectOutputStream(s.getOutputStream());
 			this.objectIn = new ObjectInputStream(s.getInputStream());
 			setPlayerName();
@@ -99,22 +90,6 @@ public class Client implements Runnable {
 			thread = new Thread(this);
 			thread.start();
 			
-			
-			//clientGUI = new ClientGUI( dashCommand );
-			
-			
-			
-		
-//			while (true) {
-//				semaphore.acquire();
-//				if(clientGUI.sendMessage() == true ){
-//					String line = clientGUI.getChatMessage();
-//					System.out.println("YOUR LINE: " + line);
-//					printWriter.println(line);
-//					printWriter.flush();
-//				}
-//				semaphore.release();
-//			}
 		} catch (IOException ioe) {
 			System.out.println("ioe in ChatClient: " + ioe.getMessage());
 		}
@@ -130,8 +105,6 @@ public class Client implements Runnable {
 			    }
 
 			    public void insertUpdate(DocumentEvent e) {
-			    	command(dashCommand.getText());
-			    	
 			    	
 			    }
 
@@ -199,63 +172,79 @@ public class Client implements Runnable {
 		});
 	}
 	
-	public void command(String c){		
-		//this is where you can check if the command matches the instruction that was given
-		System.out.println( c );
-	}
-	
-	
 	private void setPlayerName(){
-		this.printWriter.println("setName");
-		printWriter.flush();
-		this.printWriter.println(username);
-		printWriter.flush();
+		lock.lock();
+		try {
+			this.objectCannon.writeObject(new String("setName"));
+			this.objectCannon.writeObject(username);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally{
+			lock.unlock();
+		}
 	}
 	
 	private void setReady(boolean ready){
-		this.printWriter.println("setState");
-		printWriter.flush();
-		if (ready){
-			this.printWriter.println("ready");
-			printWriter.flush();
+		lock.lock();
+		try {
+			System.out.println("3 - State Sending");
+			this.objectCannon.writeObject(new String("setState"));
+			if (ready){
+				this.objectCannon.writeObject(new String("ready"));
+			}
+			else{
+				this.objectCannon.writeObject(new String("notready"));
+			}
+			System.out.println("State sent");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally{
+			lock.unlock();
 		}
-		if (!ready){
-			this.printWriter.println("notready");
-			printWriter.flush();
-		}
-		System.out.println("state sent");
 	}
 	
 	//Gives the server the list of widgets in use in the current dashboard
 	public void giveWidgets(Vector<Widget> widgets){
 		lock.lock();
 		try {
-			System.out.println("Client: widgets size: " + widgets.size());
-			this.printWriter.println("giveWidgets");
-			printWriter.flush();
+			System.out.println("2 - Vector sending");
+			this.objectCannon.writeObject(new String("giveWidgets"));
 			this.objectCannon.writeObject(widgets);
-			objectCannon.flush();
+			System.out.println("2 - Vector sent");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally{
+			lock.unlock();
 		}
-		lock.unlock();
 	}
-	
 	private void sendMessage(String msg){
-		this.printWriter.println("message");
-		this.printWriter.println(msg);
-	}
-	
-	public void updateWidget(Widget w) {
+		lock.lock();
 		try {
-			printWriter.println("widget change");
-			printWriter.flush();
-			objectCannon.writeObject(w);
-			objectCannon.flush();
+			this.objectCannon.writeObject(new String("message"));
+			this.objectCannon.writeObject(new String(msg));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally{
+			lock.unlock();
+		}
+	}
+	public void updateWidget(Widget w) {
+		lock.lock();
+		try {
+			System.out.println("1 Sending widget update");
+			System.out.println("  " + w.getInstructionString());
+			objectCannon.writeObject(new String("widgetChanged"));
+			objectCannon.writeObject(w);
+			objectCannon.writeObject(w.getVal());
+			System.out.println("1 Update sent");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally{
+			lock.unlock();
 		}
 	}
 
@@ -265,7 +254,7 @@ public class Client implements Runnable {
 		while (true){
 			//Receive and process input
 			try {
-				String value1 = buffer.readLine().trim();
+				String value1 = ((String) objectIn.readObject()).trim();;
 				String value2;
 				Object o;
 				
@@ -273,13 +262,12 @@ public class Client implements Runnable {
 				switch(value1){
 				
 				case("connected user"):
-					value2 = buffer.readLine().trim();
+					value2 = ((String) objectIn.readObject()).trim();;
 					playerTA.append(value2);
 					break;
 				case("startLevel"):
-					System.out.println("start level");
-					int level = Integer.parseInt(buffer.readLine().trim());
-					int ind = Integer.parseInt(buffer.readLine().trim());
+					int level = (Integer) objectIn.readObject();
+					int ind = (Integer) objectIn.readObject();
 					if (clientState == WAITINGROOM) {
 						wrFrame.dispose();
 						clientGUI = new ClientGUI(dashCommand, this);
@@ -291,21 +279,17 @@ public class Client implements Runnable {
 					break;
 					
 				case("instruction"):
-					System.out.println("client receiving instruction");
 					o = objectIn.readObject();
-					System.out.println("got obj");
-					int time = Integer.parseInt(buffer.readLine().trim());
-					System.out.println("got time");
+					int time = (Integer) objectIn.readObject();
 					if (o instanceof Widget){
-						System.out.println("casting to widget");
 						Widget w = (Widget) o;
 						String instruction = w.getInstructionString();
-						System.out.println("updating instruction");
 						clientGUI.updateInstruction(instruction, time);
 					}
 					break;
 					
 				case("instruction completed"):
+					System.out.println("Instruction completed");
 					//do GUI shit
 					
 					/*
@@ -319,8 +303,9 @@ public class Client implements Runnable {
 					}
 					break;
 					*/
-
+					break;
 				case("instruction failed"):
+					System.out.println("Instruction failed");
 					//do GUI shit
 					
 					/*
@@ -333,21 +318,23 @@ public class Client implements Runnable {
 						System.out.println("WRONG OBJECT RECEIVED");
 					}
 					break; */
-					
+					break;
 				case("game over"):
 					//Do shit
 					break;
 					
 				case("message"):
-					value2 = buffer.readLine().trim();
+					value2 = ((String) objectIn.readObject()).trim();
 					/*value2 = buffer.readLine().trim();
 					this.Client.sendMessage(this, value2);
 					break; */
 				}
-				
+			} catch (SocketException e){
+				System.out.println("Socket closed. Quitting...");
+				return;
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("Socket closed. Quitting...");
+				return;
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

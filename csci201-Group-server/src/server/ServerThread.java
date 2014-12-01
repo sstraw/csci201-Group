@@ -63,10 +63,12 @@ public class ServerThread implements Runnable {
 	
 	public void sendMessage(String msg){
 		lock.lock();
-		printwrite.println("message");
-		printwrite.flush();
-		printwrite.println(msg);
-		printwrite.flush();
+		try{
+			objectcannon.writeObject(new String("message"));
+			objectcannon.writeObject(new String(msg));
+		} catch (IOException e){
+			e.printStackTrace();
+		}
 		lock.unlock();
 	}
 	
@@ -84,26 +86,37 @@ public class ServerThread implements Runnable {
 		//Needs to get a new instruction from the server, and pass it to the player
 		lock.lock();
 		timer.interrupt();
-		printwrite.println("instruction completed");
-		printwrite.flush();
-		this.giveInstruction();
-		lock.unlock();
+		try {
+			objectcannon.writeObject(new String("instruction completed"));
+			this.giveInstruction();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally{
+			lock.unlock();
+		}
 	}
 	
 	//Called by the timer thread when there is no more time
 	public void timerDone(){
 		lock.lock();
 		this.server.instructionFailed();
-		printwrite.println("instruction failed");
-		this.giveInstruction();
-		lock.unlock();
+		try {
+			objectcannon.writeObject(new String("instruction failed"));
+			this.giveInstruction();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally{
+			lock.unlock();
+		}
 	}
 	
 	public void gameOver(){
 		lock.lock();
-		printwrite.println("game over");
-		thread.interrupt();
 		try {
+			objectcannon.writeObject(new String("game over"));
+			thread.interrupt();
 			socket.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -127,12 +140,16 @@ public class ServerThread implements Runnable {
 	public void startLevel(int levelnumber){
 		//Notify starting a new level
 		lock.lock();
-		printwrite.println("startLevel");
-		printwrite.flush();
-		printwrite.println(1); //level: should be based on Server variable
-		printwrite.flush();
-		printwrite.println(3);	//index: should be a randomly generate index
-		printwrite.flush();
+		try {
+			objectcannon.writeObject(new String("startLevel"));
+			objectcannon.writeObject(1); //level: should be based on Server variable
+			objectcannon.writeObject(1);	//index: should be a randomly generate index
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally{
+			lock.unlock();
+		}
 		
 		//waits for Widget vector to be returned
 		
@@ -157,29 +174,25 @@ public class ServerThread implements Runnable {
 		}
 		*/
 		//giveInstruction();
-		lock.unlock();
 	}
 	
 	public void giveInstruction(){
 		lock.lock();
 		instruction = this.server.getInstruction();
-		System.out.println(instruction.getInstructionString());
 		//System.out.println("check");
 		int timeout = this.server.getTime();
 		try {
-			printwrite.println("instruction");
-			printwrite.flush();
+			objectcannon.writeObject(new String("instruction"));
 			objectcannon.writeObject(instruction);
-			objectcannon.flush();
-			printwrite.println(timeout);
-			printwrite.flush();
+			objectcannon.writeObject(timeout);
 			timer = new Thread(new Timer(this, timeout));
 			timer.start();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally{
+			lock.unlock();
 		}
-		lock.unlock();
 	}
 	
 	public void run(){
@@ -187,21 +200,21 @@ public class ServerThread implements Runnable {
 		while (isRunning){
 			//Receive and process input
 			try {
-				System.out.println("waiting");
-				String value1 = buffer.readLine().trim();
-				System.out.println(value1);
+				System.out.println("0 - Indicating...");
+				String value1 = ((String) objectin.readObject()).trim();
+				System.out.println("0 - Indicated");
 				String value2;				
 				
 				//Switch values
 				switch(value1){
 				
 				case("setState"):
-					value2 = buffer.readLine().trim();
+					System.out.println("3 - State receiving");
+					value2 = ((String) objectin.readObject()).trim();
 					switch(value2){
 					case("ready"):
 						this.ready = true;
 						this.server.playerReady();
-						System.out.println("check");
 						break;
 					case("notready"):
 						this.ready = false;
@@ -209,22 +222,23 @@ public class ServerThread implements Runnable {
 					default:
 						//Do nothing.
 					}
+					System.out.println("3 - State receivied");
 					break;
 					
 				case("setName"):
-					value2 = buffer.readLine().trim();
+					value2 = ((String) objectin.readObject()).trim();
 					this.name = value2;
 					break;
 
 				case("giveWidgets"):
 					try {
-						System.out.println("Trying to read object");
+						System.out.println("2 - Vector receiving");
 						Object o = objectin.readObject();
 						if (o instanceof Vector) {
 							Vector v = (Vector) o;
-							System.out.println("object read");
 							this.server.addWidgetsFromNetwork(v); //sends vector to be stored in Server
 						}
+						System.out.println("2 - Vector received");
 					} catch (ClassNotFoundException cnfe) {
 						cnfe.printStackTrace();
 					}
@@ -232,21 +246,23 @@ public class ServerThread implements Runnable {
 					
 					break; 
 					
-				case("widget changed"):
+				case("widgetChanged"):
 					try {
-						System.out.println("ST: Widget changed: reading object");
+						System.out.println("1 - Widget Receiving");
 						Object o = objectin.readObject();
 						if (o instanceof Widget) {
 							Widget w = (Widget) o;
-							System.out.println("widget read");
+							w.setVal((Integer) objectin.readObject());
+							System.out.println(w.getInstructionString());
 							server.widgetChanged(this, w);
 						}
+						System.out.println("1 - Widget received");
 					} catch (ClassNotFoundException cnfe) {
 						cnfe.printStackTrace();
 					}
-					
+				break;
 				case("message"):
-					value2 = buffer.readLine().trim();
+					value2 = ((String) objectin.readObject()).trim();
 					this.server.sendMessage(this, value2);
 					break;
 				}
@@ -259,6 +275,10 @@ public class ServerThread implements Runnable {
 				// TODO Auto-generated catch block
 				//e.printStackTrace();
 			//}
+ catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -282,11 +302,9 @@ class Timer implements Runnable{
 	
 	public void run(){
 		try {
-			System.out.println("Timer started");
 			Thread.sleep(milliseconds);
 			if(!this.done){
 				serverthread.timerDone();
-				System.out.println("Timer ended");
 			}
 		} catch (InterruptedException e) {
 			//No error here because the ServerThread may kill this when it's no longer needed;
