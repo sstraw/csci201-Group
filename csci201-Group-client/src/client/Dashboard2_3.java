@@ -1,8 +1,12 @@
 package client;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Vector;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class Dashboard2_3 implements Dashboard
 {
@@ -27,6 +31,13 @@ public class Dashboard2_3 implements Dashboard
 		JComboBox<String> levels = new JComboBox<String>(array);
 		levels.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		levels.setMaximumSize(new Dimension(80, 50));
+		levels.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				
+			}
+		});
 		one.add(levels);
 		
 		panel.add(one);
@@ -46,11 +57,25 @@ public class Dashboard2_3 implements Dashboard
 		run.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		two.add(run);
 		run.setAlignmentX(Component.CENTER_ALIGNMENT);
+		run.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				
+			}
+		});
 		two.add(Box.createRigidArea(new Dimension(0, 10)));
 		JRadioButton analysis = new JRadioButton("ANALYZE");
 		analysis.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		two.add(analysis);
 		analysis.setAlignmentX(Component.CENTER_ALIGNMENT);
+		analysis.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				
+			}
+		});
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(run);
 		bg.add(analysis);
@@ -75,6 +100,17 @@ public class Dashboard2_3 implements Dashboard
 		settings.setPaintLabels(true);
 		three.add(settings);
 		settings.setAlignmentX(Component.CENTER_ALIGNMENT);
+		settings.addChangeListener(new ChangeListener() 
+		{
+	        public void stateChanged(ChangeEvent ce) 
+	        {
+	        	JSlider source = (JSlider)ce.getSource();
+                if(!source.getValueIsAdjusting())
+                {
+                	
+                }
+	        }
+	    });
 		
 		panel.add(three);
 		
@@ -96,6 +132,17 @@ public class Dashboard2_3 implements Dashboard
 		setting.setPaintLabels(true);
 		four.add(setting);
 		setting.setAlignmentX(Component.CENTER_ALIGNMENT);
+		setting.addChangeListener(new ChangeListener() 
+		{
+	        public void stateChanged(ChangeEvent ce) 
+	        {
+	        	JSlider source = (JSlider)ce.getSource();
+                if(!source.getValueIsAdjusting())
+                {
+                	
+                }
+	        }
+	    });
 		
 		panel.add(four);
 		
@@ -109,6 +156,13 @@ public class Dashboard2_3 implements Dashboard
 		yes.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		five.add(yes);
 		yes.setMaximumSize(new Dimension(100, 100));
+		yes.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				
+			}
+		});
 		five.add(Box.createRigidArea(new Dimension(30, 0)));
 		JLabel infratoxin = new JLabel("INFRATOXIN");
 		infratoxin.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
@@ -122,7 +176,6 @@ public class Dashboard2_3 implements Dashboard
 	}
 
 	public Vector<Widget> getWidgets() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

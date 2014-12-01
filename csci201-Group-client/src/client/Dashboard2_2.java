@@ -1,8 +1,12 @@
 package client;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Vector;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class Dashboard2_2 implements Dashboard
 {
@@ -30,6 +34,17 @@ public class Dashboard2_2 implements Dashboard
 		setting.setPaintLabels(true);
 		one.add(setting);
 		setting.setAlignmentX(Component.CENTER_ALIGNMENT);
+		setting.addChangeListener(new ChangeListener() 
+		{
+	        public void stateChanged(ChangeEvent ce) 
+	        {
+	        	JSlider source = (JSlider)ce.getSource();
+                if(!source.getValueIsAdjusting())
+                {
+                	
+                }
+	        }
+	    });
 		
 		panel.add(one);
 		
@@ -50,11 +65,25 @@ public class Dashboard2_2 implements Dashboard
 		num0.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		sidetop.add(num0);
 		num0.setMaximumSize(new Dimension(100, 50));
+		num0.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				
+			}
+		});
 		sidetop.add(Box.createRigidArea(new Dimension(10, 0)));
 		JButton num1 = new JButton ("1");
 		num1.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		sidetop.add(num1);
 		num1.setMaximumSize(new Dimension(100, 50));
+		num1.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				
+			}
+		});
 		two.add(sidetop);
 		two.add(Box.createRigidArea(new Dimension(0, 10)));
 		JPanel sidebottom = new JPanel();
@@ -63,11 +92,25 @@ public class Dashboard2_2 implements Dashboard
 		num2.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		sidebottom.add(num2);
 		num2.setMaximumSize(new Dimension(100, 50));
+		num2.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				
+			}
+		});
 		sidebottom.add(Box.createRigidArea(new Dimension(10, 0)));
 		JButton num3 = new JButton ("3");
 		num3.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		sidebottom.add(num3);
 		num3.setMaximumSize(new Dimension(100, 50));
+		num3.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				
+			}
+		});
 		two.add(sidebottom);
 		
 		panel.add(two);
@@ -88,12 +131,26 @@ public class Dashboard2_2 implements Dashboard
 		three.add(baste);
 		baste.setMaximumSize(new Dimension(140, 50));
 		baste.setAlignmentX(Component.CENTER_ALIGNMENT);
+		baste.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				
+			}
+		});
 		three.add(Box.createRigidArea(new Dimension(0, 20)));
 		JButton jiggle = new JButton ("JIGGLE");
 		jiggle.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		three.add(jiggle);
 		jiggle.setAlignmentX(Component.CENTER_ALIGNMENT);
 		jiggle.setMaximumSize(new Dimension(140, 50));
+		jiggle.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				
+			}
+		});
 		
 		panel.add(three);
 		
@@ -112,6 +169,13 @@ public class Dashboard2_2 implements Dashboard
 		yes.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		four.add(yes);
 		yes.setMaximumSize(new Dimension(100, 100));
+		yes.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				
+			}
+		});
 		
 		panel.add(four);
 		
@@ -125,6 +189,13 @@ public class Dashboard2_2 implements Dashboard
 		JComboBox<String> levels = new JComboBox<String>(array);
 		levels.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		levels.setMaximumSize(new Dimension(80, 50));
+		levels.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				
+			}
+		});
 		five.add(levels);
 		five.add(Box.createRigidArea(new Dimension(40, 0)));
 		JLabel flush = new JLabel("FLUSHCLAMP");
