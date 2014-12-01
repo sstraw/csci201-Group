@@ -116,6 +116,8 @@ public class ServerThread implements Runnable {
 		printwrite.flush();
 		printwrite.println(levelnumber);
 		printwrite.flush();
+		printwrite.println("2");
+		printwrite.flush();
 		lock.unlock();
 	}
 	
@@ -124,7 +126,9 @@ public class ServerThread implements Runnable {
 		int timeout = this.server.getTime();
 		try {
 			objectcannon.writeObject(instruction);
-			printwrite.print(timeout);
+			objectcannon.flush();
+			printwrite.println(timeout);
+			printwrite.flush();
 			timer = new Thread(new Timer(this, timeout));
 			timer.start();
 		} catch (IOException e) {

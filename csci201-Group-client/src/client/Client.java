@@ -38,17 +38,19 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+
+
 public class Client extends Thread {
 	final static public int WAITINGROOM = 1;
 	final static public int INGAME = 2;
 	final static public int GAMEOVER = 3;
 	
 	
-	Vector<JPanel> levelOneDashboards; //will hold hardcoded set of Dashboards for each level
-	Vector<JPanel> levelTwoDashboards;
-	Vector<JPanel> levelThreeDashboards;
-	Vector<JPanel> levelFourDashboards;
-	Vector<JPanel> levelFiveDashboards;
+	Vector<Dashboard> levelOneDashboards; //will hold hardcoded set of Dashboards for each level
+	Vector<Dashboard> levelTwoDashboards;
+	Vector<Dashboard> levelThreeDashboards;
+	Vector<Dashboard> levelFourDashboards;
+	Vector<Dashboard> levelFiveDashboards;
 	
 	String hostIP;
 	String username;
@@ -234,6 +236,15 @@ public class Client extends Thread {
 		this.printWriter.println(msg);
 	}
 	
+	public void updateWidget(Widget w) {
+		try {
+			objectCannon.writeObject(w);
+			objectCannon.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 		
 	
@@ -251,12 +262,18 @@ public class Client extends Thread {
 				case("startLevel"):
 					System.out.println("start level");
 					int level = Integer.parseInt(buffer.readLine().trim());
-					System.out.println("Level: " + level);
-					System.out.println("clientState: " + clientState);
+					int ind = Integer.parseInt(buffer.readLine().trim());
+					System.out.println("level:" + level);
+					System.out.println("ind:" + ind);
 					if (clientState == WAITINGROOM) {
 						System.out.println("disposing of wr");
 						wrFrame.dispose();
-						clientGUI = new ClientGUI(dashCommand);
+						clientGUI = new ClientGUI(dashCommand, this);
+						clientGUI.setDashboard(level, ind);
+						clientState = INGAME;
+					} else if (clientState == INGAME) {
+						//dispose of current game GUI
+						//create new game GUI
 					}
 					
 					

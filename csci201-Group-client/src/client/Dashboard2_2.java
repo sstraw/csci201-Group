@@ -9,6 +9,7 @@ public class Dashboard2_2 implements Dashboard
 	private JPanel panel;
 	public Dashboard2_2(Client c)
 	{
+		panel = new JPanel();
 		panel.setLayout(null);
 		
 		JPanel one = new JPanel();
