@@ -54,7 +54,6 @@ private JPanel panel;
 		for(int i = 0; i < 9; i++){
 			final JToggleButton temp = new JToggleButton(String.valueOf(i+1));
 			buttonGrid.add(temp);
-			
 			temp.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
 					int newval = 0;

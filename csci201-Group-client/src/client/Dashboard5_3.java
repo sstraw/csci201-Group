@@ -69,8 +69,8 @@ public class Dashboard5_3 implements Dashboard{
 		plan.setMaximumSize( new Dimension(120, 75));
 		plan.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				int newVal = 0;
-				AnyButton currentWidget = (AnyButton)widgets.get(1);
+				int newVal = 1;
+				AnyButton currentWidget = (AnyButton)widgets.get(0);
 				currentWidget.setVal(newVal);
 			}
 		});
@@ -81,8 +81,8 @@ public class Dashboard5_3 implements Dashboard{
 		humid.setMaximumSize( new Dimension(120, 75));
 		humid.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				int newVal = 0;
-				AnyButton currentWidget = (AnyButton)widgets.get(2);
+				int newVal = 2;
+				AnyButton currentWidget = (AnyButton)widgets.get(0);
 				currentWidget.setVal(newVal);
 			}
 		});
@@ -106,7 +106,7 @@ public class Dashboard5_3 implements Dashboard{
 		cable2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				int newVal = 0;
-				AnyButton currentWidget = (AnyButton)widgets.get(3);
+				AnyButton currentWidget = (AnyButton)widgets.get(1);
 				currentWidget.setVal(newVal);
 			}
 		});
@@ -117,8 +117,8 @@ public class Dashboard5_3 implements Dashboard{
 		cable3.setMaximumSize( new Dimension(120, 35));
 		cable3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				int newVal = 0;
-				AnyButton currentWidget = (AnyButton)widgets.get(4);
+				int newVal = 1;
+				AnyButton currentWidget = (AnyButton)widgets.get(1);
 				currentWidget.setVal(newVal);
 			}
 		});
@@ -158,7 +158,7 @@ public class Dashboard5_3 implements Dashboard{
                 if(!source.getValueIsAdjusting())
                 {
                 	int newval = source.getValue();
-                	Slider currentwidget = (Slider)widgets.get(5);
+                	Slider currentwidget = (Slider)widgets.get(2);
                 	currentwidget.setVal(newval);
                 }
 	        }
