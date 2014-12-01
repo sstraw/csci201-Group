@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -24,7 +25,7 @@ import javax.swing.event.ChangeListener;
 public class Dashboard5_2 implements Dashboard{
 
 private JPanel panel;
-	
+	private Vector<Widget> widgets;
 	public Dashboard5_2(Client c){
 		
 		panel = new JPanel();
@@ -51,16 +52,16 @@ private JPanel panel;
 		JPanel buttonGrid = new JPanel();
 		buttonGrid.setLayout( new GridLayout(3 ,3) );
 		buttonGrid.setMaximumSize( new Dimension(400,180 ));
-//		for(int i =0; i < 9; i++){
-//			final JToggleButton temp = new JToggleButton( String.valueOf(i+1));
-//			buttonGrid.add(temp);
-//			
+		for(int i =0; i < 9; i++){
+			final JToggleButton temp = new JToggleButton( String.valueOf(i+1));
+			buttonGrid.add(temp);
+			
 //			temp.addActionListener(new ActionListener() {
 //				public void actionPerformed(ActionEvent ae) {
 //					command.setText("SELECT LOGIC CONTROL BOARD " +  temp.getText() );	
 //				}
 //			});
-//		}
+		}
 		sec1.add(Box.createRigidArea(new Dimension(0, 10)));
 		sec1.add ( buttonGrid );
 		sec1.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -156,6 +157,13 @@ private JPanel panel;
 		
 		sec4.add(Box.createRigidArea(new Dimension(0, 24)));
 		
+		widgets = new Vector<Widget>(11);
+		for (int i = 1; i < 10; i++){
+			widgets.add(new AnyButtonStored(String.format("Logic Control Board %d", i), 2, 0,
+					    new Vector<String>(Arrays.asList(String.format("Set Logic Control Board %d to not pressed", i), (String.format("Set Logic Control Board %d to pressed", i))))));
+		}
+		widgets.add(new AnyButton("Emergency Whittler", 2, 0, new Vector<String>(Arrays.asList("Baste the Emergency Whittler", "Juggle the Emergency Whittler"))));
+		widgets.add(new Slider("Epsilon Trap", 0, 5, 0));
 	}
 
 	public JPanel getPanel() {

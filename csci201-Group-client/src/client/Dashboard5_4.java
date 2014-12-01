@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -25,7 +26,7 @@ import javax.swing.event.ChangeListener;
 public class Dashboard5_4 implements Dashboard{
 	
 	private JPanel panel;
-	
+	private Vector<Widget> widgets;
 	public Dashboard5_4(Client c){
 		
 		panel = new JPanel();
@@ -147,7 +148,11 @@ public class Dashboard5_4 implements Dashboard{
 		//hahahaha
 		//Supercalifragilisticexpialidocious
 		
-
+		widgets = new Vector<Widget>(3);
+		widgets.add(new AnyButtonStored("Pentose", 4, 0, new Vector<String>(Arrays.asList(
+				"Set Pentose to 1", "Set pentose to 2", "Set Pentose to 3", "Set Pentose to 4"))));
+		widgets.add(new AnyButton("Tachyon Adapter", 2, 0, new Vector<String>(Arrays.asList("Quell the Tachyon Adapter", "Synthesize the Tachyon Adapter"))));
+		widgets.add(new Slider("Supercalifragilisticexpialidocious", 0, 11, 0));
 		
 	}
 

@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -24,7 +25,7 @@ import javax.swing.event.ChangeListener;
 public class Dashboard5_1  implements Dashboard{
 	
 	private JPanel panel;
-	
+	private Vector<Widget> widgets;
 	public Dashboard5_1(Client c){
 		panel = new JPanel();
 		panel.setLayout( new GridLayout(2 ,1) );
@@ -186,6 +187,14 @@ public class Dashboard5_1  implements Dashboard{
 //		});
 		sec4.add(Box.createRigidArea(new Dimension(0, 30)));
 		
+		widgets = new Vector<Widget>(12);
+		for (int i = 1; i < 10; i++){
+			widgets.add(new AnyButtonStored(String.format("Triple Grid Plexer %d", i), 2, 0,
+					    new Vector<String>(Arrays.asList(String.format("Set Triple Grid Plexer %d to Red", i), (String.format("Set Triple Grid Plexer %d to Green", i))))));
+		}
+		widgets.add(new AnyButton("Quantum Omegifier", 2, 0, new Vector<String>(Arrays.asList("Disperse the Quantum Omegifier", "Synthesize the Quantum Omegifier"))));
+		widgets.add(new Slider("Elastic Illusioner", 0, 11, 0));
+		widgets.add(new AnyButtonStored("Milk Moleculizer", 2, 0, new Vector<String>(Arrays.asList("Switch Milk Moleculizer to Dirty", "Switch Milk Moleculizer to Clean"))));
 	}
 
 	public JPanel getPanel() {
