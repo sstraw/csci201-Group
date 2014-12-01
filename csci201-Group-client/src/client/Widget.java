@@ -21,9 +21,6 @@ public interface Widget extends Serializable{
 	//Updates the widget to a new value given the current one
 	public void update(Widget w);
 	
-	public void setVal(int val);
-	public int getVal();
-	
 	//Gets the name of the widget
 	public String getName();
 	
@@ -47,10 +44,6 @@ abstract class SingleButtonPress implements Widget{
 	
 	public int getVal(){
 		return this.val;
-	}
-	
-	public void setVal(int val){
-		this.val = val;
 	}
 	
 	public boolean equals(Object other){
@@ -119,6 +112,7 @@ abstract class SingleValueWidget implements Widget{
 }
 
 class Slider extends SingleValueWidget{
+	private static final long serialVersionUID = -2296919106897840561L;
 	public Slider(String name, int min, int max, int init_val) {
 		super(name, min, max, init_val);
 	}
@@ -143,6 +137,7 @@ class Slider extends SingleValueWidget{
 
 //Anything where a button is pressed
 class AnyButton extends SingleButtonPress{
+	private static final long serialVersionUID = 6626303430460051073L;
 	protected Vector<String> printoutValues;
 	public AnyButton(String name, int buttons, int val, Vector<String> printoutValues) {
 		super(name, buttons, val);
@@ -159,7 +154,7 @@ class AnyButton extends SingleButtonPress{
 //Any button press where the new random instruction cannot be the same button as the current value. Also
 //implements the Update to actually change it.
 class AnyButtonStored extends AnyButton{
-
+	private static final long serialVersionUID = 6164023689502358712L;
 	public AnyButtonStored(String name, int buttons, int val,
 			Vector<String> printoutValues) {
 		super(name, buttons, val, printoutValues);
@@ -178,35 +173,3 @@ class AnyButtonStored extends AnyButton{
 		}
 	}
 }
-//public abstract class Widget implements Serializable {
-//	private static final long serialVersionUID = -4298245903822614337L;
-//	private Vector<Integer> val;
-//	private String name;
-//	
-//	public Widget(String name){
-//		this.setName(name);
-//		this.val = new Vector<Integer>();
-//	}
-//
-//
-//	public String getName(){
-//		return name;
-//	}
-//
-//	public void setName(String name){
-//		this.name = name;
-//	}
-//	
-//	public Vector<Integer> getValues(){
-//		return val;
-//	}
-//	
-//	public boolean equals(Widget other){
-//		return (this.name == other.getName() && this.val.equals(other.getValues()));
-//	}
-//	
-//	public abstract Widget getRandomInstruction();
-//	
-//	public abstract String getInstructionString();
-//	
-//}
