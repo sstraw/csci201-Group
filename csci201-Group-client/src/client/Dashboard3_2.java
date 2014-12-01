@@ -13,8 +13,10 @@ public class Dashboard3_2 implements Dashboard
 {
 	private JPanel panel;
 	private Vector<Widget> widgets;
+	private Client client;
 	public Dashboard3_2(Client c)
 	{
+		this.client = c;
 		panel = new JPanel();
 		panel.setLayout(null);
 		
@@ -59,6 +61,7 @@ public class Dashboard3_2 implements Dashboard
 					newval = 3;
 				}
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(0));
 			}
 		});
 		one.add(levels);
@@ -87,6 +90,7 @@ public class Dashboard3_2 implements Dashboard
 				int newval = 0;
 				AnyButtonStored currentwidget = (AnyButtonStored)widgets.get(1);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(1));
 			}
 		});
 		two.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -101,6 +105,7 @@ public class Dashboard3_2 implements Dashboard
 				int newval = 1;
 				AnyButtonStored currentwidget = (AnyButtonStored)widgets.get(1);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(1));
 			}
 		});
 		ButtonGroup bg = new ButtonGroup();
@@ -137,6 +142,7 @@ public class Dashboard3_2 implements Dashboard
                 	int newval = source.getValue();
                 	Slider currentwidget = (Slider)widgets.get(2);
                 	currentwidget.setVal(newval);
+                	client.updateWidget(widgets.get(2));
                 }
 	        }
 	    });
@@ -171,6 +177,7 @@ public class Dashboard3_2 implements Dashboard
                 	int newval = source.getValue();
                 	Slider currentwidget = (Slider)widgets.get(3);
                 	currentwidget.setVal(newval);
+                	client.updateWidget(widgets.get(3));
                 }
 	        }
 	    });
@@ -200,6 +207,7 @@ public class Dashboard3_2 implements Dashboard
 				int newval = 0;
 				AnyButton currentwidget = (AnyButton)widgets.get(4);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(4));
 			}
 		});
 		
@@ -223,6 +231,7 @@ public class Dashboard3_2 implements Dashboard
 				int newval = 0;
 				AnyButton currentwidget = (AnyButton)widgets.get(5);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(5));
 			}
 		});
 		six.add(Box.createRigidArea(new Dimension(0, 10)));

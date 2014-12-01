@@ -13,8 +13,10 @@ public class Dashboard3_1 implements Dashboard
 {
 	private JPanel panel;
 	private Vector<Widget> widgets;
+	private Client client;
 	public Dashboard3_1(Client c)
 	{
+		this.client = c;
 		panel = new JPanel();
 		panel.setLayout(null);
 		
@@ -40,6 +42,7 @@ public class Dashboard3_1 implements Dashboard
 				int newval = 0;
 				AnyButtonStored currentwidget = (AnyButtonStored)widgets.get(0);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(0));
 			}
 		});
 		one.add(Box.createRigidArea(new Dimension(0, 15)));
@@ -54,6 +57,7 @@ public class Dashboard3_1 implements Dashboard
 				int newval = 1;
 				AnyButtonStored currentwidget = (AnyButtonStored)widgets.get(0);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(0));
 			}
 		});
 		one.add(Box.createRigidArea(new Dimension(0, 15)));
@@ -68,6 +72,7 @@ public class Dashboard3_1 implements Dashboard
 				int newval = 2;
 				AnyButtonStored currentwidget = (AnyButtonStored)widgets.get(0);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(0));
 			}
 		});
 		one.add(Box.createRigidArea(new Dimension(0, 15)));
@@ -101,6 +106,7 @@ public class Dashboard3_1 implements Dashboard
 				int newval = 0;
 				AnyButton currentwidget = (AnyButton)widgets.get(1);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(1));
 			}
 		});
 		
@@ -129,6 +135,7 @@ public class Dashboard3_1 implements Dashboard
 				int newval = 0;
 				AnyButton currentwidget = (AnyButton)widgets.get(2);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(2));
 			}
 		});
 		
@@ -162,6 +169,7 @@ public class Dashboard3_1 implements Dashboard
                 	int newval = source.getValue();
                 	Slider currentwidget = (Slider)widgets.get(3);
                 	currentwidget.setVal(newval);
+                	client.updateWidget(widgets.get(3));
                 }
 	        }
 	    });
@@ -209,6 +217,7 @@ public class Dashboard3_1 implements Dashboard
 					newval = 3;
 				}
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(4));
 			}
 		});
 		five.add(levels);
@@ -239,6 +248,7 @@ public class Dashboard3_1 implements Dashboard
 				int newval = 0;
 				AnyButton currentwidget = (AnyButton)widgets.get(5);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(5));
 			}
 		});
 		side.add(Box.createRigidArea(new Dimension(10, 0)));
@@ -253,6 +263,7 @@ public class Dashboard3_1 implements Dashboard
 				int newval = 0;
 				AnyButton currentwidget = (AnyButton)widgets.get(5);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(5));
 			}
 		});
 		side.add(Box.createRigidArea(new Dimension(10, 0)));
@@ -267,6 +278,7 @@ public class Dashboard3_1 implements Dashboard
 				int newval = 0;
 				AnyButton currentwidget = (AnyButton)widgets.get(5);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(5));
 			}
 		});
 		six.add(side);
