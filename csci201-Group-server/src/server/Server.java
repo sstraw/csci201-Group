@@ -131,7 +131,7 @@ public class Server implements Runnable{
 	
 	//Time each instruction gets
 	public int getTime(){
-		return 3000 - 60 * currentLevel;
+		return 10000 - 60 * currentLevel;
 	}
 	
 	private void instructionCompleted(ServerThread s){
@@ -195,6 +195,17 @@ public class Server implements Runnable{
 	
 	public void removeChatThread(ChatThread ct) {
 		ctVector.remove(ct);
+	}
+	
+	public void getPlayers(ServerThread caller){
+		lock.lock();
+		for (ServerThread s : playerThreads){
+			if (!s.equals(caller)){
+				caller.newConnection(s.getName());
+				s.newConnection(caller.getName());
+			}
+		}
+		lock.unlock();
 	}
 	
 	public void sendMessage(ServerThread serverthread, String msg){

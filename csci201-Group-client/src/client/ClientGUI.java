@@ -182,9 +182,10 @@ public class ClientGUI extends JFrame implements Serializable {
 		currentDashboard = temp.getPanel();
 		dbContainer.removeAll();
 		dbContainer.add(currentDashboard);
-		this.repaint();
 		Vector<Widget> wVect = temp.getWidgets();
 		client.giveWidgets(wVect);
+		this.validate();
+		this.repaint();
 	}
 	
 	public void updateInstruction(String inst, int timeLimit) {

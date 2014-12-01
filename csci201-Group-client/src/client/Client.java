@@ -81,14 +81,13 @@ public class Client implements Runnable {
 		displayLoginGUI();
 		// Establish connection to server
 		try {
-			s = new Socket("localhost", 55555);
+			s = new Socket(hostIP, 55555);
 			this.objectCannon = new ObjectOutputStream(s.getOutputStream());
 			this.objectIn = new ObjectInputStream(s.getInputStream());
-			setPlayerName();
-			displayWaitingRoomGUI();
-			
 			thread = new Thread(this);
 			thread.start();
+			setPlayerName();
+			displayWaitingRoomGUI();
 			
 		} catch (IOException ioe) {
 			System.out.println("ioe in ChatClient: " + ioe.getMessage());
@@ -265,7 +264,9 @@ public class Client implements Runnable {
 				
 				case("connected user"):
 					value2 = ((String) objectIn.readObject()).trim();;
-					playerTA.append(value2);
+					if (clientState == WAITINGROOM){
+						playerTA.append("\n" + value2);
+					}
 					break;
 				case("startLevel"):
 					int level = (Integer) objectIn.readObject();

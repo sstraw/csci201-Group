@@ -136,7 +136,7 @@ public class ServerThread implements Runnable {
 	public boolean isReady(){
 		return ready;
 	}
-		
+	
 	public void startLevel(int levelnumber){
 		//Notify starting a new level
 		lock.lock();
@@ -195,6 +195,19 @@ public class ServerThread implements Runnable {
 		}
 	}
 	
+	public void newConnection(String s){
+		lock.lock();
+		try {
+			objectcannon.writeObject(new String("connected user"));
+			objectcannon.writeObject(s);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally{
+			lock.unlock();
+		}
+	}
+	
 	public void run(){
 
 		while (isRunning){
@@ -228,6 +241,7 @@ public class ServerThread implements Runnable {
 				case("setName"):
 					value2 = ((String) objectin.readObject()).trim();
 					this.name = value2;
+					server.getPlayers(this);
 					break;
 
 				case("giveWidgets"):
