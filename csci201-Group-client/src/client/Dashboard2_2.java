@@ -1,5 +1,6 @@
 package client;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.*;
@@ -137,9 +138,9 @@ public class Dashboard2_2 implements Dashboard
 		widgets = new Vector<Widget>(5);
 		widgets.add(new Slider("Holospectrum", 0, 5, 2));
 		widgets.add(new Slider("Flushclamp", 0, 4, 0));
-		widgets.add(new EmergencyWhittler(0));
-		widgets.add(new RepulsionLocator(0));
-		widgets.add(new Accelerator());
+		widgets.add(new AnyButton("Emergency Whittler", 2, 0, new Vector<String>(Arrays.asList("Baste the Emergency Whittler", "Juggle the Emergency Whittler"))));
+		widgets.add(new AnyButton("Repulsion Locator", 4, 0, new Vector<String>(Arrays.asList("Set Repulsion Locator to 0","Set Repulsion Locator to 1","Set Repulsion Locator to 2","Set Repulsion Locator to 3"))));
+		widgets.add(new AnyButton("Accelerator", 1, 0, new Vector<String>(Arrays.asList("Start the Accelerator"))));
 	}
 
 	public JPanel getPanel() {

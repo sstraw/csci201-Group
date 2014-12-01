@@ -1,5 +1,6 @@
 package client;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.*;
@@ -119,10 +120,10 @@ public class Dashboard2_3 implements Dashboard
 		
 		widgets = new Vector<Widget>(5);
 		widgets.add(new Slider("Sloping Solution", 0, 4, 0));
-		widgets.add(new Monodish(0));
+		widgets.add(new AnyButtonStored("Monodish", 2, 0, new Vector<String>(Arrays.asList("Set Monodish to Run", "Set Monodish to Analyze"))));
 		widgets.add(new Slider("Induction Iron", 0, 4, 0));
 		widgets.add(new Slider("Flange Exhaust", 0, 6, 0));
-		widgets.add(new Infratoxin());
+		widgets.add(new AnyButton("Infratoxin", 1, 0, new Vector<String>(Arrays.asList("Spitball the Infratoxin"))));
 	}
 
 	public JPanel getPanel() {

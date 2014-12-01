@@ -1,5 +1,6 @@
 package client;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.*;
@@ -143,10 +144,10 @@ public class Dashboard2_4 implements Dashboard
 		panel.add(five);
 		
 		widgets = new Vector<Widget>(5);
-		widgets.add(new ForeignDignitaries());
-		widgets.add(new Holowheel(0));
+		widgets.add(new AnyButton("Foreign Dignitaries", 1, 0, new Vector<String>(Arrays.asList("Entertain Foreign Dignitaries"))));
+		widgets.add(new AnyButtonStored("Holowheel", 4, 0, new Vector<String>(Arrays.asList("Set Holowheel mode to Cast", "Set Holowheel mode to Reel", "Set Holowheel mode to Roll", "Set Holowheel mode to Reel"))));
 		widgets.add(new Slider("RadioCortex", 0, 4, 0));
-		widgets.add(new Progyro(0));
+		widgets.add(new AnyButton("Progyro", 3, 0, new Vector<String>(Arrays.asList("Set Progyro to 1", "Set Progyro to 2", "Set Progyro to 3"))));
 		widgets.add(new Slider("Radiation", 0, 5, 2));
 	}
 
