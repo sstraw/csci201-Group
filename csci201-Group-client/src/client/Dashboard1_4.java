@@ -105,14 +105,14 @@ public class Dashboard1_4 implements Dashboard
 		destruct.setAlignmentX(Component.CENTER_ALIGNMENT);
 		bottomleft.add(Box.createRigidArea(new Dimension(0, 20)));
 		JButton activate = new JButton("ACTIVATE");
-		high.addActionListener(new ActionListener(){
+		activate.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				widgets.get(1).setVal(0);
 				client.updateWidget(widgets.get(1));
 			}
 		});
-		activate.setMaximumSize(new Dimension(120, 50));
-		activate.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
+		activate.setMaximumSize(new Dimension(160, 50));
+		activate.setFont(new Font("DejaVu Sans", Font.BOLD, 16));
 		bottomleft.add(activate);
 		activate.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
@@ -129,7 +129,7 @@ public class Dashboard1_4 implements Dashboard
 		flamethrower.setAlignmentX(Component.CENTER_ALIGNMENT);
 		flamethrower.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		bottomright.add(Box.createRigidArea(new Dimension(0, 20)));
-		JButton point = new JButton ("POINT");
+		JButton point = new JButton ("AIM");
 		point.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				widgets.get(2).setVal(0);
