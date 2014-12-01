@@ -2,18 +2,23 @@ package client;
 
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class Dashboard1_3 implements Dashboard
 {
 	private JPanel panel;
 	private Vector<Widget> widgets;
-	
+	private Client client;
 	public Dashboard1_3(Client c)
 	{
+		client = c;
 		panel = new JPanel();
 		panel.setLayout(null);
 		
@@ -29,6 +34,15 @@ public class Dashboard1_3 implements Dashboard
 		chair.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		topleft.add(Box.createRigidArea(new Dimension(0, 15)));
 		JSlider setting = new JSlider(JSlider.VERTICAL, 0, 4, 2);
+		setting.addChangeListener(new ChangeListener(){
+			public void stateChanged(ChangeEvent arg0) {
+				if (arg0.getSource() instanceof JSlider){
+					int i = ((JSlider) arg0.getSource()).getValue();
+					widgets.get(0).setVal(i);
+					client.updateWidget(widgets.get(0));
+				}
+			}
+		});
 		setting.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		setting.setMajorTickSpacing(1);
 		setting.setPaintTicks(true);
@@ -50,11 +64,23 @@ public class Dashboard1_3 implements Dashboard
 		hitchhiker.setAlignmentX(Component.CENTER_ALIGNMENT);
 		topright.add(Box.createRigidArea(new Dimension(0, 20)));
 		JRadioButton allow = new JRadioButton("ALLOW");
+		allow.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				widgets.get(1).setVal(0);
+				client.updateWidget(widgets.get(1));
+			}
+		});
 		allow.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		topright.add(allow);
 		allow.setAlignmentX(Component.CENTER_ALIGNMENT);
 		topright.add(Box.createRigidArea(new Dimension(0, 10)));
 		JRadioButton deny = new JRadioButton("DENY");
+		deny.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				widgets.get(1).setVal(1);
+				client.updateWidget(widgets.get(1));
+			}
+		});
 		deny.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		topright.add(deny);
 		deny.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -76,6 +102,12 @@ public class Dashboard1_3 implements Dashboard
 		coffee.setAlignmentX(Component.CENTER_ALIGNMENT);
 		bottomleft.add(Box.createRigidArea(new Dimension(0, 20)));
 		JButton brew = new JButton("BREW");
+		brew.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				widgets.get(2).setVal(0);
+				client.updateWidget(widgets.get(2));
+			}
+		});
 		brew.setMaximumSize(new Dimension(120, 50));
 		brew.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		bottomleft.add(brew);
@@ -96,6 +128,15 @@ public class Dashboard1_3 implements Dashboard
 		bottomright.add(Box.createRigidArea(new Dimension(0, 30)));
 		String[] array = new String[] {"2.5", "3", "3.5", "4"};
 		JComboBox<String> points = new JComboBox<String>(array);
+		points.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() instanceof JComboBox<?>){
+					int i = ((JComboBox<?>) e.getSource()).getSelectedIndex();
+					widgets.get(3).setVal(i);
+					client.updateWidget(widgets.get(3));
+				}
+			}
+		});
 		points.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		points.setMaximumSize(new Dimension(80, 50));
 		bottomright.add(points);
