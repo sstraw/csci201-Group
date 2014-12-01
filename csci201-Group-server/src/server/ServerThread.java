@@ -164,7 +164,7 @@ public class ServerThread implements Runnable {
 		lock.lock();
 		instruction = this.server.getInstruction();
 		System.out.println(instruction.getInstructionString());
-		System.out.println("check");
+		//System.out.println("check");
 		int timeout = this.server.getTime();
 		try {
 			printwrite.println("instruction");
@@ -239,7 +239,7 @@ public class ServerThread implements Runnable {
 						if (o instanceof Widget) {
 							Widget w = (Widget) o;
 							System.out.println("widget read");
-							//server.widgetChanged(this, w);
+							server.widgetChanged(this, w);
 						}
 					} catch (ClassNotFoundException cnfe) {
 						cnfe.printStackTrace();

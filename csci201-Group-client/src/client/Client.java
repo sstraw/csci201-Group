@@ -74,6 +74,8 @@ public class Client implements Runnable {
 	private JTextArea dashCommand = new JTextArea();
 	private ClientGUI clientGUI; 
 	
+	private Thread thread;
+	
 
 	
 	public Client() {
