@@ -76,10 +76,11 @@ public class ClientGUI extends JFrame implements Serializable {
 		    	  if(e.getID() == KeyEvent.KEY_PRESSED){
 		    		  int keys = e.getKeyCode();
 		    		  if(keys == KeyEvent.VK_ENTER){
-						  message = "[PLAYER_NAME]: " + playerChat.getText();
+						  message = playerChat.getText();
 						  sendMessage = true;
 						  playerChat.setText("");
 						  playerChat.setCaretPosition(0);
+						  client.sendMessage(message);
 				      }
 		    		  else{	playerChat.append(e.getKeyChar() + "");	  }	  }
 		    	  return true;

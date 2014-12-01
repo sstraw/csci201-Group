@@ -218,7 +218,7 @@ public class Client implements Runnable {
 			lock.unlock();
 		}
 	}
-	private void sendMessage(String msg){
+	public void sendMessage(String msg){
 		lock.lock();
 		try {
 			this.objectCannon.writeObject(new String("message"));
@@ -328,6 +328,8 @@ public class Client implements Runnable {
 					
 				case("message"):
 					value2 = ((String) objectIn.readObject()).trim();
+					clientGUI.receiveMessage(value2);
+					break;
 					/*value2 = buffer.readLine().trim();
 					this.Client.sendMessage(this, value2);
 					break; */
