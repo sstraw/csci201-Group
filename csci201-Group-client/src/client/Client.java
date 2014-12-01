@@ -57,6 +57,7 @@ public class Client extends Thread {
 	private int clientState = Client.WAITINGROOM;
 	
 	JFrame wrFrame;
+	JTextArea playerTA;
 	JButton readyButton; //waiting room button
 	
 	// Chat variables
@@ -168,7 +169,7 @@ public class Client extends Thread {
 	public void displayWaitingRoomGUI() {
 		JPanel wrPanel = new JPanel();
 		wrPanel.setLayout(new BorderLayout());
-		JTextArea playerTA = new JTextArea(username, 4, 20);
+		playerTA = new JTextArea(username, 4, 20);
 		playerTA.setEditable(false);
 		readyButton = new JButton("Ready");
 		wrPanel.add(playerTA, BorderLayout.CENTER);
@@ -221,10 +222,12 @@ public class Client extends Thread {
 	}
 	
 	//Gives the server the list of widgets in use in the current dashboard
-	private void giveWidgets(Vector<Widget> widgets){
+	public void giveWidgets(Vector<Widget> widgets){
 		try {
 			this.printWriter.println("giveWidgets");
+			printWriter.flush();
 			this.objectCannon.writeObject(widgets);
+			objectCannon.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -259,6 +262,10 @@ public class Client extends Thread {
 				//Switch values
 				switch(value1){
 				
+				case("connected user"):
+					value2 = buffer.readLine().trim();
+					playerTA.append(value2);
+									
 				case("startLevel"):
 					System.out.println("start level");
 					int level = Integer.parseInt(buffer.readLine().trim());
@@ -266,16 +273,22 @@ public class Client extends Thread {
 					System.out.println("level:" + level);
 					System.out.println("ind:" + ind);
 					if (clientState == WAITINGROOM) {
-						System.out.println("disposing of wr");
 						wrFrame.dispose();
 						clientGUI = new ClientGUI(dashCommand, this);
 						clientGUI.setDashboard(level, ind);
 						clientState = INGAME;
 					} else if (clientState == INGAME) {
-						//dispose of current game GUI
-						//create new game GUI
+						clientGUI.setDashboard(level, ind);
 					}
 					
+				case("instruction"):
+					o = objectIn.readObject();
+					int time = Integer.parseInt(buffer.readLine().trim());
+					if (o instanceof Widget){
+						Widget w = (Widget) o;
+						String instruction = w.getInstructionString();
+						clientGUI.updateInstruction(instruction, time);
+					}
 					
 				case("instruction completed"):
 					//do GUI shit
@@ -320,10 +333,10 @@ public class Client extends Thread {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} /*catch (ClassNotFoundException e) {
+			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}*/
+			}
 		}
 	}
 	

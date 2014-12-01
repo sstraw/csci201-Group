@@ -28,6 +28,7 @@ import javax.swing.JToggleButton;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class ClientGUI extends JFrame implements Serializable {
 	
@@ -42,6 +43,7 @@ public class ClientGUI extends JFrame implements Serializable {
 	ArrayList<JPanel> levelFiveDashboards;
 	
 	protected int currentLevel;
+	JTextField instruction;
 	
 	
 	//private JPanel currentDashboard;
@@ -101,10 +103,10 @@ public class ClientGUI extends JFrame implements Serializable {
 		return sendMessage;
 	}
 	
-	public void setDashboard(JPanel dashboard){
+	/*public void setDashboard(JPanel dashboard){
 		this.dashboard = dashboard;
 		add(this.dashboard, BorderLayout.CENTER);
-	}
+	}*/
 	public void createGUI(){
 		setSize(750, 700);
 		setLocation(250, 25); 
@@ -133,7 +135,7 @@ public class ClientGUI extends JFrame implements Serializable {
 		gamePanel.add(shipPanel);
 		
 		//text field showing the recieved instruction
-		JTextField instruction = new JTextField("INSTRUCTIONS GO HERE");
+		instruction = new JTextField("INSTRUCTIONS GO HERE");
 		gamePanel.add(instruction);
 		instruction.setMaximumSize( new Dimension (550, 50));
 		instruction.setEditable(false);	
@@ -143,7 +145,7 @@ public class ClientGUI extends JFrame implements Serializable {
 		progressBar = new JProgressBar(0, 100);
 		progressBar.setValue(100);
 		progressBar.setForeground( Color.GREEN);			
-		gamePanel.add( progressBar );
+		gamePanel.add(progressBar);
 		
 		dbContainer = new JPanel();
 		dbContainer.setLayout(new BorderLayout());
@@ -178,11 +180,17 @@ public class ClientGUI extends JFrame implements Serializable {
 	
 	public void setDashboard(int lvl, int ind) {
 		Dashboard temp = dbFactory.getDashboard(client, lvl, ind);	
+		Vector<Widget> wVect = temp.getWidgets();
+		System.out.println("widgets sent");
+		client.giveWidgets(wVect);
 		currentDashboard = temp.getPanel();
 		dbContainer.removeAll();
 		dbContainer.add(currentDashboard);
 		repaint();
-		//showGUI();
+	}
+	
+	public void updateInstruction(String inst, int timeLimit) {
+		instruction.setText(inst);
 	}
 	
 	public void showGUI() {

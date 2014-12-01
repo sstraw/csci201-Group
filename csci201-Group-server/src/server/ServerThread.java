@@ -60,9 +60,20 @@ public class ServerThread implements Runnable {
 	public void sendMessage(String msg){
 		lock.lock();
 		printwrite.println("message");
+		printwrite.flush();
 		printwrite.println(msg);
+		printwrite.flush();
 		lock.unlock();
 	}
+	
+	/*public void sendConnectedUser(String un) {
+		lock.lock();
+		printwrite.println("connected user");
+		printwrite.flush();
+		printwrite.println(un);
+		printwrite.flush();
+		lock.unlock();
+	}*/
 	
 	public void instructionCompleted(){
 		//Server calls this when an instruction is passed
@@ -70,6 +81,7 @@ public class ServerThread implements Runnable {
 		lock.lock();
 		timer.interrupt();
 		printwrite.println("instruction completed");
+		printwrite.flush();
 		this.giveInstruction();
 		lock.unlock();
 	}
@@ -116,12 +128,13 @@ public class ServerThread implements Runnable {
 		printwrite.flush();
 		printwrite.println(levelnumber);
 		printwrite.flush();
-		printwrite.println("2");
+		printwrite.println("2");	//should be a randomly generate index
 		printwrite.flush();
+		//giveInstruction();
 		lock.unlock();
 	}
 	
-	private void giveInstruction(){
+	public void giveInstruction(){
 		instruction = this.server.getInstruction();
 		int timeout = this.server.getTime();
 		try {
