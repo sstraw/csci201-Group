@@ -137,10 +137,11 @@ class Slider extends SingleValueWidget{
 
 //Anything where a button is pressed
 class AnyButton extends SingleButtonPress{
-	private static final long serialVersionUID = 6626303430460051073L;
+	private static final long serialVersionUID = 3541996716894509126L;
 	protected Vector<String> printoutValues;
 	public AnyButton(String name, int buttons, int val, Vector<String> printoutValues) {
 		super(name, buttons, val);
+		this.printoutValues = printoutValues;
 	}
 	public Widget getRandomInstruction() {
 		return new AnyButton(name, buttons, (new Random()).nextInt(buttons), printoutValues);
