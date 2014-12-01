@@ -191,7 +191,6 @@ public class Client extends Thread {
 				}
 			}
 		});
-		
 	}
 	
 	public void command(String c){		
@@ -224,6 +223,7 @@ public class Client extends Thread {
 	//Gives the server the list of widgets in use in the current dashboard
 	public void giveWidgets(Vector<Widget> widgets){
 		try {
+			System.out.println("Client: widgets size: " + widgets.size());
 			this.printWriter.println("giveWidgets");
 			printWriter.flush();
 			this.objectCannon.writeObject(widgets);
@@ -282,11 +282,16 @@ public class Client extends Thread {
 					}
 					
 				case("instruction"):
+					System.out.println("client receiving instruction");
 					o = objectIn.readObject();
+					System.out.println("got obj");
 					int time = Integer.parseInt(buffer.readLine().trim());
+					System.out.println("got time");
 					if (o instanceof Widget){
+						System.out.println("casting to widget");
 						Widget w = (Widget) o;
 						String instruction = w.getInstructionString();
+						System.out.println("updating instruction");
 						clientGUI.updateInstruction(instruction, time);
 					}
 					
