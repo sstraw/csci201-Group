@@ -31,7 +31,6 @@ private JPanel panel;
 		panel = new JPanel();
 		panel.setLayout( new GridLayout(2 ,1) );
 		
-		
 		//top row
 		JPanel db1 = new JPanel();
 		db1.setLayout( new BoxLayout( db1 , BoxLayout.LINE_AXIS) );
@@ -52,26 +51,29 @@ private JPanel panel;
 		JPanel buttonGrid = new JPanel();
 		buttonGrid.setLayout( new GridLayout(3 ,3) );
 		buttonGrid.setMaximumSize( new Dimension(400,180 ));
-		for(int i =0; i < 9; i++){
-			final JToggleButton temp = new JToggleButton( String.valueOf(i+1));
+		for(int i = 0; i < 9; i++){
+			final JToggleButton temp = new JToggleButton(String.valueOf(i+1));
 			buttonGrid.add(temp);
-			
-//			temp.addActionListener(new ActionListener() {
-//				public void actionPerformed(ActionEvent ae) {
-//					command.setText("SELECT LOGIC CONTROL BOARD " +  temp.getText() );	
-//				}
-//			});
+			temp.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent ae) {
+					int newval = 0;
+					if(temp.isSelected()){
+						newval = 1;
+					}
+					else{
+						newval = 0;
+					}
+					AnyButtonStored currentWidget = (AnyButtonStored)widgets.get(Integer.valueOf(temp.getText()) - 1);
+					currentWidget.setVal(newval);
+				}
+			});
 		}
 		sec1.add(Box.createRigidArea(new Dimension(0, 10)));
 		sec1.add ( buttonGrid );
 		sec1.add(Box.createRigidArea(new Dimension(0, 10)));
-		
-		
 		db1.add(Box.createRigidArea(new Dimension(12, 0)));
 		
-		
 		//bottom row
-
 		JPanel db2 = new JPanel();
 		db2.setLayout( new BoxLayout( db2 , BoxLayout.LINE_AXIS) );
 		db2.setBackground( Color.black);
@@ -97,22 +99,17 @@ private JPanel panel;
 		sec3.add ( slider );
 		slider.setMaximumSize( new Dimension(250, 35));
 		sec3.add(Box.createRigidArea(new Dimension(0, 90)));
-//		slider.addChangeListener(new ChangeListener() {
-//	        @Override
-//	        public void stateChanged(ChangeEvent ce) {
-//	        	JSlider source = (JSlider)ce.getSource();
-//                if(!source.getValueIsAdjusting())
-//                {
-//                	//System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
-//                	command.setText( "SET EPSILON TRAP TO " + source.getValue() );
-//                }
-//	        }
-//	    });
-		
-		//defribilator
-		//hahahaha
-		//Supercalifragilisticexpialidocious
-		
+		slider.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent ce) {
+	        	JSlider source = (JSlider)ce.getSource();
+                if(!source.getValueIsAdjusting())
+                {
+                	int newval = source.getValue();
+                	Slider currentwidget = (Slider)widgets.get(9);
+                	currentwidget.setVal(newval);
+                }
+	        }
+	    });
 		
 		JPanel sec4 = new JPanel();
 		db2.add( sec4 );
@@ -137,33 +134,35 @@ private JPanel panel;
 		sec4.add(baste);
 		baste.setAlignmentX( Component.CENTER_ALIGNMENT );
 		baste.setMaximumSize( new Dimension(100, 50));
-		
-//		baste.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent ae) {
-//				command.setText( "BASTE THE EMERGENCY WHITTLER" );
-//			}
-//		});
+		baste.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				int newVal = 0;
+				AnyButton currentWidget = (AnyButton)widgets.get(10);
+				currentWidget.setVal(newVal);
+			}
+		});
 		sec4.add(Box.createRigidArea(new Dimension(0, 20)));
 		final JButton jiggle = new JButton("JIGGLE");
 		sec4.add(jiggle);
 		jiggle.setAlignmentX( Component.CENTER_ALIGNMENT );
 		jiggle.setMaximumSize( new Dimension(100, 50));
-		
-//		jiggle.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent ae) {
-//				command.setText( "JIGGLE THE EMERGENCY WHITTLER" );
-//			}
-//		});
+		jiggle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				int newVal = 1;
+				AnyButton currentWidget = (AnyButton)widgets.get(10);
+				currentWidget.setVal(newVal);
+			}
+		});
 		
 		sec4.add(Box.createRigidArea(new Dimension(0, 24)));
 		
 		widgets = new Vector<Widget>(11);
 		for (int i = 1; i < 10; i++){
 			widgets.add(new AnyButtonStored(String.format("Logic Control Board %d", i), 2, 0,
-					    new Vector<String>(Arrays.asList(String.format("Set Logic Control Board %d to not pressed", i), (String.format("Set Logic Control Board %d to pressed", i))))));
+					    new Vector<String>(Arrays.asList(String.format("Press Logic Control Board %d", i), (String.format("Unpress Logic Control Board %d", i))))));
 		}
-		widgets.add(new AnyButton("Emergency Whittler", 2, 0, new Vector<String>(Arrays.asList("Baste the Emergency Whittler", "Juggle the Emergency Whittler"))));
 		widgets.add(new Slider("Epsilon Trap", 0, 5, 0));
+		widgets.add(new AnyButton("Emergency Whittler", 2, 0, new Vector<String>(Arrays.asList("Baste the Emergency Whittler", "Juggle the Emergency Whittler"))));
 	}
 
 	public JPanel getPanel() {

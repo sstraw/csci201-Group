@@ -1,5 +1,7 @@
 package client;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -9,9 +11,10 @@ public class Dashboard1_1 implements Dashboard
 {
 	private JPanel panel;
 	private Vector<Widget> widgets;
-	
+	private Client client;
 	public Dashboard1_1(Client c)
 	{
+		this.client = c;
 		panel = new JPanel();
 		panel.setLayout(null);
 		
@@ -30,6 +33,15 @@ public class Dashboard1_1 implements Dashboard
 		JComboBox<String> levels = new JComboBox<String>(array);
 		levels.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		levels.setMaximumSize(new Dimension(80, 50));
+		levels.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				if(arg0.getSource() instanceof JComboBox<?>){
+					int i = ((JComboBox<?>) arg0.getSource()).getSelectedIndex();
+					widgets.get(0).setVal(i);
+					client.updateWidget(widgets.get(0));
+				}
+			}
+		});
 		topleft.add(levels);
 		
 		panel.add(topleft);
@@ -46,11 +58,23 @@ public class Dashboard1_1 implements Dashboard
 		transmission.setAlignmentX(Component.CENTER_ALIGNMENT);
 		topright.add(Box.createRigidArea(new Dimension(0, 20)));
 		JRadioButton auto = new JRadioButton("AUTOMATIC");
+		auto.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				widgets.get(2).setVal(0);
+				client.updateWidget(widgets.get(2));
+			}
+		});
 		auto.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		topright.add(auto);
 		auto.setAlignmentX(Component.CENTER_ALIGNMENT);
 		topright.add(Box.createRigidArea(new Dimension(0, 10)));
 		JRadioButton manual = new JRadioButton("MANUAL");
+		auto.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				widgets.get(2).setVal(1);
+				client.updateWidget(widgets.get(2));
+			}
+		});
 		manual.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		topright.add(manual);
 		manual.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -73,6 +97,12 @@ public class Dashboard1_1 implements Dashboard
 		cokecup.setAlignmentX(Component.CENTER_ALIGNMENT);
 		bottomleft.add(Box.createRigidArea(new Dimension(0, 20)));
 		JButton refill = new JButton("REFILL");
+		refill.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				widgets.get(1).setVal(0);
+				client.updateWidget(widgets.get(1));
+			}
+		});
 		refill.setMaximumSize(new Dimension(120, 50));
 		refill.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		bottomleft.add(refill);
@@ -92,12 +122,24 @@ public class Dashboard1_1 implements Dashboard
 		mosfet.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		bottomright.add(Box.createRigidArea(new Dimension(0, 20)));
 		JButton ntype = new JButton ("N-CHANNEL");
+		ntype.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				widgets.get(3).setVal(0);
+				client.updateWidget(widgets.get(3));
+			}
+		});
 		ntype.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		bottomright.add(ntype);
 		ntype.setMaximumSize(new Dimension(140, 50));
 		ntype.setAlignmentX(Component.CENTER_ALIGNMENT);
 		bottomright.add(Box.createRigidArea(new Dimension(0, 10)));
 		JButton ptype = new JButton ("P-CHANNEL");
+		ptype.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				widgets.get(3).setVal(1);
+				client.updateWidget(widgets.get(3));
+			}
+		});
 		ptype.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		bottomright.add(ptype);
 		ptype.setAlignmentX(Component.CENTER_ALIGNMENT);

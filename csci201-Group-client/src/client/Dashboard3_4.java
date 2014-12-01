@@ -1,9 +1,13 @@
 package client;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class Dashboard3_4 implements Dashboard
 {
@@ -32,6 +36,19 @@ public class Dashboard3_4 implements Dashboard
 		setting.setPaintLabels(true);
 		one.add(setting);
 		setting.setAlignmentX(Component.CENTER_ALIGNMENT);
+		setting.addChangeListener(new ChangeListener() 
+		{
+	        public void stateChanged(ChangeEvent ce) 
+	        {
+	        	JSlider source = (JSlider)ce.getSource();
+                if(!source.getValueIsAdjusting())
+                {
+                	int newval = source.getValue();
+                	Slider currentwidget = (Slider)widgets.get(0);
+                	currentwidget.setVal(newval);
+                }
+	        }
+	    });
 		
 		panel.add(one);
 		
@@ -52,11 +69,29 @@ public class Dashboard3_4 implements Dashboard
 		disengage.setFont(new Font("DejaVu Sans", Font.BOLD, 12));
 		side.add(disengage);
 		disengage.setMaximumSize(new Dimension(100, 50));
+		disengage.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				int newval = 0;
+				AnyButton currentwidget = (AnyButton)widgets.get(1);
+				currentwidget.setVal(newval);
+			}
+		});
 		side.add(Box.createRigidArea(new Dimension(20, 0)));
 		JButton engage = new JButton ("1");
 		engage.setFont(new Font("DejaVu Sans", Font.BOLD, 12));
 		side.add(engage);
 		engage.setMaximumSize(new Dimension(100, 50));
+		engage.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				int newval = 1;
+				AnyButton currentwidget = (AnyButton)widgets.get(1);
+				currentwidget.setVal(newval);
+			}
+		});
 		two.add(side);
 		
 		panel.add(two);
@@ -77,6 +112,15 @@ public class Dashboard3_4 implements Dashboard
 		take.setFont(new Font("DejaVu Sans", Font.BOLD, 12));
 		three.add(take);
 		take.setAlignmentX(Component.CENTER_ALIGNMENT);
+		take.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				int newval = 0;
+				AnyButton currentwidget = (AnyButton)widgets.get(2);
+				currentwidget.setVal(newval);
+			}
+		});
 		
 		panel.add(three);
 		
@@ -96,18 +140,45 @@ public class Dashboard3_4 implements Dashboard
 		four.add(balance);
 		balance.setMaximumSize(new Dimension(140, 50));
 		balance.setAlignmentX(Component.CENTER_ALIGNMENT);
+		balance.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				int newval = 0;
+				AnyButton currentwidget = (AnyButton)widgets.get(3);
+				currentwidget.setVal(newval);
+			}
+		});
 		four.add(Box.createRigidArea(new Dimension(0, 10)));
 		JButton withdraw = new JButton ("WITHDRAW");
 		withdraw.setFont(new Font("DejaVu Sans", Font.BOLD, 12));
 		four.add(withdraw);
 		withdraw.setAlignmentX(Component.CENTER_ALIGNMENT);
 		withdraw.setMaximumSize(new Dimension(140, 50));
+		withdraw.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				int newval = 1;
+				AnyButton currentwidget = (AnyButton)widgets.get(3);
+				currentwidget.setVal(newval);
+			}
+		});
 		four.add(Box.createRigidArea(new Dimension(0, 10)));
 		JButton deposit = new JButton ("DEPOSIT");
 		deposit.setFont(new Font("DejaVu Sans", Font.BOLD, 12));
 		four.add(deposit);
 		deposit.setAlignmentX(Component.CENTER_ALIGNMENT);
 		deposit.setMaximumSize(new Dimension(140, 50));
+		deposit.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				int newval = 2;
+				AnyButton currentwidget = (AnyButton)widgets.get(3);
+				currentwidget.setVal(newval);
+			}
+		});
 		
 		panel.add(four);
 		
@@ -127,6 +198,15 @@ public class Dashboard3_4 implements Dashboard
 		five.add(empty);
 		empty.setAlignmentX(Component.CENTER_ALIGNMENT);
 		empty.setMaximumSize(new Dimension(100, 80));
+		empty.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				int newval = 0;
+				AnyButton currentwidget = (AnyButton)widgets.get(4);
+				currentwidget.setVal(newval);
+			}
+		});
 		
 		panel.add(five);
 		
@@ -146,15 +226,24 @@ public class Dashboard3_4 implements Dashboard
 		six.add(on);
 		on.setAlignmentX(Component.CENTER_ALIGNMENT);
 		on.setMaximumSize(new Dimension(100, 80));
+		on.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent ae) 
+			{
+				int newval = 0;
+				AnyButton currentwidget = (AnyButton)widgets.get(5);
+				currentwidget.setVal(newval);
+			}
+		});
 		
 		panel.add(six);
 		widgets = new Vector<Widget>(6);
 		widgets.add(new Slider("Plectroblade", 0, 4, 0));
-		widgets.add(new AnyButton("Evasive Manuevers", 1, 0, new Vector<String>(Arrays.asList("Take Evasive Manuevers"))));
 		widgets.add(new AnyButton("Bilge Airengines", 2, 0, new Vector<String>(Arrays.asList("Set Bilge Airengines to 0", "Set Bilge Airengines to 1"))));
-		widgets.add(new AnyButton("Bank", 3, 0, new Vector<String>(Arrays.asList("Balance Bank", "Windraw from Bank", "Deposit in Bank"))));
-		widgets.add(new AnyButton("Recycling", 1, 0, new Vector<String>(Arrays.asList("Empty Recycling"))));
-		widgets.add(new AnyButton("Hextrack", 1, 0, new Vector<String>(Arrays.asList("Turn on Hextrack"))));
+		widgets.add(new AnyButton("Evasive Manuevers", 1, 0, new Vector<String>(Arrays.asList("Take Evasive Manuevers"))));
+		widgets.add(new AnyButton("Bank", 3, 0, new Vector<String>(Arrays.asList("Check Bank Balance", "Withdraw from Bank", "Deposit in Bank"))));
+		widgets.add(new AnyButton("Recycling", 1, 0, new Vector<String>(Arrays.asList("Empty the Recycling"))));
+		widgets.add(new AnyButton("Hextrack", 1, 0, new Vector<String>(Arrays.asList("Turn On Hextrack"))));
 	}
 
 	public JPanel getPanel() {

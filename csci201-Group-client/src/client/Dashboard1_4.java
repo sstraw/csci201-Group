@@ -1,16 +1,22 @@
 package client;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class Dashboard1_4 implements Dashboard
 {
 	private JPanel panel;
 	private Vector<Widget> widgets;
+	private Client client;
 	public Dashboard1_4(Client c)
 	{
+		client = c;
 		panel = new JPanel();
 		panel.setLayout(null);
 		
@@ -26,6 +32,15 @@ public class Dashboard1_4 implements Dashboard
 		siren.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		topleft.add(Box.createRigidArea(new Dimension(0, 15)));
 		JSlider setting = new JSlider(JSlider.VERTICAL, 0, 5, 5);
+		setting.addChangeListener(new ChangeListener(){
+			public void stateChanged(ChangeEvent arg0) {
+				if (arg0.getSource() instanceof JSlider){
+					int i = ((JSlider) arg0.getSource()).getValue();
+					widgets.get(0).setVal(i);
+					client.updateWidget(widgets.get(0));
+				}
+			}
+		});
 		setting.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		setting.setMajorTickSpacing(1);
 		setting.setPaintTicks(true);
@@ -47,11 +62,23 @@ public class Dashboard1_4 implements Dashboard
 		tech.setAlignmentX(Component.CENTER_ALIGNMENT);
 		topright.add(Box.createRigidArea(new Dimension(0, 20)));
 		JRadioButton high = new JRadioButton("HIGH");
+		high.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				widgets.get(3).setVal(0);
+				client.updateWidget(widgets.get(3));
+			}
+		});
 		high.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		topright.add(high);
 		high.setAlignmentX(Component.CENTER_ALIGNMENT);
 		topright.add(Box.createRigidArea(new Dimension(0, 10)));
 		JRadioButton low = new JRadioButton("LOW");
+		low.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				widgets.get(3).setVal(1);
+				client.updateWidget(widgets.get(3));
+			}
+		});
 		low.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		topright.add(low);
 		low.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -73,6 +100,12 @@ public class Dashboard1_4 implements Dashboard
 		destruct.setAlignmentX(Component.CENTER_ALIGNMENT);
 		bottomleft.add(Box.createRigidArea(new Dimension(0, 20)));
 		JButton activate = new JButton("ACTIVATE");
+		high.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				widgets.get(1).setVal(0);
+				client.updateWidget(widgets.get(1));
+			}
+		});
 		activate.setMaximumSize(new Dimension(120, 50));
 		activate.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		bottomleft.add(activate);
@@ -92,12 +125,24 @@ public class Dashboard1_4 implements Dashboard
 		flamethrower.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		bottomright.add(Box.createRigidArea(new Dimension(0, 20)));
 		JButton point = new JButton ("POINT");
+		point.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				widgets.get(2).setVal(0);
+				client.updateWidget(widgets.get(2));
+			}
+		});
 		point.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		bottomright.add(point);
 		point.setMaximumSize(new Dimension(140, 50));
 		point.setAlignmentX(Component.CENTER_ALIGNMENT);
 		bottomright.add(Box.createRigidArea(new Dimension(0, 10)));
 		JButton shoot = new JButton ("SHOOT");
+		shoot.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				widgets.get(2).setVal(1);
+				client.updateWidget(widgets.get(2));
+			}
+		});
 		shoot.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		bottomright.add(shoot);
 		shoot.setAlignmentX(Component.CENTER_ALIGNMENT);

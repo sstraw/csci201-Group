@@ -18,6 +18,9 @@ public interface Widget extends Serializable{
 	//changed widget
 	public boolean equals(Object other);
 	
+	public int getVal();
+	public void setVal(int i);
+	
 	//Updates the widget to a new value given the current one
 	public void update(Widget w);
 	
