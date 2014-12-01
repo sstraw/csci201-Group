@@ -38,7 +38,9 @@ public class Dashboard2_4 implements Dashboard
 		{
 			public void actionPerformed(ActionEvent ae) 
 			{
-				
+				int newval = 0;
+				AnyButton currentwidget = (AnyButton)widgets.get(0);
+				currentwidget.setVal(newval);
 			}
 		});
 		
@@ -63,7 +65,9 @@ public class Dashboard2_4 implements Dashboard
 		{
 			public void actionPerformed(ActionEvent ae) 
 			{
-				
+				int newval = 0;
+				AnyButtonStored currentwidget = (AnyButtonStored)widgets.get(1);
+				currentwidget.setVal(newval);
 			}
 		});
 		two.add(Box.createRigidArea(new Dimension(0, 15)));
@@ -75,7 +79,9 @@ public class Dashboard2_4 implements Dashboard
 		{
 			public void actionPerformed(ActionEvent ae) 
 			{
-				
+				int newval = 1;
+				AnyButtonStored currentwidget = (AnyButtonStored)widgets.get(1);
+				currentwidget.setVal(newval);
 			}
 		});
 		two.add(Box.createRigidArea(new Dimension(0, 15)));
@@ -87,7 +93,9 @@ public class Dashboard2_4 implements Dashboard
 		{
 			public void actionPerformed(ActionEvent ae) 
 			{
-				
+				int newval = 2;
+				AnyButtonStored currentwidget = (AnyButtonStored)widgets.get(1);
+				currentwidget.setVal(newval);
 			}
 		});
 		two.add(Box.createRigidArea(new Dimension(0, 15)));
@@ -99,7 +107,9 @@ public class Dashboard2_4 implements Dashboard
 		{
 			public void actionPerformed(ActionEvent ae) 
 			{
-				
+				int newval = 3;
+				AnyButtonStored currentwidget = (AnyButtonStored)widgets.get(1);
+				currentwidget.setVal(newval);
 			}
 		});
 		ButtonGroup bg = new ButtonGroup();
@@ -135,7 +145,9 @@ public class Dashboard2_4 implements Dashboard
 	        	JSlider source = (JSlider)ce.getSource();
                 if(!source.getValueIsAdjusting())
                 {
-                	
+                	int newval = source.getValue();
+                	Slider currentwidget = (Slider)widgets.get(2);
+                	currentwidget.setVal(newval);
                 }
 	        }
 	    });
@@ -161,7 +173,28 @@ public class Dashboard2_4 implements Dashboard
 		{
 			public void actionPerformed(ActionEvent ae) 
 			{
+				JComboBox<String> source = (JComboBox<String>)ae.getSource();
+				int newval = 0;
+				Slider currentwidget = (Slider)widgets.get(3);
 				
+				String newselection = (String)source.getSelectedItem();
+				if(newselection.equals("0"))
+				{
+					newval = 0;
+				}
+				else if(newselection.equals("1"))
+				{
+					newval = 1;
+				}
+				else if(newselection.equals("2"))
+				{
+					newval = 2;
+				}
+				else if(newselection.equals("3"))
+				{
+					newval = 3;
+				}
+				currentwidget.setVal(newval);
 			}
 		});
 		four.add(levels);
@@ -189,7 +222,9 @@ public class Dashboard2_4 implements Dashboard
 		{
 			public void actionPerformed(ActionEvent ae) 
 			{
-				
+				int newval = 0;
+				AnyButton currentwidget = (AnyButton)widgets.get(4);
+				currentwidget.setVal(newval);
 			}
 		});
 		side.add(Box.createRigidArea(new Dimension(10, 0)));
@@ -201,7 +236,9 @@ public class Dashboard2_4 implements Dashboard
 		{
 			public void actionPerformed(ActionEvent ae) 
 			{
-				
+				int newval = 1;
+				AnyButton currentwidget = (AnyButton)widgets.get(4);
+				currentwidget.setVal(newval);
 			}
 		});
 		side.add(Box.createRigidArea(new Dimension(10, 0)));
@@ -213,7 +250,9 @@ public class Dashboard2_4 implements Dashboard
 		{
 			public void actionPerformed(ActionEvent ae) 
 			{
-				
+				int newval = 2;
+				AnyButton currentwidget = (AnyButton)widgets.get(4);
+				currentwidget.setVal(newval);
 			}
 		});
 		five.add(side);
@@ -222,10 +261,10 @@ public class Dashboard2_4 implements Dashboard
 		
 		widgets = new Vector<Widget>(5);
 		widgets.add(new AnyButton("Foreign Dignitaries", 1, 0, new Vector<String>(Arrays.asList("Entertain Foreign Dignitaries"))));
-		widgets.add(new AnyButtonStored("Holowheel", 4, 0, new Vector<String>(Arrays.asList("Set Holowheel mode to Cast", "Set Holowheel mode to Reel", "Set Holowheel mode to Roll", "Set Holowheel mode to Reel"))));
-		widgets.add(new Slider("RadioCortex", 0, 4, 0));
-		widgets.add(new AnyButton("Progyro", 3, 0, new Vector<String>(Arrays.asList("Set Progyro to 1", "Set Progyro to 2", "Set Progyro to 3"))));
+		widgets.add(new AnyButtonStored("Holowheel", 4, 0, new Vector<String>(Arrays.asList("Cast the Holowheel", "Reel the Holowheel", "Roll the Holowheel", "Flip the Holowheel"))));
 		widgets.add(new Slider("Radiation", 0, 5, 2));
+		widgets.add(new Slider("RadioCortex", 0, 4, 0));
+		widgets.add(new AnyButton("Progyro", 3, 0, new Vector<String>(Arrays.asList("Set Progyro to 0", "Set Progyro to 1", "Set Progyro to 2"))));
 	}
 
 	public JPanel getPanel() {
