@@ -10,6 +10,8 @@ import java.net.Socket;
 import java.util.Vector;
 import java.util.concurrent.locks.ReentrantLock;
 
+import client.Widget;
+
 public class ServerThread implements Runnable {
 	private Socket socket;
 	private Server server;
@@ -119,25 +121,45 @@ public class ServerThread implements Runnable {
 	public boolean isReady(){
 		return ready;
 	}
-	
-	
+		
 	public void startLevel(int levelnumber){
 		//Notify starting a new level
 		lock.lock();
 		printwrite.println("startLevel");
 		printwrite.flush();
-		printwrite.println(levelnumber);
+		printwrite.println(1); //level: should be based on Server variable
 		printwrite.flush();
-		printwrite.println("2");	//should be a randomly generate index
+		printwrite.println(2);	//index: should be a randomly generate index
 		printwrite.flush();
+		
+		//waits for Widget vector to be returned
+		try {
+			String value = buffer.readLine().trim();
+			if (value.equals("giveWidgets")) {
+				Vector v = (Vector) objectin.readObject();
+				System.out.println("adding vector");
+				this.server.addWidgetsFromNetwork(v); //sends vector to be stored in Server
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+		}
+		
 		//giveInstruction();
 		lock.unlock();
 	}
 	
 	public void giveInstruction(){
+		lock.lock();
 		instruction = this.server.getInstruction();
+		System.out.println(instruction.getInstructionString());
+		System.out.println("check");
 		int timeout = this.server.getTime();
 		try {
+			//printwrite.println("instruction");
+			printwrite.flush();
 			objectcannon.writeObject(instruction);
 			objectcannon.flush();
 			printwrite.println(timeout);
@@ -148,6 +170,7 @@ public class ServerThread implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		lock.unlock();
 	}
 	
 	public void run(){
@@ -182,7 +205,7 @@ public class ServerThread implements Runnable {
 					this.name = value2;
 					break;
 
-				case("giveWidgets"):
+				/*case("giveWidgets"):
 					Object o = objectin.readObject();
 					if (o instanceof Vector<?>){
 						Vector<?> widgets = (Vector<?>) o;
@@ -191,7 +214,7 @@ public class ServerThread implements Runnable {
 					else{
 						System.out.println("ERR:NOT RECEVING CORRECT WIDGET FORMAT");
 					}
-					break;
+					break; */
 					
 				case("message"):
 					value2 = buffer.readLine().trim();
@@ -202,10 +225,10 @@ public class ServerThread implements Runnable {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
+			} //catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				//e.printStackTrace();
+			//}
 		}
 	}
 	

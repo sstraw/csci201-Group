@@ -5,7 +5,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Random;
 import java.util.Vector;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
+
+import client.Widget;
 
 public class Server implements Runnable{
 	final static public int WAITINGROOM = 1;
@@ -13,6 +16,7 @@ public class Server implements Runnable{
 	final static public int GAMEOVER = 3;
 	
 	private ReentrantLock lock = new ReentrantLock();
+	private Condition allLvlsStarted = lock.newCondition();
 	private Vector<ServerThread> playerThreads;
 	private Vector<ChatThread> ctVector = new Vector<ChatThread>();
 	private Vector<Widget> currentWidgets;
@@ -23,7 +27,8 @@ public class Server implements Runnable{
 	private int currentMisses;
 	private Random generator;
 	private Thread thread;
-
+	private int lvlsStarted = 0;
+	
 	public Server(){
 		playerThreads = new Vector<ServerThread>(4);
 		currentWidgets = new Vector<Widget>();
@@ -52,6 +57,8 @@ public class Server implements Runnable{
 				currentWidgets.addElement((Widget) o);
 			}
 		}
+		System.out.println("Server: currentWidgets size: " + currentWidgets.size());
+		incrementStartedLvls();
 		lock.unlock();
 	}
 	
@@ -146,13 +153,34 @@ public class Server implements Runnable{
 		for (ServerThread s : playerThreads){
 			s.startLevel(i);
 		}
-		for (ServerThread s : playerThreads){
-			//s.giveInstruction();
+		System.out.println("beginning all level starts");
+		//try {
+		lock.lock();	
+		System.out.println("waiting for all levels to finish starting");
+			//allLvlsStarted.await();
+			System.out.println("sending instructions");
+			for (ServerThread s : playerThreads){
+				s.giveInstruction();
+			}
+		//} /*catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+		//	e.printStackTrace();
+		//} finally {*/
+			lock.unlock();
+		//}
+	}
+	
+	public void incrementStartedLvls() {
+		System.out.println("incrementing");
+		lvlsStarted++;
+		if (lvlsStarted == playerThreads.size()) {
+			System.out.println("signalling");
+			allLvlsStarted.signal();
 		}
 	}
 	
-	private void gameOver(){
-		for (ServerThread s : playerThreads){
+	private void gameOver() {
+		for (ServerThread s : playerThreads) {
 			s.gameOver();
 		}
 	}

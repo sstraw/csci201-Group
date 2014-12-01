@@ -181,7 +181,7 @@ public class ClientGUI extends JFrame implements Serializable {
 	public void setDashboard(int lvl, int ind) {
 		Dashboard temp = dbFactory.getDashboard(client, lvl, ind);	
 		Vector<Widget> wVect = temp.getWidgets();
-		System.out.println("widgets sent");
+		System.out.println("wVect size; " + wVect.size());
 		client.giveWidgets(wVect);
 		currentDashboard = temp.getPanel();
 		dbContainer.removeAll();

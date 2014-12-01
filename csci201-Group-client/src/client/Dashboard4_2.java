@@ -198,7 +198,7 @@ public class Dashboard4_2 implements Dashboard{
 
 	public Vector<Widget> getWidgets() {
 		// TODO Auto-generated method stub
-		return null;
+		return widgets;
 	}	
 
 
