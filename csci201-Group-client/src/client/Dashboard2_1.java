@@ -129,7 +129,7 @@ public class Dashboard2_1 implements Dashboard
 		five.add(levels);
 		
 		panel.add(five);
-		
+
 		widgets = new Vector<Widget>(5);
 		widgets.add(new Slider("Finite Plexus", 0, 4, 3));
 		widgets.add(new AnyButton("Turbo Jumper", 2, 0, new Vector<String>(Arrays.asList("Set Turbo Jumper to 0","Set Turbo Jumper to 1"))));

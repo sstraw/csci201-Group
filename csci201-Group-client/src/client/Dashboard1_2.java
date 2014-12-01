@@ -1,5 +1,6 @@
 package client;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.*;
@@ -104,9 +105,9 @@ public class Dashboard1_2 implements Dashboard
 		panel.add(bottomright);
 		
 		widgets = new Vector<Widget>(4);
-		widgets.add(new SpaceGate(0));
-		widgets.add(new Nextron());
-		widgets.add(new FluxCapacitor(0));
+		widgets.add(new AnyButton("Space Gate", 2, 0, new Vector<String>(Arrays.asList("Open the Space Gate", "Close the Space Gate"))));
+		widgets.add(new AnyButton("Nextron", 1, 0, new Vector<String>(Arrays.asList("Reset the Nextron"))));
+		widgets.add(new AnyButton("Flux Capacitor", 2, 0, new Vector<String>(Arrays.asList("Clean the Flux Capacitor", "Vent the Flux Capacitor"))));
 		widgets.add(new Slider("Laser Beam", 0, 4, 0));
 	}
 
