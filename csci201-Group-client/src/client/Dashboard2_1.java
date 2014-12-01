@@ -13,8 +13,10 @@ public class Dashboard2_1 implements Dashboard
 {
 	private JPanel panel;
 	private Vector<Widget> widgets;
+	private Client client;
 	public Dashboard2_1(Client c)
 	{
+		this.client = c;
 		panel = new JPanel();
 		panel.setLayout(null);
 		
@@ -46,6 +48,7 @@ public class Dashboard2_1 implements Dashboard
                 	int newval = source.getValue();
                 	Slider currentwidget = (Slider)widgets.get(0);
                 	currentwidget.setVal(newval);
+                	client.updateWidget(widgets.get(0));
                 }
 	        }
 	    });
@@ -76,6 +79,7 @@ public class Dashboard2_1 implements Dashboard
 				int newval = 0;
 				AnyButton currentwidget = (AnyButton)widgets.get(1);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(1));
 			}
 		});
 		side.add(Box.createRigidArea(new Dimension(20, 0)));
@@ -90,6 +94,7 @@ public class Dashboard2_1 implements Dashboard
 				int newval = 0;
 				AnyButton currentwidget = (AnyButton)widgets.get(1);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(1));
 			}
 		});
 		two.add(side);
@@ -119,6 +124,7 @@ public class Dashboard2_1 implements Dashboard
 				int newval = 0;
 				AnyButton currentwidget = (AnyButton)widgets.get(2);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(2));
 			}
 		});
 		
@@ -147,6 +153,7 @@ public class Dashboard2_1 implements Dashboard
 				int newval = 0;
 				AnyButton currentwidget = (AnyButton)widgets.get(3);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(3));
 			}
 		});
 		four.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -162,6 +169,7 @@ public class Dashboard2_1 implements Dashboard
 				int newval = 0;
 				AnyButton currentwidget = (AnyButton)widgets.get(3);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(3));
 			}
 		});
 		four.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -177,6 +185,7 @@ public class Dashboard2_1 implements Dashboard
 				int newval = 0;
 				AnyButton currentwidget = (AnyButton)widgets.get(3);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(3));
 			}
 		});
 		
@@ -223,6 +232,7 @@ public class Dashboard2_1 implements Dashboard
 					newval = 3;
 				}
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(4));
 			}
 		});
 		five.add(levels);

@@ -27,8 +27,10 @@ public class Dashboard5_4 implements Dashboard{
 	
 	private JPanel panel;
 	private Vector<Widget> widgets;
+	private Client client;
 	public Dashboard5_4(Client c){
 		
+		this.client = c;
 		panel = new JPanel();
 		panel.setLayout( new GridLayout(2 ,1) );
 		
@@ -73,6 +75,7 @@ public class Dashboard5_4 implements Dashboard{
 					}
 					AnyButtonStored currentWidget = (AnyButtonStored)widgets.get(0);
 					currentWidget.setVal(newval);
+					client.updateWidget(widgets.get(0));
 				}
 			});
 		}
@@ -101,6 +104,7 @@ public class Dashboard5_4 implements Dashboard{
 				int newVal = 0;
 				AnyButton currentWidget = (AnyButton)widgets.get(1);
 				currentWidget.setVal(newVal);
+				client.updateWidget(widgets.get(1));
 			}
 		});
 		sec2.add(Box.createRigidArea(new Dimension(0, 25)));
@@ -113,6 +117,7 @@ public class Dashboard5_4 implements Dashboard{
 				int newVal = 1;
 				AnyButton currentWidget = (AnyButton)widgets.get(1);
 				currentWidget.setVal(newVal);
+				client.updateWidget(widgets.get(1));
 			}
 		});
 		
@@ -156,6 +161,7 @@ public class Dashboard5_4 implements Dashboard{
                 	int newval = source.getValue();
                 	Slider currentwidget = (Slider)widgets.get(2);
                 	currentwidget.setVal(newval);
+                	client.updateWidget(widgets.get(2));
                 }
 	        }
 	    });

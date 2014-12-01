@@ -34,15 +34,20 @@ public class Dashboard1_3 implements Dashboard
 		chair.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		topleft.add(Box.createRigidArea(new Dimension(0, 15)));
 		JSlider setting = new JSlider(JSlider.VERTICAL, 0, 4, 2);
-		setting.addChangeListener(new ChangeListener(){
-			public void stateChanged(ChangeEvent arg0) {
-				if (arg0.getSource() instanceof JSlider){
-					int i = ((JSlider) arg0.getSource()).getValue();
-					widgets.get(0).setVal(i);
-					client.updateWidget(widgets.get(0));
-				}
-			}
-		});
+		setting.addChangeListener(new ChangeListener() 
+		{
+	        public void stateChanged(ChangeEvent ce) 
+	        {
+	        	JSlider source = (JSlider)ce.getSource();
+                if(!source.getValueIsAdjusting())
+                {
+                	int newval = source.getValue();
+                	Slider currentwidget = (Slider)widgets.get(0);
+                	currentwidget.setVal(newval);
+                	client.updateWidget(widgets.get(0));
+                }
+	        }
+	    });
 		setting.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		setting.setMajorTickSpacing(1);
 		setting.setPaintTicks(true);

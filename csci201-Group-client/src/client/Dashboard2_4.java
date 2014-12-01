@@ -13,8 +13,10 @@ public class Dashboard2_4 implements Dashboard
 {
 	private JPanel panel;
 	private Vector<Widget> widgets;
+	private Client client;
 	public Dashboard2_4(Client c)
 	{
+		this.client = c;
 		panel = new JPanel();
 		panel.setLayout(null);
 		
@@ -41,6 +43,7 @@ public class Dashboard2_4 implements Dashboard
 				int newval = 0;
 				AnyButton currentwidget = (AnyButton)widgets.get(0);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(0));
 			}
 		});
 		
@@ -68,6 +71,7 @@ public class Dashboard2_4 implements Dashboard
 				int newval = 0;
 				AnyButtonStored currentwidget = (AnyButtonStored)widgets.get(1);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(1));
 			}
 		});
 		two.add(Box.createRigidArea(new Dimension(0, 15)));
@@ -82,6 +86,7 @@ public class Dashboard2_4 implements Dashboard
 				int newval = 1;
 				AnyButtonStored currentwidget = (AnyButtonStored)widgets.get(1);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(1));
 			}
 		});
 		two.add(Box.createRigidArea(new Dimension(0, 15)));
@@ -96,6 +101,7 @@ public class Dashboard2_4 implements Dashboard
 				int newval = 2;
 				AnyButtonStored currentwidget = (AnyButtonStored)widgets.get(1);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(1));
 			}
 		});
 		two.add(Box.createRigidArea(new Dimension(0, 15)));
@@ -110,6 +116,7 @@ public class Dashboard2_4 implements Dashboard
 				int newval = 3;
 				AnyButtonStored currentwidget = (AnyButtonStored)widgets.get(1);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(1));
 			}
 		});
 		ButtonGroup bg = new ButtonGroup();
@@ -148,6 +155,7 @@ public class Dashboard2_4 implements Dashboard
                 	int newval = source.getValue();
                 	Slider currentwidget = (Slider)widgets.get(2);
                 	currentwidget.setVal(newval);
+                	client.updateWidget(widgets.get(2));
                 }
 	        }
 	    });
@@ -195,6 +203,7 @@ public class Dashboard2_4 implements Dashboard
 					newval = 3;
 				}
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(3));
 			}
 		});
 		four.add(levels);
@@ -225,6 +234,7 @@ public class Dashboard2_4 implements Dashboard
 				int newval = 0;
 				AnyButton currentwidget = (AnyButton)widgets.get(4);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(4));
 			}
 		});
 		side.add(Box.createRigidArea(new Dimension(10, 0)));
@@ -239,6 +249,7 @@ public class Dashboard2_4 implements Dashboard
 				int newval = 1;
 				AnyButton currentwidget = (AnyButton)widgets.get(4);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(4));
 			}
 		});
 		side.add(Box.createRigidArea(new Dimension(10, 0)));
@@ -253,6 +264,7 @@ public class Dashboard2_4 implements Dashboard
 				int newval = 2;
 				AnyButton currentwidget = (AnyButton)widgets.get(4);
 				currentwidget.setVal(newval);
+				client.updateWidget(widgets.get(4));
 			}
 		});
 		five.add(side);
