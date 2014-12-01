@@ -25,7 +25,9 @@ import javax.swing.event.ChangeListener;
 public class Dashboard4_2 implements Dashboard{
 	private JPanel panel;
 	private Vector<Widget> widgets;
+	private Client client;
 	public Dashboard4_2(Client c){
+		client = c;
 		
 		panel = new JPanel();
 		panel.setLayout( new GridLayout(2 ,1) );
@@ -51,24 +53,25 @@ public class Dashboard4_2 implements Dashboard{
 		ironText.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		sec1.add(Box.createRigidArea(new Dimension(0, 40)));
 		JButton hot = new JButton ( "RANCH" );
-//		hot.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent ae) {
-//				//System.out.println("INDUCTION IRON SET TO HOT");
-//				command.setText("SET SUPERSTITIOUS SALAD TO RANCH");
-//			}
-//		});
+		hot.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				widgets.get(0).setVal(0);
+				client.updateWidget(widgets.get(0));
+			}
+		});
 		
 		sec1.add( hot );
 		hot.setMaximumSize( new Dimension(120, 35));
 		hot.setAlignmentX( Component.CENTER_ALIGNMENT );
 		sec1.add(Box.createRigidArea(new Dimension(0, 10)));
 		JButton cold = new JButton ( "ITALIAN" );
-//		cold.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent ae) {
-//				//System.out.println("INDUCTION IRON SET TO COLD");
-//				command.setText("SET SUPERSTICIOUS SALAD TO ITALIAN");
-//			}
-//		});
+		cold.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				//System.out.println("INDUCTION IRON SET TO COLD");
+				widgets.get(0).setVal(1);
+				client.updateWidget(widgets.get(0));
+			}
+		});
 		sec1.add( cold );
 		cold.setAlignmentX( Component.CENTER_ALIGNMENT );
 		cold.setMaximumSize( new Dimension(120, 35));
@@ -89,23 +92,21 @@ public class Dashboard4_2 implements Dashboard{
 		sec2.add(cable);
 		cable.setAlignmentX( Component.CENTER_ALIGNMENT );
 		cable.setMaximumSize( new Dimension(120, 35));
-//		cable.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent ae) {
-//				if( cable.getText().equals("HOOKED")){
-//					cable.setText("UNHOOKED");
-//					//System.out.println("GROOVED CABLE UNLOCKED");
-//					command.setText("UNHOOK CROWLEY CLAW");
-//				}
-//				else{
-//					cable.setText("HOOKED");
-//					//System.out.println("GROOVED CABLE LOCKED");
-//					command.setText("HOOK CRAWLEY CLAW");
-//				}
-//			}
-//		});
+		cable.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				if( cable.getText().equals("HOOKED")){
+					cable.setText("UNHOOKED");
+					widgets.get(1).setVal(1);
+				}
+				else{
+					cable.setText("HOOKED");
+					widgets.get(1).setVal(0);
+				}
+				client.updateWidget(widgets.get(1));
+			}
+		});
 		
 		sec2.add(Box.createRigidArea(new Dimension(0, 95)));
-		
 		db1.add( sec2 );
 		db1.add(Box.createRigidArea(new Dimension(10, 0)));
 		
@@ -129,17 +130,17 @@ public class Dashboard4_2 implements Dashboard{
 		sec3.add( phaseText );
 		sec3.add(Box.createRigidArea(new Dimension(0, 70)));
 		JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 3, 0);
-//		slider.addChangeListener(new ChangeListener() {
-//	        @Override
-//	        public void stateChanged(ChangeEvent ce) {
-//	        	JSlider source = (JSlider)ce.getSource();
-//                if(!source.getValueIsAdjusting())
-//                {
-//                	//System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
-//                	command.setText( "SET PHYLON SAUCER TO " + source.getValue() );
-//                }
-//	        }
-//	    });
+		slider.addChangeListener(new ChangeListener() {
+	        @Override
+	        public void stateChanged(ChangeEvent ce) {
+	        	JSlider source = (JSlider)ce.getSource();
+                if(!source.getValueIsAdjusting())
+                {
+                	widgets.get(4).setVal(source.getValue());
+                	client.updateWidget(widgets.get(4));
+                }
+	        }
+	    });
 		slider.setMajorTickSpacing(1);
 		slider.setPaintTicks(true);
 		slider.setPaintLabels(true);
@@ -165,24 +166,25 @@ public class Dashboard4_2 implements Dashboard{
 		final JButton beamswitch = new JButton();
 		sec4.add(beamswitch);
 		beamswitch.setAlignmentX( Component.CENTER_ALIGNMENT );
-		beamswitch.setBackground( Color.green);
+		beamswitch.setBackground(Color.green);
 		beamswitch.setMaximumSize( new Dimension(100, 135));
-//		beamswitch.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent ae) {
-//				if( beamswitch.getBackground().equals(Color.green)){
-//					beamswitch.setBackground( Color.blue);
-//					command.setText( "SET RAY HUE TO BLUE");
-//				}
-//				else if(beamswitch.getBackground().equals(Color.blue)){
-//					beamswitch.setBackground( Color.red);
-//					command.setText( "SET RAY HUE TO RED");
-//				}
-//				else{
-//					beamswitch.setBackground( Color.green);
-//					command.setText( "SET RAY HUE TO GREEN");
-//				}
-//			}
-//		});
+		beamswitch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				if( beamswitch.getBackground().equals(Color.green)){
+					beamswitch.setBackground( Color.blue);
+					widgets.get(3).setVal(1);
+				}
+				else if(beamswitch.getBackground().equals(Color.blue)){
+					beamswitch.setBackground( Color.red);
+					widgets.get(3).setVal(2);
+				}
+				else{
+					beamswitch.setBackground( Color.green);
+					widgets.get(3).setVal(0);
+				}
+				client.updateWidget(widgets.get(3));
+			}
+		});
 		sec4.add(Box.createRigidArea(new Dimension(0, 30)));
 		
 		widgets = new Vector<Widget>(4);
