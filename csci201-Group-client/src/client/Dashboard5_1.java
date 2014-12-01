@@ -49,20 +49,23 @@ public class Dashboard5_1  implements Dashboard{
 		JPanel buttonGrid = new JPanel();
 		buttonGrid.setLayout( new GridLayout(3,3) );
 		buttonGrid.setMaximumSize( new Dimension(180,180 ));
-		for(int i =0; i < 9; i++){
+		for(int i = 0; i < 9; i++){
 			final JButton temp = new JButton( String.valueOf(i+1));
 			temp.setBackground( Color.green);
 			buttonGrid.add(temp);
 			temp.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
+					int newVal = 0;
+					
 					if(temp.getBackground().equals(Color.green) ){
-						temp.setBackground( Color.red);
+						temp.setBackground(Color.red);
+						newVal = 1;
 					}
 					else{
-						temp.setBackground( Color.green);
+						temp.setBackground(Color.green);
+						newVal = 0;
 					}
-					int newVal = 0;
-					AnyButton currentWidget = (AnyButton)widgets.get(0);
+					AnyButtonStored currentWidget = (AnyButtonStored)widgets.get(Integer.valueOf(temp.getText()) - 1);
 					currentWidget.setVal(newVal);
 				}
 			});
@@ -90,7 +93,7 @@ public class Dashboard5_1  implements Dashboard{
 		cable.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				int newVal = 0;
-				AnyButton currentWidget = (AnyButton)widgets.get(1);
+				AnyButton currentWidget = (AnyButton)widgets.get(9);
 				currentWidget.setVal(newVal);
 			}
 		});
@@ -101,8 +104,8 @@ public class Dashboard5_1  implements Dashboard{
 		synth.setMaximumSize( new Dimension(120, 35));
 		synth.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				int newVal = 0;
-				AnyButton currentWidget = (AnyButton)widgets.get(2);
+				int newVal = 1;
+				AnyButton currentWidget = (AnyButton)widgets.get(9);
 				currentWidget.setVal(newVal);
 			}
 		});
@@ -140,13 +143,12 @@ public class Dashboard5_1  implements Dashboard{
 		slider.setMaximumSize( new Dimension(250, 35));
 		sec3.add(Box.createRigidArea(new Dimension(0, 90)));
 		slider.addChangeListener(new ChangeListener() {
-	        
 	        public void stateChanged(ChangeEvent ce) {
 	        	JSlider source = (JSlider)ce.getSource();
                 if(!source.getValueIsAdjusting())
                 {
                 	int newval = source.getValue();
-                	Slider currentwidget = (Slider)widgets.get(3);
+                	Slider currentwidget = (Slider)widgets.get(10);
                 	currentwidget.setVal(newval);
                 }
 	        }
@@ -176,14 +178,17 @@ public class Dashboard5_1  implements Dashboard{
 		
 		beamcable.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				int newval = 0;
 				if( beamcable.getText().equals("DIRTY")){
 					beamcable.setText("CLEAN");
-					command.setText("SET MILK MOLECULIZER TO CLEAN");
+					newval = 1;
 				}
 				else{
 					beamcable.setText("DIRTY");
-					command.setText("SET MILK MOLECULIZER TO DIRTY");
+					newval = 0;
 				}
+				AnyButtonStored currentWidget = (AnyButtonStored)widgets.get(11);
+				currentWidget.setVal(newval);
 			}
 		});
 		sec4.add(Box.createRigidArea(new Dimension(0, 30)));
