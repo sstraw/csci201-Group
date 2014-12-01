@@ -32,7 +32,6 @@ public class Dashboard5_4 implements Dashboard{
 		panel = new JPanel();
 		panel.setLayout( new GridLayout(2 ,1) );
 		
-		
 		//top row
 		JPanel db1 = new JPanel();
 		db1.setLayout( new BoxLayout( db1 , BoxLayout.LINE_AXIS) );
@@ -43,8 +42,6 @@ public class Dashboard5_4 implements Dashboard{
 		db1.add( sec1 );
 		sec1.setLayout( new BoxLayout( sec1 , BoxLayout.PAGE_AXIS) );
 		sec1.setBorder( BorderFactory.createLineBorder(Color.black) );
-		
-
 		sec1.add(Box.createRigidArea(new Dimension(255 , 20)));
 		
 		JLabel gridText = new JLabel("PENTOSE");
@@ -85,21 +82,25 @@ public class Dashboard5_4 implements Dashboard{
 		sec2.add(cable);
 		cable.setAlignmentX( Component.CENTER_ALIGNMENT );
 		cable.setMaximumSize( new Dimension(120, 35));
-//		cable.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent ae) {
-//				command.setText( "QUELL TACHYON ADAPTER");
-//			}
-//		});
+		cable.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				int newVal = 0;
+				AnyButton currentWidget = (AnyButton)widgets.get(1);
+				currentWidget.setVal(newVal);
+			}
+		});
 		sec2.add(Box.createRigidArea(new Dimension(0, 25)));
 		JButton synth = new JButton("SYNTHESIZE");
 		sec2.add(synth);
 		synth.setAlignmentX( Component.CENTER_ALIGNMENT );
 		synth.setMaximumSize( new Dimension(120, 35));
-//		synth.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent ae) {
-//				command.setText( "SYNTHESIZE TACHYON ADAPTER");
-//			}
-//		});
+		synth.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				int newVal = 0;
+				AnyButton currentWidget = (AnyButton)widgets.get(2);
+				currentWidget.setVal(newVal);
+			}
+		});
 		
 		sec2.add(Box.createRigidArea(new Dimension(0, 55)));
 		
@@ -107,7 +108,6 @@ public class Dashboard5_4 implements Dashboard{
 		db1.add(Box.createRigidArea(new Dimension(10, 0)));
 		
 		//bottom row
-
 		JPanel db2 = new JPanel();
 		db2.setLayout( new BoxLayout( db2 , BoxLayout.LINE_AXIS) );
 		db2.setBackground( Color.black);
@@ -133,21 +133,19 @@ public class Dashboard5_4 implements Dashboard{
 		sec3.add ( slider );
 		slider.setMaximumSize( new Dimension(450, 35));
 		sec3.add(Box.createRigidArea(new Dimension(0, 90)));
-//		slider.addChangeListener(new ChangeListener() {
-//	        @Override
-//	        public void stateChanged(ChangeEvent ce) {
-//	        	JSlider source = (JSlider)ce.getSource();
-//                if(!source.getValueIsAdjusting())
-//                {
-//                	//System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
-//                	command.setText( "SET SUPERCALIFRAGILISTICEXPIALIDOCIOUS TO " + source.getValue() );
-//                }
-//	        }
-//	    });
-		//defribilator
-		//hahahaha
-		//Supercalifragilisticexpialidocious
-		
+		slider.addChangeListener(new ChangeListener() {
+	        
+	        public void stateChanged(ChangeEvent ce) {
+	        	JSlider source = (JSlider)ce.getSource();
+                if(!source.getValueIsAdjusting())
+                {
+                	int newval = source.getValue();
+                	Slider currentwidget = (Slider)widgets.get(3);
+                	currentwidget.setVal(newval);
+                }
+	        }
+	    });
+
 		widgets = new Vector<Widget>(3);
 		widgets.add(new AnyButtonStored("Pentose", 4, 0, new Vector<String>(Arrays.asList(
 				"Set Pentose to 1", "Set pentose to 2", "Set Pentose to 3", "Set Pentose to 4"))));
