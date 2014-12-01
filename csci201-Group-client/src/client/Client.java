@@ -41,7 +41,7 @@ import javax.swing.event.DocumentListener;
 
 
 
-public class Client extends Thread {
+public class Client implements Runnable {
 	final static public int WAITINGROOM = 1;
 	final static public int INGAME = 2;
 	final static public int GAMEOVER = 3;
@@ -74,6 +74,8 @@ public class Client extends Thread {
 	private JTextArea dashCommand = new JTextArea();
 	private ClientGUI clientGUI; 
 	
+	private Thread thread;
+	
 
 	
 	public Client() {
@@ -85,7 +87,7 @@ public class Client extends Thread {
 		// Establish connection to server
 		try {
 			System.out.println("trying to connect");
-			s = new Socket("10.123.160.76", 10000);
+			s = new Socket("localhost", 55555);
 			System.out.println("connected");
 			this.printWriter = new PrintWriter(s.getOutputStream());
 			this.buffer = new BufferedReader(new InputStreamReader(s.getInputStream()));
@@ -94,7 +96,8 @@ public class Client extends Thread {
 			setPlayerName();
 			displayWaitingRoomGUI();
 			
-			this.start();
+			thread = new Thread(this);
+			thread.start();
 			
 			
 			//clientGUI = new ClientGUI( dashCommand );
@@ -260,6 +263,7 @@ public class Client extends Thread {
 		while (true){
 			//Receive and process input
 			try {
+				System.out.println("Loop");
 				String value1 = buffer.readLine().trim();
 				String value2;
 				Object o;
@@ -270,7 +274,7 @@ public class Client extends Thread {
 				case("connected user"):
 					value2 = buffer.readLine().trim();
 					playerTA.append(value2);
-									
+					break;
 				case("startLevel"):
 					System.out.println("start level");
 					int level = Integer.parseInt(buffer.readLine().trim());
@@ -283,6 +287,7 @@ public class Client extends Thread {
 					} else if (clientState == INGAME) {
 						clientGUI.setDashboard(level, ind);
 					}
+					break;
 					
 				case("instruction"):
 					System.out.println("client receiving instruction");
@@ -297,6 +302,7 @@ public class Client extends Thread {
 						System.out.println("updating instruction");
 						clientGUI.updateInstruction(instruction, time);
 					}
+					break;
 					
 				case("instruction completed"):
 					//do GUI shit

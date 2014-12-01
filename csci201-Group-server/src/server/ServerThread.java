@@ -167,7 +167,7 @@ public class ServerThread implements Runnable {
 		System.out.println("check");
 		int timeout = this.server.getTime();
 		try {
-			//printwrite.println("instruction");
+			printwrite.println("instruction");
 			printwrite.flush();
 			objectcannon.writeObject(instruction);
 			objectcannon.flush();
@@ -241,6 +241,7 @@ public class ServerThread implements Runnable {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				break;
 			} //catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				//e.printStackTrace();
@@ -254,15 +255,26 @@ public class ServerThread implements Runnable {
 class Timer implements Runnable{
 	private ServerThread serverthread;
 	private int milliseconds;
+	private boolean done;
 	
 	public Timer(ServerThread serverthread, int milliseconds){
 		this.serverthread = serverthread;
+		this.milliseconds = milliseconds;
+		this.done = false;
+	}
+	
+	public void done(){
+		done = true;
 	}
 	
 	public void run(){
 		try {
+			System.out.println("Timer started");
 			Thread.sleep(milliseconds);
-			serverthread.timerDone();
+			if(!this.done){
+				serverthread.timerDone();
+				System.out.println("Timer ended");
+			}
 		} catch (InterruptedException e) {
 			//No error here because the ServerThread may kill this when it's no longer needed;
 		}
