@@ -180,40 +180,22 @@ public class ClientGUI extends JFrame implements Serializable {
 	
 	public void setDashboard(int lvl, int ind) {
 		Dashboard temp = dbFactory.getDashboard(client, lvl, ind);	
-		Vector<Widget> wVect = temp.getWidgets();
-		System.out.println("wVect size; " + wVect.size());
 		currentDashboard = temp.getPanel();
 		dbContainer.removeAll();
 		dbContainer.add(currentDashboard);
-		repaint();
+		this.repaint();
+		Vector<Widget> wVect = temp.getWidgets();
+		System.out.println("wVect size; " + wVect.size());
 		client.giveWidgets(wVect);
 	}
 	
 	public void updateInstruction(String inst, int timeLimit) {
 		instruction.setText(inst);
-	}
-	
-	public void showGUI() {
 		repaint();
-		//setVisible(true);
 	}
 	
-	void displayClientGUI() {
-		setVisible(true);
+	public void closeClientGUI() {
+		this.setVisible(false);
 	}
 	
-	
-	void chooseDashboard(int index) {  //
-		if (currentLevel==1) { 
-			currentDashboard = levelOneDashboards.get(index);
-		} else if (currentLevel==2) {
-			currentDashboard = levelTwoDashboards.get(index);
-		} else if (currentLevel==3) {
-			currentDashboard = levelThreeDashboards.get(index);
-		} else if (currentLevel==4) {
-			currentDashboard = levelFourDashboards.get(index);
-		} else if (currentLevel==5) {
-			currentDashboard = levelFiveDashboards.get(index);
-		}
-	}
 }

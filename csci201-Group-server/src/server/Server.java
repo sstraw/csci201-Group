@@ -35,7 +35,7 @@ public class Server implements Runnable{
 		gamestate = Server.WAITINGROOM;
 		generator = new Random();
 		try {
-			this.serversocket = new ServerSocket(10000);
+			this.serversocket = new ServerSocket(55555);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
