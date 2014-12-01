@@ -67,7 +67,6 @@ public class Dashboard4_2 implements Dashboard{
 		JButton cold = new JButton ( "ITALIAN" );
 		cold.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				//System.out.println("INDUCTION IRON SET TO COLD");
 				widgets.get(0).setVal(1);
 				client.updateWidget(widgets.get(0));
 			}
@@ -131,13 +130,12 @@ public class Dashboard4_2 implements Dashboard{
 		sec3.add(Box.createRigidArea(new Dimension(0, 70)));
 		JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 3, 0);
 		slider.addChangeListener(new ChangeListener() {
-	        @Override
 	        public void stateChanged(ChangeEvent ce) {
 	        	JSlider source = (JSlider)ce.getSource();
                 if(!source.getValueIsAdjusting())
                 {
-                	widgets.get(4).setVal(source.getValue());
-                	client.updateWidget(widgets.get(4));
+                	widgets.get(3).setVal(source.getValue());
+                	client.updateWidget(widgets.get(3));
                 }
 	        }
 	    });
@@ -172,24 +170,24 @@ public class Dashboard4_2 implements Dashboard{
 			public void actionPerformed(ActionEvent ae) {
 				if( beamswitch.getBackground().equals(Color.green)){
 					beamswitch.setBackground( Color.blue);
-					widgets.get(3).setVal(1);
+					widgets.get(2).setVal(1);
 				}
 				else if(beamswitch.getBackground().equals(Color.blue)){
 					beamswitch.setBackground( Color.red);
-					widgets.get(3).setVal(2);
+					widgets.get(2).setVal(2);
 				}
 				else{
 					beamswitch.setBackground( Color.green);
-					widgets.get(3).setVal(0);
+					widgets.get(2).setVal(0);
 				}
-				client.updateWidget(widgets.get(3));
+				client.updateWidget(widgets.get(2));
 			}
 		});
 		sec4.add(Box.createRigidArea(new Dimension(0, 30)));
 		
 		widgets = new Vector<Widget>(4);
 		widgets.add(new AnyButton("Superstitious Salad", 2, 0, new Vector<String>(Arrays.asList("Put Ranch on the Superstitious Salad", "Put Italian on the Superstitious Salad"))));
-		widgets.add(new AnyButtonStored("Crowley Claw", 2, 0, new Vector<String>(Arrays.asList("Set Crowley Claw to Unhooked", "Set the Crowley Claw to Hooked"))));
+		widgets.add(new AnyButtonStored("Crowley Claw", 2, 0, new Vector<String>(Arrays.asList("Unhook the Crowley Claw", "Hook the Crowley Claw"))));
 		widgets.add(new AnyButtonStored("Ray Hue", 3, 0, new Vector<String>(Arrays.asList("Set the Ray Hue to Green", "Set the Ray Hue to Blue", "Set the Ray Hue to Red"))));
 		widgets.add(new Slider("Phylon Saucer", 0, 4, 0));
 	}

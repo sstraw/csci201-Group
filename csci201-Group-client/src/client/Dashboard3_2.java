@@ -39,7 +39,7 @@ public class Dashboard3_2 implements Dashboard
 		{
 			public void actionPerformed(ActionEvent ae) 
 			{
-				JComboBox<String> source = (JComboBox<String>)ae.getSource();
+				JComboBox<?> source = (JComboBox<?>)ae.getSource();
 				int newval = 0;
 				Slider currentwidget = (Slider)widgets.get(0);
 				
