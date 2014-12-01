@@ -81,7 +81,7 @@ public class Dashboard1_2 implements Dashboard
 		vent.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				widgets.get(2).setVal(1);
-				client.updateWidget(widgets.get(1));
+				client.updateWidget(widgets.get(2));
 			}
 		});
 		vent.setFont(new Font("DejaVu Sans", Font.BOLD, 18));

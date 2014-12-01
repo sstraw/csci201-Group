@@ -248,7 +248,9 @@ public class Client implements Runnable {
 		}
 	}
 
-		
+	public void GameOverGUI() {	
+		JFrame finalframe = new JFrame("Game Over");
+	}
 	
 	public void run() {
 		while (true){

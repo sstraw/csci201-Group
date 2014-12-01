@@ -195,7 +195,7 @@ public class Dashboard3_1 implements Dashboard
 		{
 			public void actionPerformed(ActionEvent ae) 
 			{
-				JComboBox<String> source = (JComboBox<String>)ae.getSource();
+				JComboBox<?> source = (JComboBox<?>)ae.getSource();
 				int newval = 0;
 				Slider currentwidget = (Slider)widgets.get(4);
 				
@@ -260,7 +260,7 @@ public class Dashboard3_1 implements Dashboard
 		{
 			public void actionPerformed(ActionEvent ae) 
 			{
-				int newval = 0;
+				int newval = 1;
 				AnyButton currentwidget = (AnyButton)widgets.get(5);
 				currentwidget.setVal(newval);
 				client.updateWidget(widgets.get(5));
@@ -275,7 +275,7 @@ public class Dashboard3_1 implements Dashboard
 		{
 			public void actionPerformed(ActionEvent ae) 
 			{
-				int newval = 0;
+				int newval = 2;
 				AnyButton currentwidget = (AnyButton)widgets.get(5);
 				currentwidget.setVal(newval);
 				client.updateWidget(widgets.get(5));

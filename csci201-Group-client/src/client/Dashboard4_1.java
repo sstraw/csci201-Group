@@ -158,7 +158,6 @@ public class Dashboard4_1 implements Dashboard{
 				}
 				else{
 					beamswitch.setText("OFF");
-					System.out.println("TURN OFF SPECTROBEAM");
 					widgets.get(3).setVal(0);
 				}
 				client.updateWidget(widgets.get(3));

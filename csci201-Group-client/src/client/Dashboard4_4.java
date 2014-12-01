@@ -139,7 +139,6 @@ public class Dashboard4_4 implements Dashboard{
 	        	JSlider source = (JSlider)ce.getSource();
                 if(!source.getValueIsAdjusting())
                 {
-                	//System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
                 	widgets.get(5).setVal(source.getValue());
                 	client.updateWidget(widgets.get(5));
                 }
@@ -172,13 +171,13 @@ public class Dashboard4_4 implements Dashboard{
 		sec4.add(Box.createRigidArea(new Dimension(0, 50)));
 		
 		widgets = new Vector<Widget>(7);
-		widgets.add(new AnyButton("Disc Loop", 1, 0, new Vector<String>(Arrays.asList("Rewind the disc loop"))));
+		widgets.add(new AnyButton("Disc Loop", 1, 0, new Vector<String>(Arrays.asList("Rewind the Disc Loop"))));
 		widgets.add(new AnyButtonStored("Gridlock 1", 2, 0, new Vector<String>(Arrays.asList("Set Gridlock 1 to Green", "Set Gridlock 1 to Red"))));
 		widgets.add(new AnyButtonStored("Gridlock 2", 2, 0, new Vector<String>(Arrays.asList("Set Gridlock 2 to Green", "Set Gridlock 2 to Red"))));
 		widgets.add(new AnyButtonStored("Gridlock 3", 2, 0, new Vector<String>(Arrays.asList("Set Gridlock 3 to Green", "Set Gridlock 3 to Red"))));
 		widgets.add(new AnyButtonStored("Gridlock 4", 2, 0, new Vector<String>(Arrays.asList("Set Gridlock 4 to Green", "Set Gridlock 4 to Red"))));
 		widgets.add(new Slider("Molecular Magnifier", 0, 4, 0));
-		widgets.add(new AnyButton("Power-cycle", 1, 0, new Vector<String>(Arrays.asList("Boost the Power-cycle"))));
+		widgets.add(new AnyButton("Power Cycle", 1, 0, new Vector<String>(Arrays.asList("Boost the Power Cycle"))));
 	}
 
 	public JPanel getPanel() {

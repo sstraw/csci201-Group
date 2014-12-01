@@ -82,8 +82,8 @@ public class Dashboard4_3  implements Dashboard{
 		zero.setMaximumSize( new Dimension(45, 45));
 		zero.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				widgets.get(2).setVal(0);
-				client.updateWidget(widgets.get(2));
+				widgets.get(1).setVal(0);
+				client.updateWidget(widgets.get(1));
 			}
 		});
 		final JButton one = new JButton("1");
@@ -92,8 +92,8 @@ public class Dashboard4_3  implements Dashboard{
 		one.setMaximumSize( new Dimension(45, 45));
 		one.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				widgets.get(2).setVal(1);
-				client.updateWidget(widgets.get(2));
+				widgets.get(1).setVal(1);
+				client.updateWidget(widgets.get(1));
 			}
 		});
 		
@@ -103,8 +103,8 @@ public class Dashboard4_3  implements Dashboard{
 		two.setMaximumSize( new Dimension(45, 45));
 		two.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				widgets.get(2).setVal(2);
-				client.updateWidget(widgets.get(2));
+				widgets.get(1).setVal(2);
+				client.updateWidget(widgets.get(1));
 			}
 		});
 		
@@ -139,7 +139,7 @@ public class Dashboard4_3  implements Dashboard{
                 if(!source.getValueIsAdjusting())
                 {
                 	widgets.get(2).setVal(source.getValue());
-                	client.updateWidget(widgets.get(1));
+                	client.updateWidget(widgets.get(2));
                 }
 	        }
 	    });
