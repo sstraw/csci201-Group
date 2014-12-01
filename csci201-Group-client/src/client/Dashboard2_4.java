@@ -32,8 +32,8 @@ public class Dashboard2_4 implements Dashboard
 		dignitaries.setAlignmentX(Component.CENTER_ALIGNMENT);
 		one.add(Box.createRigidArea(new Dimension(0, 20)));
 		JButton entertain = new JButton("ENTERTAIN");
-		entertain.setMaximumSize(new Dimension(120, 100));
-		entertain.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
+		entertain.setMaximumSize(new Dimension(160, 100));
+		entertain.setFont(new Font("DejaVu Sans", Font.BOLD, 17));
 		one.add(entertain);
 		entertain.setAlignmentX(Component.CENTER_ALIGNMENT);
 		entertain.addActionListener(new ActionListener() 

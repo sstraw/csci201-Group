@@ -112,7 +112,7 @@ public class Dashboard1_4 implements Dashboard
 			}
 		});
 		activate.setMaximumSize(new Dimension(160, 50));
-		activate.setFont(new Font("DejaVu Sans", Font.BOLD, 16));
+		activate.setFont(new Font("DejaVu Sans", Font.BOLD, 17));
 		bottomleft.add(activate);
 		activate.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
