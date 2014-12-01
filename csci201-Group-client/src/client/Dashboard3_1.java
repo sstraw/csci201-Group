@@ -1,5 +1,6 @@
 package client;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.*;
@@ -156,10 +157,10 @@ public class Dashboard3_1 implements Dashboard
 		panel.add(six);
 		
 		widgets = new Vector<Widget>(6);
-		widgets.add(new Flexbolt(0));
-		widgets.add(new DirectOrders());
-		widgets.add(new Onions());
-		widgets.add(new TachyonAdapter(0));
+		widgets.add(new AnyButtonStored("Flexbolt", 3, 0, new Vector<String>(Arrays.asList("Connect the Flexbolt", "Spark the Flexbolt", "Cut the Flexbolt"))));
+		widgets.add(new AnyButton("Direct Orders", 1, 0, new Vector<String>(Arrays.asList("Disobey Direct Orders"))));
+		widgets.add(new AnyButton("Onions", 1, 0, new Vector<String>(Arrays.asList("Caramelize Onions"))));
+		widgets.add(new AnyButton("Tachyon Adapter", 3, 0, new Vector<String>(Arrays.asList("Set Tachyon Adapter to -1", "Set Tachyon Adapter to 0", "Set Tachyon Adapter to 1"))));
 		widgets.add(new Slider("Pulsing Ribbontrellis", 0, 4, 0));
 		widgets.add(new Slider("Frustration", 0, 5, 0));
 	}

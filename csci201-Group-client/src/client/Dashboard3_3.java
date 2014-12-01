@@ -1,5 +1,6 @@
 package client;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.*;
@@ -155,10 +156,10 @@ public class Dashboard3_3 implements Dashboard
 		panel.add(six);
 		widgets = new Vector<Widget>(6);
 		widgets.add(new Slider("Subslime", 0, 5, 2));
-		widgets.add(new Gigamill(0));
-		widgets.add(new MillerMonoray(0));
-		widgets.add(new GeigerPowerlantern());
-		widgets.add(new Transmission());
+		widgets.add(new AnyButton("Gigamill", 4, 0, new Vector<String>(Arrays.asList("Set Gigamill to 0", "Set Gigamill to 1", "Set Gigamill to 2", "Set Gigamill to 3"))));
+		widgets.add(new AnyButton("Miller Monoray", 2, 0, new Vector<String>(Arrays.asList("Aim the Miller Monoray", "Fire the Miller Monoray"))));
+		widgets.add(new AnyButton("Geiger Powerlantern", 1, 0, new Vector<String>(Arrays.asList("Light the Geiger Powerlantern"))));
+		widgets.add(new AnyButton("Transmission", 1, 0, new Vector<String>(Arrays.asList("Decrypt the transmission"))));
 		widgets.add(new Slider("B-Beacon", 0, 4, 0));
 	}
 
