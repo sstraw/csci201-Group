@@ -58,16 +58,14 @@ private JPanel panel;
 			buttonGrid.add(temp);
 			temp.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
-					int newval = 0;
+					int widget = Integer.parseInt(((JButton)ae.getSource()).getText());
 					if(temp.isSelected()){
-						newval = 1;
+						widgets.get(widget - 1).setVal(1);
 					}
 					else{
-						newval = 0;
+						widgets.get(widget - 1).setVal(0);
 					}
-					AnyButtonStored currentWidget = (AnyButtonStored)widgets.get(Integer.valueOf(temp.getText()) - 1);
-					currentWidget.setVal(newval);
-					client.updateWidget(widgets.get(Integer.valueOf(temp.getText()) - 1));
+					client.updateWidget(widgets.get(widget - 1));
 				}
 			});
 		}

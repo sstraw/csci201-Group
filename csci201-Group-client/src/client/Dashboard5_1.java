@@ -57,19 +57,16 @@ public class Dashboard5_1  implements Dashboard{
 			buttonGrid.add(temp);
 			temp.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
-					int newVal = 0;
-					
+					int widget = Integer.parseInt(((JButton)ae.getSource()).getText());
 					if(temp.getBackground().equals(Color.green) ){
-						temp.setBackground(Color.red);
-						newVal = 1;
+						temp.setBackground( Color.red);
+						widgets.get(widget - 1).setVal(1);
 					}
 					else{
-						temp.setBackground(Color.green);
-						newVal = 0;
+						temp.setBackground( Color.green);
+						widgets.get(widget - 1).setVal(0);
 					}
-					AnyButtonStored currentWidget = (AnyButtonStored)widgets.get(Integer.valueOf(temp.getText()) - 1);
-					currentWidget.setVal(newVal);
-					client.updateWidget(widgets.get(Integer.valueOf(temp.getText()) - 1));
+					client.updateWidget(widgets.get(widget - 1));
 				}
 			});
 		}
