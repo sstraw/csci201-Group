@@ -62,9 +62,10 @@ public class Server implements Runnable{
 		System.out.println("playerThreads.size()");
 		if (lvlsStarted == playerThreads.size()) {
 			System.out.println("signalling");
-			allLvlsStarted.signal();
+			for (ServerThread s : playerThreads){
+				s.giveInstruction();
+			}
 		}
-		//incrementStartedLvls();
 		lock.unlock();
 	}
 	
@@ -159,25 +160,11 @@ public class Server implements Runnable{
 		currentPoints = 0;
 		currentMisses = 0;
 		currentWidgets.clear();
+		lvlsStarted=0;
 		for (ServerThread s : playerThreads){
 			s.startLevel(i);
 		}
 		System.out.println("beginning all level starts");
-		
-		lock.lock();
-		try {
-			System.out.println("waiting for all levels to finish starting");
-			allLvlsStarted.await();
-			System.out.println("sending instructions");
-			for (ServerThread s : playerThreads){
-				s.giveInstruction();
-			}
-		} catch (InterruptedException e) {
-			//TODO Auto-generated catch block
-			e.printStackTrace();
-		} //finally {*/
-			lock.unlock();
-		//}
 	}
 	
 	public void incrementStartedLvls() {
@@ -185,7 +172,9 @@ public class Server implements Runnable{
 		lvlsStarted++;
 		if (lvlsStarted == playerThreads.size()) {
 			System.out.println("signalling");
-			allLvlsStarted.signal();
+			for (ServerThread s : playerThreads){
+				s.giveInstruction();
+			}
 		}
 	}
 	

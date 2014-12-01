@@ -187,9 +187,10 @@ public class ServerThread implements Runnable {
 		while (isRunning){
 			//Receive and process input
 			try {
+				System.out.println("waiting");
 				String value1 = buffer.readLine().trim();
-				String value2;
-				
+				System.out.println(value1);
+				String value2;				
 				
 				//Switch values
 				switch(value1){
@@ -200,6 +201,7 @@ public class ServerThread implements Runnable {
 					case("ready"):
 						this.ready = true;
 						this.server.playerReady();
+						System.out.println("check");
 						break;
 					case("notready"):
 						this.ready = false;
