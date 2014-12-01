@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -23,7 +24,7 @@ import javax.swing.event.ChangeListener;
 public class Dashboard4_4 implements Dashboard{
 	
 	private JPanel panel;
-	
+	private Vector<Widget> widgets;
 	public Dashboard4_4(Client c){
 		panel = new JPanel();
 		panel.setLayout( new GridLayout(2 ,1) );
@@ -168,15 +169,21 @@ public class Dashboard4_4 implements Dashboard{
 //		});
 		sec4.add(Box.createRigidArea(new Dimension(0, 50)));
 		
+		widgets = new Vector<Widget>(7);
+		widgets.add(new AnyButton("Disc Loop", 1, 0, new Vector<String>(Arrays.asList("Rewind the disc loop"))));
+		widgets.add(new AnyButtonStored("Gridlock 1", 2, 0, new Vector<String>(Arrays.asList("Set Gridlock 1 to Green", "Set Gridlock 1 to Red"))));
+		widgets.add(new AnyButtonStored("Gridlock 2", 2, 0, new Vector<String>(Arrays.asList("Set Gridlock 2 to Green", "Set Gridlock 2 to Red"))));
+		widgets.add(new AnyButtonStored("Gridlock 3", 2, 0, new Vector<String>(Arrays.asList("Set Gridlock 3 to Green", "Set Gridlock 3 to Red"))));
+		widgets.add(new AnyButtonStored("Gridlock 4", 2, 0, new Vector<String>(Arrays.asList("Set Gridlock 4 to Green", "Set Gridlock 4 to Red"))));
+		widgets.add(new Slider("Molecular Magnifier", 0, 4, 0));
+		widgets.add(new AnyButton("Power-cycle", 1, 0, new Vector<String>(Arrays.asList("Boost the Power-cycle"))));
 	}
 
 	public JPanel getPanel() {
 		return panel;
 	}
-	@Override
 	public Vector<Widget> getWidgets() {
-		// TODO Auto-generated method stub
-		return null;
+		return widgets;
 	}
 
 }

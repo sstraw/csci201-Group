@@ -134,6 +134,44 @@ class Slider extends SingleValueWidget{
 	
 }
 
+//Anything where a button is pressed
+class AnyButton extends SingleButtonPress{
+	protected Vector<String> printoutValues;
+	public AnyButton(String name, int buttons, int val, Vector<String> printoutValues) {
+		super(name, buttons, val);
+	}
+	public Widget getRandomInstruction() {
+		return new AnyButton(name, buttons, (new Random()).nextInt(buttons), printoutValues);
+	}
+	public String getInstructionString() {
+		return printoutValues.get(val);
+	}
+	
+}
+
+//Any button press where the new random instruction cannot be the same button as the current value. Also
+//implements the Update to actually change it.
+class AnyButtonStored extends AnyButton{
+
+	public AnyButtonStored(String name, int buttons, int val,
+			Vector<String> printoutValues) {
+		super(name, buttons, val, printoutValues);
+	}
+	public Widget getRandomInstruction(){
+		Random r = new Random();
+		int i = r.nextInt(buttons);
+		while (i == val){
+			i = r.nextInt(buttons);
+		}
+		return new AnyButton(name, buttons, i, printoutValues);
+	}
+	public void update(Widget w){
+		if (w instanceof AnyButtonStored){
+			val = ((AnyButtonStored) w).getVal();
+		}
+	}
+}
+
 //Dashboard1_1
 class TransmissionWidget extends SingleValueWidget{
 	public TransmissionWidget(int init_val) {
@@ -670,17 +708,12 @@ class Hextrack extends SingleButtonPress{
 		return "Turn on Hextrack";
 	}
 }
-class Bank extends SingleValueWidget{
+class Bank extends SingleButtonPress{
 	public Bank(int init_val) {
-		super("Bank", 0, 2, init_val);
+		super("Bank", 3, init_val);
 	}
 	public Widget getRandomInstruction() {
-		Random r = new Random();
-		int i = r.nextInt(max);
-		while(i == val){
-			i = r.nextInt(max);
-		}
-		return new Bank(i);
+		return new Bank((new Random().nextInt(buttons)));
 	}
 	public String getInstructionString() {
 		switch(val){
@@ -702,6 +735,9 @@ class BilgeAirengines extends SingleButtonPress{
 		return String.format("Set Bilge Airengines to %d", val);
 	}
 }
+
+//Dashboard 4-1
+//None.
 
 //public abstract class Widget implements Serializable {
 //	private static final long serialVersionUID = -4298245903822614337L;

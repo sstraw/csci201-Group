@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -23,7 +24,7 @@ import javax.swing.event.ChangeListener;
 
 public class Dashboard4_3  implements Dashboard{
 	private JPanel panel;
-
+	private Vector<Widget> widgets;
 	public Dashboard4_3(Client c){
 		
 		panel = new JPanel();
@@ -179,16 +180,20 @@ public class Dashboard4_3  implements Dashboard{
 //		});
 		sec4.add(Box.createRigidArea(new Dimension(0, 30)));
 		
+		widgets = new Vector<Widget>(4);
+		widgets.add(new AnyButton("Ship's Log", 1, 0, new Vector<String>(Arrays.asList("Update the Ship's Log"))));
+		widgets.add(new AnyButton("Granular Putty", 3, 0, new Vector<String>(Arrays.asList("Set Granular Putty to 0", "Set Granular Putty to 1", "Set Granular Putty to 2"))));
+		widgets.add(new Slider("Suction Gauge", 0, 6, 0));
+		widgets.add(new AnyButtonStored("Beta Alert", 2, 0, new Vector<String>(Arrays.asList("Turn off Beta Alert", "Turn on Beta Alert"))));
+		
 	}
 
 	public JPanel getPanel() {
 		return panel;
 	}
 
-	@Override
 	public Vector<Widget> getWidgets() {
-		// TODO Auto-generated method stub
-		return null;
+		return widgets;
 	}	
 
 

@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -23,7 +24,7 @@ import javax.swing.event.ChangeListener;
 
 public class Dashboard4_2 implements Dashboard{
 	private JPanel panel;
-
+	private Vector<Widget> widgets;
 	public Dashboard4_2(Client c){
 		
 		panel = new JPanel();
@@ -184,6 +185,11 @@ public class Dashboard4_2 implements Dashboard{
 //		});
 		sec4.add(Box.createRigidArea(new Dimension(0, 30)));
 		
+		widgets = new Vector<Widget>(4);
+		widgets.add(new AnyButton("Superstitious Salad", 2, 0, new Vector<String>(Arrays.asList("Put Ranch on the Superstitious Salad", "Put Italian on the Superstitious Salad"))));
+		widgets.add(new AnyButtonStored("Crowley Claw", 2, 0, new Vector<String>(Arrays.asList("Set Crowley Claw to Unhooked", "Set the Crowley Claw to Hooked"))));
+		widgets.add(new AnyButtonStored("Ray Hue", 3, 0, new Vector<String>(Arrays.asList("Set the Ray Hue to Green", "Set the Ray Hue to Blue", "Set the Ray Hue to Red"))));
+		widgets.add(new Slider("Phylon Saucer", 0, 4, 0));
 	}
 
 	public JPanel getPanel() {
