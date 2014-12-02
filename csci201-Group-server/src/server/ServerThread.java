@@ -102,8 +102,13 @@ public class ServerThread implements Runnable {
 		lock.lock();
 		this.server.instructionFailed();
 		try {
-			objectcannon.writeObject(new String("instruction failed"));
-			this.giveInstruction();
+			if (this.server.failLimit()) {
+				this.server.gameOver();
+			}
+			else {
+				objectcannon.writeObject(new String("instruction failed"));
+				this.giveInstruction();
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -117,7 +122,8 @@ public class ServerThread implements Runnable {
 		try {
 			objectcannon.writeObject(new String("game over"));
 			thread.interrupt();
-			socket.close();
+			//socket.close();		//causing all the exceptions on gameover
+			//want to keep socket open for scoring stuff
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

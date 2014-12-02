@@ -328,7 +328,11 @@ public class Client implements Runnable {
 					break; */
 					break;
 				case("game over"):
-					
+					clientGUI.closeClientGUI();
+					JOptionPane.showMessageDialog(null,
+							"Game Over",
+							"Whoops",
+							JOptionPane.ERROR_MESSAGE);				
 					break;
 					
 				case("message"):
