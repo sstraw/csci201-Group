@@ -27,6 +27,8 @@ import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -64,6 +66,13 @@ public class ClientGUI extends JFrame implements Serializable {
 	private JPanel dashboard; 
 	private JTextArea dashCommand;
 	
+	private Timer timer;
+	private ActionListener listener;
+	private int counter;
+	boolean resetTimer = false;
+	boolean firstTime = true;
+	
+	
 	public ClientGUI(JTextArea d, Client cl) {
 		client = cl;
 		dashCommand = d;
@@ -94,6 +103,16 @@ public class ClientGUI extends JFrame implements Serializable {
 		    	  return true;
 		      }
 		});
+		
+		listener = new ActionListener() {
+		       public void actionPerformed(ActionEvent ae) {
+		           counter--;
+		           progressBar.setValue(counter);
+		           if (counter<1) {
+		               timer.stop();
+		           } 
+		       }
+		   };
 	}
 	
 	public void receiveMessage(String newMessage){
@@ -117,6 +136,9 @@ public class ClientGUI extends JFrame implements Serializable {
 		this.dashboard = dashboard;
 		add(this.dashboard, BorderLayout.CENTER);
 	}*/
+	
+
+		
 	public void createGUI(){
 		setSize(750, 700);
 		setLocation(250, 25); 
@@ -156,6 +178,21 @@ public class ClientGUI extends JFrame implements Serializable {
 		progressBar.setValue(100);
 		progressBar.setForeground( Color.GREEN);			
 		gamePanel.add(progressBar);
+		
+		
+        listener = new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                counter--;
+                progressBar.setValue(counter);
+                if (counter<1) {
+                    timer.stop();
+                } 
+            }
+        };
+       // timer = new Timer(100, listener);
+       // timer.start();
+		    
+		
 		
 		dbContainer = new JPanel();
 		dbContainer.setLayout(new BorderLayout());
@@ -198,6 +235,7 @@ public class ClientGUI extends JFrame implements Serializable {
 	}	
 	
 	public void setDashboard(int lvl, int ind) {
+		resetTimer=true;
 		Dashboard temp = dbFactory.getDashboard(client, lvl, ind);	
 		currentDashboard = temp.getPanel();
 		dbContainer.removeAll();
@@ -210,6 +248,22 @@ public class ClientGUI extends JFrame implements Serializable {
 	
 	public void updateInstruction(String inst, int timeLimit) {
 		instruction.setText(inst);
+		//System.out.println("Inst time limit: " + timeLimit/1000);
+		counter = 100;
+		progressBar.setValue(100);
+		if (resetTimer) {
+			if (!firstTime) {
+				timer.removeActionListener(listener);
+				timer.stop();
+			} else {
+				firstTime = false;
+			}
+			int inc = (timeLimit/100);
+			System.out.println("Setting timer with inc = " + inc);
+			timer = new Timer(inc, listener);		
+		    timer.start();
+		    resetTimer = false;
+		}
 		repaint();
 	}
 	

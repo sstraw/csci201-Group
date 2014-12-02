@@ -162,11 +162,17 @@ public class Server implements Runnable{
 	public void instructionFailed(){
 		lock.lock();
 		currentMisses++;
-		if (currentMisses >= getMaxMisses()){
-			gameOver();
-			this.thread.interrupt();
+		lock.unlock();
+	}
+	
+	public boolean failLimit() {
+		lock.lock();
+		if (currentMisses >= getMaxMisses()) {
+			lock.unlock();
+			return true;
 		}
 		lock.unlock();
+		return false;
 	}
 	
 	private void startLevel(int i){
@@ -193,12 +199,12 @@ public class Server implements Runnable{
 		lock.unlock();
 	}
 	
-	private void gameOver() {
+	public void gameOver() {
+		lock.lock();
 		for (ServerThread s : playerThreads) {
-			s.gameOver();
-			
-			
+			s.gameOver();					
 		}
+		lock.unlock();
 	}
 	
 	public ReentrantLock getLock(){
