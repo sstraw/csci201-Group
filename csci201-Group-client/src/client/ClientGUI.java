@@ -205,4 +205,4 @@ public class ClientGUI extends JFrame implements Serializable {
 		this.setVisible(false);
 	}
 	
-
+}
