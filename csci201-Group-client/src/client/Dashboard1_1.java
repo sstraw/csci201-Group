@@ -128,9 +128,9 @@ public class Dashboard1_1 implements Dashboard
 				client.updateWidget(widgets.get(3));
 			}
 		});
-		ntype.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
+		ntype.setFont(new Font("DejaVu Sans", Font.BOLD, 17));
 		bottomright.add(ntype);
-		ntype.setMaximumSize(new Dimension(140, 50));
+		ntype.setMaximumSize(new Dimension(160, 50));
 		ntype.setAlignmentX(Component.CENTER_ALIGNMENT);
 		bottomright.add(Box.createRigidArea(new Dimension(0, 10)));
 		JButton ptype = new JButton ("P-CHANNEL");
@@ -140,10 +140,10 @@ public class Dashboard1_1 implements Dashboard
 				client.updateWidget(widgets.get(3));
 			}
 		});
-		ptype.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
+		ptype.setFont(new Font("DejaVu Sans", Font.BOLD, 17));
 		bottomright.add(ptype);
 		ptype.setAlignmentX(Component.CENTER_ALIGNMENT);
-		ptype.setMaximumSize(new Dimension(140, 50));
+		ptype.setMaximumSize(new Dimension(160, 50));
 		
 		panel.add(bottomright);
 		
