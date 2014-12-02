@@ -47,7 +47,6 @@ public class Client implements Runnable {
 	final static public int INGAME = 2;
 	final static public int GAMEOVER = 3;
 	
-	
 	Vector<Dashboard> levelOneDashboards; //will hold hardcoded set of Dashboards for each level
 	Vector<Dashboard> levelTwoDashboards;
 	Vector<Dashboard> levelThreeDashboards;
@@ -67,21 +66,16 @@ public class Client implements Runnable {
 	private ObjectOutputStream objectCannon;
 	private ObjectInputStream objectIn;
 	private JTextArea dashCommand = new JTextArea();
-	private ClientGUI clientGUI; 
-	
+	private ClientGUI clientGUI; 	
 	private Thread thread;
-	
 
-	
 	public Client() {
 		
-		
 		addGUIActions();
-		
 		displayLoginGUI();
 		// Establish connection to server
 		try {
-			s = new Socket(hostIP, 55555);
+			s = new Socket("localhost", 55555);
 			this.objectCannon = new ObjectOutputStream(s.getOutputStream());
 			this.objectIn = new ObjectInputStream(s.getInputStream());
 			thread = new Thread(this);

@@ -21,6 +21,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
@@ -57,6 +58,7 @@ public class ClientGUI extends JFrame implements Serializable {
 	
 	private JTextArea groupChat;
 	private JTextArea playerChat;
+	private JScrollPane groupChatScrollPane;
 	private String message = "";
 	private boolean sendMessage;
 	private JPanel dashboard; 
@@ -74,8 +76,8 @@ public class ClientGUI extends JFrame implements Serializable {
 		  .addKeyEventDispatcher(new KeyEventDispatcher() {
 		      @Override
 		      public boolean dispatchKeyEvent(KeyEvent e) {
-		    	  if(e.getID() == KeyEvent.KEY_PRESSED){
-		    		  int keys = e.getKeyCode();
+		    	  if(e.getID() == KeyEvent.KEY_TYPED){
+		    		  int keys = e.getKeyChar();
 		    		  if(keys == KeyEvent.VK_ENTER){
 						  message = playerChat.getText();
 						  sendMessage = true;
@@ -83,6 +85,11 @@ public class ClientGUI extends JFrame implements Serializable {
 						  playerChat.setCaretPosition(0);
 						  client.sendMessage(message);
 				      }
+		    		  else if(keys == KeyEvent.VK_BACK_SPACE){
+		    			  message = playerChat.getText();
+		    			  message = message.substring(0, message.length() - 1);
+		    			  playerChat.setText(message);
+		    		  }
 		    		  else{	playerChat.append(e.getKeyChar() + "");	  }	  }
 		    	  return true;
 		      }
@@ -91,6 +98,8 @@ public class ClientGUI extends JFrame implements Serializable {
 	
 	public void receiveMessage(String newMessage){
 		groupChat.append(newMessage + '\n');
+		JScrollBar vertical = groupChatScrollPane.getVerticalScrollBar();
+		vertical.setValue( vertical.getMaximum() );
 	}
 	
 	public String getChatMessage(){
@@ -162,19 +171,26 @@ public class ClientGUI extends JFrame implements Serializable {
 		
 		// groupChat will hold all chat messages
 		groupChat = new JTextArea();
-		groupChat.setPreferredSize(new Dimension(200, 500));
-		groupChat.setFocusable(false);
-		JScrollPane groupChatScrollPane = new JScrollPane(groupChat);
-		groupChatScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		groupChat.setWrapStyleWord(true);
+        groupChat.setLineWrap(true);      
+
+		groupChatScrollPane = new JScrollPane(groupChat);
+		groupChatScrollPane.setBorder(BorderFactory.createTitledBorder("Space Chatter:"));
+	    groupChatScrollPane.setViewportView(groupChat);
+	    groupChatScrollPane.setPreferredSize(new Dimension(200, 500));
 		
 		// playerChat will hold player's current message
 		playerChat = new JTextArea();
-		playerChat.setPreferredSize(new Dimension(200, 200));
 		playerChat.setWrapStyleWord(true);
+		playerChat.setLineWrap(true);
 		playerChat.setFocusable(true);
-		
+		JScrollPane playerChatScrollPane = new JScrollPane(playerChat);
+		playerChatScrollPane.setBorder(BorderFactory.createTitledBorder("Your Message:"));
+	    playerChatScrollPane.setViewportView(playerChat);
+	    playerChatScrollPane.setPreferredSize(new Dimension(200, 200));
+	    
 		chatPanel.add(groupChatScrollPane, BorderLayout.NORTH);
-		chatPanel.add(playerChat, BorderLayout.SOUTH);
+		chatPanel.add(playerChatScrollPane, BorderLayout.SOUTH);
 		mainLayout.add(chatPanel, BorderLayout.EAST);
 		
 		add(mainLayout);
