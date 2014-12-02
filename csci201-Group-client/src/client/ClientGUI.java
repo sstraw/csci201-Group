@@ -21,6 +21,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -28,12 +29,12 @@ import javax.swing.JToggleButton;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class ClientGUI extends JFrame implements Serializable {
 	
-	/**
-	 * 
-	 */
+	Client client;
+	
 	private static final long serialVersionUID = 1L;
 	
 	ArrayList<JPanel> levelOneDashboards; //will hold hardcoded set of Dashboards for each level
@@ -43,9 +44,13 @@ public class ClientGUI extends JFrame implements Serializable {
 	ArrayList<JPanel> levelFiveDashboards;
 	
 	protected int currentLevel;
+	JTextField instruction;
 	
 	
+	//private JPanel currentDashboard;
+	private DashboardFactory dbFactory = new DashboardFactory();
 	private JPanel currentDashboard;
+	private JPanel dbContainer;
 	private JProgressBar progressBar;
 	private JLabel shipAnimation;
 	private ImageIcon shipIcon;
@@ -57,12 +62,12 @@ public class ClientGUI extends JFrame implements Serializable {
 	private JPanel dashboard; 
 	private JTextArea dashCommand;
 	
-	public ClientGUI( JTextArea d){
-		
+	public ClientGUI(JTextArea d, Client cl) {
+		client = cl;
 		dashCommand = d;
 		
-		System.out.println("Creating chat window.");
-		createAndShowGUI();
+		
+		createGUI();
 		sendMessage = false;
 		//Configure KeyListener for keyboard
 		KeyboardFocusManager.getCurrentKeyboardFocusManager()
@@ -72,10 +77,11 @@ public class ClientGUI extends JFrame implements Serializable {
 		    	  if(e.getID() == KeyEvent.KEY_PRESSED){
 		    		  int keys = e.getKeyCode();
 		    		  if(keys == KeyEvent.VK_ENTER){
-						  message = "[PLAYER_NAME]: " + playerChat.getText();
+						  message = playerChat.getText();
 						  sendMessage = true;
 						  playerChat.setText("");
 						  playerChat.setCaretPosition(0);
+						  client.sendMessage(message);
 				      }
 		    		  else{	playerChat.append(e.getKeyChar() + "");	  }	  }
 		    	  return true;
@@ -98,11 +104,11 @@ public class ClientGUI extends JFrame implements Serializable {
 		return sendMessage;
 	}
 	
-	public void setDashboard(JPanel dashboard){
+	/*public void setDashboard(JPanel dashboard){
 		this.dashboard = dashboard;
 		add(this.dashboard, BorderLayout.CENTER);
-	}
-	public void createAndShowGUI(){
+	}*/
+	public void createGUI(){
 		setSize(750, 700);
 		setLocation(250, 25); 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -122,7 +128,7 @@ public class ClientGUI extends JFrame implements Serializable {
 		shipPanel.setMaximumSize( new Dimension (550, 100));
 		shipAnimation.setMinimumSize( new Dimension(550, 100));
 		shipAnimation.setAlignmentX(Component.LEFT_ALIGNMENT);
-		shipIcon = new ImageIcon("ShipImages/ship" + 9 + ".jpg");
+		shipIcon = new ImageIcon("Images/ship" + 9 + ".jpg");
 		shipAnimation.setIcon(shipIcon);
 		shipAnimation.setIcon(shipIcon);
 		shipAnimation.setBorder( BorderFactory.createLineBorder(Color.black) );
@@ -130,8 +136,8 @@ public class ClientGUI extends JFrame implements Serializable {
 		gamePanel.add(shipPanel);
 		
 		//text field showing the recieved instruction
-		JTextField instruction = new JTextField("INSTRUCTIONS GO HERE");
-		gamePanel.add( instruction );
+		instruction = new JTextField("INSTRUCTIONS GO HERE");
+		gamePanel.add(instruction);
 		instruction.setMaximumSize( new Dimension (550, 50));
 		instruction.setEditable(false);	
 		instruction.setHorizontalAlignment(JTextField.CENTER);
@@ -140,10 +146,13 @@ public class ClientGUI extends JFrame implements Serializable {
 		progressBar = new JProgressBar(0, 100);
 		progressBar.setValue(100);
 		progressBar.setForeground( Color.GREEN);			
-		gamePanel.add( progressBar );
+		gamePanel.add(progressBar);
 		
-		currentDashboard = new Dashboard4_4( dashCommand );
-		gamePanel.add(currentDashboard);		
+		dbContainer = new JPanel();
+		dbContainer.setLayout(new BorderLayout());
+		currentDashboard = new Dashboard1_1(client).getPanel();
+		dbContainer.add(currentDashboard, BorderLayout.CENTER);
+		gamePanel.add(dbContainer);		
 		mainLayout.add(gamePanel, BorderLayout.CENTER);
 		
 		// Chat Panel:
@@ -152,9 +161,15 @@ public class ClientGUI extends JFrame implements Serializable {
 		chatPanel.setPreferredSize(new Dimension(200, 700));
 		
 		// groupChat will hold all chat messages
+		JPanel groupPanelChat = new JPanel();
 		groupChat = new JTextArea();
 		groupChat.setPreferredSize(new Dimension(200, 500));
 		groupChat.setFocusable(false);
+		groupPanelChat.add(groupChat);
+		JScrollPane groupChatScrollPane = new JScrollPane();
+		groupChatScrollPane.getViewport().add(groupPanelChat);
+		groupChatScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		groupChatScrollPane.setFocusable(false);
 		
 		// playerChat will hold player's current message
 		playerChat = new JTextArea();
@@ -162,7 +177,7 @@ public class ClientGUI extends JFrame implements Serializable {
 		playerChat.setWrapStyleWord(true);
 		playerChat.setFocusable(true);
 		
-		chatPanel.add(groupChat, BorderLayout.NORTH);
+		chatPanel.add(groupChatScrollPane, BorderLayout.NORTH);
 		chatPanel.add(playerChat, BorderLayout.SOUTH);
 		mainLayout.add(chatPanel, BorderLayout.EAST);
 		
@@ -170,18 +185,24 @@ public class ClientGUI extends JFrame implements Serializable {
 		setVisible(true);
 	}	
 	
-	
-	void chooseDashboard(int index) {  //
-		if (currentLevel==1) { 
-			currentDashboard = levelOneDashboards.get(index);
-		} else if (currentLevel==2) {
-			currentDashboard = levelTwoDashboards.get(index);
-		} else if (currentLevel==3) {
-			currentDashboard = levelThreeDashboards.get(index);
-		} else if (currentLevel==4) {
-			currentDashboard = levelFourDashboards.get(index);
-		} else if (currentLevel==5) {
-			currentDashboard = levelFiveDashboards.get(index);
-		}
+	public void setDashboard(int lvl, int ind) {
+		Dashboard temp = dbFactory.getDashboard(client, lvl, ind);	
+		currentDashboard = temp.getPanel();
+		dbContainer.removeAll();
+		dbContainer.add(currentDashboard);
+		Vector<Widget> wVect = temp.getWidgets();
+		client.giveWidgets(wVect);
+		this.validate();
+		this.repaint();
 	}
+	
+	public void updateInstruction(String inst, int timeLimit) {
+		instruction.setText(inst);
+		repaint();
+	}
+	
+	public void closeClientGUI() {
+		this.setVisible(false);
+	}
+	
 }
