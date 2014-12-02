@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 import java.util.Vector;
-import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 import client.Widget;
@@ -18,7 +17,6 @@ public class Server implements Runnable{
 	final static public int GAMEOVER = 3;
 	
 	private ReentrantLock lock = new ReentrantLock();
-	private Condition allLvlsStarted = lock.newCondition();
 	private Vector<ServerThread> playerThreads;
 	private Vector<ChatThread> ctVector = new Vector<ChatThread>();
 	private Vector<Widget> currentWidgets;
@@ -40,7 +38,6 @@ public class Server implements Runnable{
 		try {
 			this.serversocket = new ServerSocket(55555);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		thread = new Thread(this);
@@ -278,7 +275,6 @@ public class Server implements Runnable{
 					playerThreads.add(new ServerThread(this, s));
 				}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
