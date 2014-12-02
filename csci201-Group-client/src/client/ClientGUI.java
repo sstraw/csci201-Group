@@ -1,37 +1,27 @@
 package client;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JToggleButton;
-import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Vector;
 
 public class ClientGUI extends JFrame implements Serializable {
@@ -39,12 +29,6 @@ public class ClientGUI extends JFrame implements Serializable {
 	Client client;
 	
 	private static final long serialVersionUID = 1L;
-	
-	ArrayList<JPanel> levelOneDashboards; //will hold hardcoded set of Dashboards for each level
-	ArrayList<JPanel> levelTwoDashboards;
-	ArrayList<JPanel> levelThreeDashboards;
-	ArrayList<JPanel> levelFourDashboards;
-	ArrayList<JPanel> levelFiveDashboards;
 	
 	protected int currentLevel;
 	JTextField instruction;
@@ -63,9 +47,6 @@ public class ClientGUI extends JFrame implements Serializable {
 	private JScrollPane groupChatScrollPane;
 	private String message = "";
 	private boolean sendMessage;
-	private JPanel dashboard; 
-	private JTextArea dashCommand;
-	
 	private Timer timer;
 	private ActionListener listener;
 	private int counter;
@@ -74,9 +55,7 @@ public class ClientGUI extends JFrame implements Serializable {
 	
 	
 	public ClientGUI(JTextArea d, Client cl) {
-		client = cl;
-		dashCommand = d;
-		
+		client = cl;	
 		
 		createGUI();
 		sendMessage = false;

@@ -1,38 +1,21 @@
 package client;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.Vector;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
-
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -46,13 +29,7 @@ public class Client implements Runnable {
 	final static public int WAITINGROOM = 1;
 	final static public int INGAME = 2;
 	final static public int GAMEOVER = 3;
-	
-	Vector<Dashboard> levelOneDashboards; //will hold hardcoded set of Dashboards for each level
-	Vector<Dashboard> levelTwoDashboards;
-	Vector<Dashboard> levelThreeDashboards;
-	Vector<Dashboard> levelFourDashboards;
-	Vector<Dashboard> levelFiveDashboards;
-	
+
 	String hostIP;
 	String username;
 	private int clientState = Client.WAITINGROOM;
@@ -60,6 +37,7 @@ public class Client implements Runnable {
 	JFrame wrFrame, loginFrame;
 	JTextArea playerTA;
 	JButton readyButton; //waiting room button
+	boolean endFlag = true;
 	
 	private ReentrantLock lock = new ReentrantLock();
 	private Socket s;
@@ -124,7 +102,6 @@ public class Client implements Runnable {
 		JTextField unTF = new JTextField(25);
 		unPanel.add(unTF);
 		loginPanel.add(unPanel, BorderLayout.CENTER);
-		JButton okButton = new JButton("OK");
 		loginPanel.add(unPanel, BorderLayout.SOUTH);
 		
 		ImageIcon icon = new ImageIcon("Images/rocketicon.jpg");
@@ -174,7 +151,6 @@ public class Client implements Runnable {
 			this.objectCannon.writeObject(new String("setName"));
 			this.objectCannon.writeObject(username);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally{
 			lock.unlock();
@@ -194,7 +170,6 @@ public class Client implements Runnable {
 			}
 			System.out.println("State sent");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally{
 			lock.unlock();
@@ -221,7 +196,6 @@ public class Client implements Runnable {
 			this.objectCannon.writeObject(new String("message"));
 			this.objectCannon.writeObject(new String(msg));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally{
 			lock.unlock();
@@ -237,7 +211,6 @@ public class Client implements Runnable {
 			objectCannon.writeObject(w.getVal());
 			System.out.println("1 Update sent");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally{
 			lock.unlock();
@@ -322,10 +295,13 @@ public class Client implements Runnable {
 					break;
 				case("game over"):
 					clientGUI.closeClientGUI();
-					JOptionPane.showMessageDialog(null,
-							"Game Over",
-							"Whoops",
-							JOptionPane.ERROR_MESSAGE);				
+					if (endFlag) {
+						JOptionPane.showMessageDialog(null,
+								"Game Over",
+								"Whoops",
+								JOptionPane.ERROR_MESSAGE);	
+						endFlag=false;
+					}
 					break;
 					
 				case("message"):
@@ -343,7 +319,6 @@ public class Client implements Runnable {
 				System.out.println("Socket closed. Quitting...");
 				return;
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
