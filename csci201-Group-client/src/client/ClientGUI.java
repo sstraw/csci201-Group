@@ -166,7 +166,6 @@ public class ClientGUI extends JFrame implements Serializable {
 		groupChat.setFocusable(false);
 		JScrollPane groupChatScrollPane = new JScrollPane(groupChat);
 		groupChatScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		pack();
 		
 		// playerChat will hold player's current message
 		playerChat = new JTextArea();
