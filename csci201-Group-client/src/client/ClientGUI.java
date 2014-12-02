@@ -247,6 +247,7 @@ public class ClientGUI extends JFrame implements Serializable {
 				firstTime = false;
 			}
 			int inc = (timeLimit/100);
+			System.out.println("Setting timer with inc = " + inc);
 			timer = new Timer(inc, listener);		
 		    timer.start();
 		    resetTimer = false;
