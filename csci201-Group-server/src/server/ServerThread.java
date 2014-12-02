@@ -208,6 +208,7 @@ public class ServerThread implements Runnable {
 		lock.lock();
 		try {
 			objectcannon.writeObject(new String("connected user"));
+			System.out.println(name + " being sent connected user: " + s);
 			objectcannon.writeObject(s);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

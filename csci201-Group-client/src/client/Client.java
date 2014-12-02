@@ -1,6 +1,8 @@
 package client;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -10,6 +12,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.Vector;
 import java.util.concurrent.locks.ReentrantLock;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -34,9 +37,9 @@ public class Client implements Runnable {
 	String username;
 	private int clientState = Client.WAITINGROOM;
 	
-	JFrame wrFrame, loginFrame;
-	JTextArea playerTA;
-	JButton readyButton; //waiting room button
+	private JFrame wrFrame, loginFrame;
+	private JTextArea playerTA = new JTextArea(4, 20);
+	private JButton readyButton; //waiting room button
 	boolean endFlag = true;
 	
 	private ReentrantLock lock = new ReentrantLock();
@@ -53,7 +56,7 @@ public class Client implements Runnable {
 		displayLoginGUI();
 		// Establish connection to server
 		try {
-			s = new Socket(hostIP, 55555);
+			s = new Socket("localhost", 55555);
 			this.objectCannon = new ObjectOutputStream(s.getOutputStream());
 			this.objectIn = new ObjectInputStream(s.getInputStream());
 			thread = new Thread(this);
@@ -120,7 +123,11 @@ public class Client implements Runnable {
 	public void displayWaitingRoomGUI() {
 		JPanel wrPanel = new JPanel();
 		wrPanel.setLayout(new BorderLayout());
-		playerTA = new JTextArea(username, 4, 20);
+		//playerTA = new JTextArea(username, 4, 20);
+		playerTA.setText(username);
+		//Font font = new Font("Arial Black", Font.BOLD, 14);
+		//playerTA.setFont(font);
+		//playerTA.setBackground(new Color(122, 141, 255));
 		playerTA.setEditable(false);
 		readyButton = new JButton("Ready");
 		wrPanel.add(playerTA, BorderLayout.CENTER);
@@ -233,7 +240,7 @@ public class Client implements Runnable {
 				switch(value1){
 				
 				case("connected user"):
-					value2 = ((String) objectIn.readObject()).trim();;
+					value2 = ((String) objectIn.readObject()).trim();
 					if (clientState == WAITINGROOM){
 						playerTA.append("\n" + value2);
 					}
