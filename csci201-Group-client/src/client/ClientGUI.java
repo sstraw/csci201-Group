@@ -198,15 +198,12 @@ public class ClientGUI extends JFrame implements Serializable {
 		chatPanel.setPreferredSize(new Dimension(200, 700));
 		
 		// groupChat will hold all chat messages
-		JPanel groupPanelChat = new JPanel();
 		groupChat = new JTextArea();
 		groupChat.setPreferredSize(new Dimension(200, 500));
 		groupChat.setFocusable(false);
-		groupPanelChat.add(groupChat);
-		JScrollPane groupChatScrollPane = new JScrollPane();
-		groupChatScrollPane.getViewport().add(groupPanelChat);
+		JScrollPane groupChatScrollPane = new JScrollPane(groupChat);
 		groupChatScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		groupChatScrollPane.setFocusable(false);
+		pack();
 		
 		// playerChat will hold player's current message
 		playerChat = new JTextArea();
