@@ -255,7 +255,7 @@ public class Server implements Runnable{
 		}
 		else{
 			for (ServerThread s : playerThreads){
-				s.sendMessage(s.getName() + "> " + msg);
+				s.sendMessage(serverthread.getName() + "> " + msg);
 			}
 		}
 		this.lock.unlock();
