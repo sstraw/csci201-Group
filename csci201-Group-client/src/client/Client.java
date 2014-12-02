@@ -58,7 +58,7 @@ public class Client implements Runnable {
 	String username;
 	private int clientState = Client.WAITINGROOM;
 	
-	JFrame wrFrame;
+	JFrame wrFrame, loginFrame;
 	JTextArea playerTA;
 	JButton readyButton; //waiting room button
 	
@@ -115,7 +115,6 @@ public class Client implements Runnable {
 	
 	private void displayLoginGUI() {	
 		JPanel loginPanel = new JPanel();
-				
 		loginPanel.setLayout(new BorderLayout());
 		
 		JPanel ipPanel = new JPanel();
@@ -142,6 +141,9 @@ public class Client implements Runnable {
 			hostIP = ipTF.getText();
 			username = unTF.getText();
 		} 
+		else{
+			System.exit(0);
+		}
 	}
 	
 	public void displayWaitingRoomGUI() {
@@ -155,6 +157,7 @@ public class Client implements Runnable {
 		wrFrame = new JFrame("Waiting Room");
 		wrFrame.add(wrPanel);
 		wrFrame.setSize(300, 200);
+		wrFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		wrFrame.setLocationRelativeTo(null);
 		wrFrame.setVisible(true);
 		
