@@ -146,7 +146,9 @@ public class ServerThread implements Runnable {
 	public void startLevel(int levelnumber){
 		//Notify starting a new level
 		lock.lock();
-		timer.interrupt();
+		if (timer!=null) {
+			timer.interrupt();
+		}
 		try {
 			objectcannon.writeObject(new String("startLevel"));
 			objectcannon.writeObject(server.getLevel()); //level: should be based on Server variable
@@ -321,6 +323,7 @@ class Timer implements Runnable{
 			System.out.println("Timer started");
 			Thread.sleep(milliseconds);
 			System.out.println("Timer ended");
+			serverthread.timerDone();
 		} catch (InterruptedException e) {
 			System.out.println("Time interrupted");
 			//No error here because the ServerThread may kill this when it's no longer needed;
