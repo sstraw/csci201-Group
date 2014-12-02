@@ -21,6 +21,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -160,9 +161,13 @@ public class ClientGUI extends JFrame implements Serializable {
 		chatPanel.setPreferredSize(new Dimension(200, 700));
 		
 		// groupChat will hold all chat messages
+		JPanel groupPanelChat = new JPanel();
 		groupChat = new JTextArea();
 		groupChat.setPreferredSize(new Dimension(200, 500));
 		groupChat.setFocusable(false);
+		groupPanelChat.add(groupChat);
+		JScrollPane groupChatScrollPane = new JScrollPane(groupPanelChat);
+		groupChatScrollPane.setFocusable(false);
 		
 		// playerChat will hold player's current message
 		playerChat = new JTextArea();
@@ -170,7 +175,7 @@ public class ClientGUI extends JFrame implements Serializable {
 		playerChat.setWrapStyleWord(true);
 		playerChat.setFocusable(true);
 		
-		chatPanel.add(groupChat, BorderLayout.NORTH);
+		chatPanel.add(groupChatScrollPane, BorderLayout.NORTH);
 		chatPanel.add(playerChat, BorderLayout.SOUTH);
 		mainLayout.add(chatPanel, BorderLayout.EAST);
 		
