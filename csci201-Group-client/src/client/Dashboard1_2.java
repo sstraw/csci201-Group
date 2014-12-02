@@ -1,15 +1,22 @@
 package client;
-
-
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.Vector;
 
 import javax.swing.*;
 
-public class Dashboard1_2 extends JPanel
+public class Dashboard1_2 implements Dashboard
 {
-	public Dashboard1_2()
+	private JPanel panel;
+	private Vector<Widget> widgets;
+	private Client client;
+	public Dashboard1_2(Client c)
 	{
-		setLayout(null);
+		client = c;
+		panel = new JPanel();
+		panel.setLayout(null);
 		
 		JPanel topleft = new JPanel();
 		topleft.setLayout(new BoxLayout(topleft, BoxLayout.Y_AXIS));
@@ -23,18 +30,30 @@ public class Dashboard1_2 extends JPanel
 		gate.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		topleft.add(Box.createRigidArea(new Dimension(0, 20)));
 		JButton open = new JButton ("OPEN");
+		open.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				widgets.get(0).setVal(0);
+				client.updateWidget(widgets.get(0));
+			}
+		});
 		open.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		topleft.add(open);
 		open.setMaximumSize(new Dimension(140, 50));
 		open.setAlignmentX(Component.CENTER_ALIGNMENT);
 		topleft.add(Box.createRigidArea(new Dimension(0, 10)));
 		JButton close = new JButton ("CLOSE");
+		close.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				widgets.get(0).setVal(1);
+				client.updateWidget(widgets.get(0));
+			}
+		});
 		close.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		topleft.add(close);
 		close.setAlignmentX(Component.CENTER_ALIGNMENT);
 		close.setMaximumSize(new Dimension(140, 50));
 		
-		add(topleft);
+		panel.add(topleft);
 		
 		JPanel topright = new JPanel();
 		topright.setLayout(new BoxLayout(topright, BoxLayout.Y_AXIS));
@@ -48,11 +67,23 @@ public class Dashboard1_2 extends JPanel
 		flux.setAlignmentX(Component.CENTER_ALIGNMENT);
 		topright.add(Box.createRigidArea(new Dimension(0, 20)));
 		JRadioButton clean = new JRadioButton("CLEAN");
+		clean.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				widgets.get(2).setVal(0);
+				client.updateWidget(widgets.get(2));
+			}
+		});
 		clean.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		topright.add(clean);
 		clean.setAlignmentX(Component.CENTER_ALIGNMENT);
 		topright.add(Box.createRigidArea(new Dimension(0, 10)));
 		JRadioButton vent = new JRadioButton("VENT");
+		vent.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				widgets.get(2).setVal(1);
+				client.updateWidget(widgets.get(2));
+			}
+		});
 		vent.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		topright.add(vent);
 		vent.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -60,7 +91,7 @@ public class Dashboard1_2 extends JPanel
 		bg.add(clean);
 		bg.add(vent);
 		
-		add(topright);
+		panel.add(topright);
 		
 		JPanel bottomleft = new JPanel();
 		bottomleft.setLayout(new BoxLayout(bottomleft, BoxLayout.Y_AXIS));
@@ -74,12 +105,18 @@ public class Dashboard1_2 extends JPanel
 		nextron.setAlignmentX(Component.CENTER_ALIGNMENT);
 		bottomleft.add(Box.createRigidArea(new Dimension(0, 20)));
 		JButton reset = new JButton("RESET");
+		reset.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				widgets.get(1).setVal(0);
+				client.updateWidget(widgets.get(1));
+			}
+		});
 		reset.setMaximumSize(new Dimension(120, 50));
 		reset.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		bottomleft.add(reset);
 		reset.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		add(bottomleft);
+		panel.add(bottomleft);
 		
 		JPanel bottomright = new JPanel();
 		bottomright.setLayout(new BoxLayout(bottomright, BoxLayout.Y_AXIS));
@@ -94,11 +131,33 @@ public class Dashboard1_2 extends JPanel
 		bottomright.add(Box.createRigidArea(new Dimension(0, 45)));
 		String[] array = new String[] {"0", "1", "2", "3"};
 		JComboBox<String> levels = new JComboBox<String>(array);
+		levels.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() instanceof JComboBox<?>){
+					int i = ((JComboBox<?>) e.getSource()).getSelectedIndex();
+					widgets.get(3).setVal(i);
+					client.updateWidget(widgets.get(3));
+				}
+			}
+		});
 		levels.setFont(new Font("DejaVu Sans", Font.BOLD, 18));
 		levels.setMaximumSize(new Dimension(80, 50));
 		bottomright.add(levels);
 		
-		add(bottomright);
+		panel.add(bottomright);
+		
+		widgets = new Vector<Widget>(4);
+		widgets.add(new AnyButton("Space Gate", 2, 0, new Vector<String>(Arrays.asList("Open the Space Gate", "Close the Space Gate"))));
+		widgets.add(new AnyButton("Nextron", 1, 0, new Vector<String>(Arrays.asList("Reset the Nextron"))));
+		widgets.add(new AnyButton("Flux Capacitor", 2, 0, new Vector<String>(Arrays.asList("Clean the Flux Capacitor", "Vent the Flux Capacitor"))));
+		widgets.add(new Slider("Laser Beam", 0, 4, 0));
 	}
 
+	public JPanel getPanel() {
+		return panel;
+	}
+
+	public Vector<Widget> getWidgets() {
+		return widgets;
+	}
 }

@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -20,25 +22,22 @@ import javax.swing.JToggleButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class Dashboard4_2 extends JPanel{
-	
-	private static final long serialVersionUID = 1L;
-	
-	private JTextArea command;
-	
-
-	public Dashboard4_2( JTextArea d ){
+public class Dashboard4_2 implements Dashboard{
+	private JPanel panel;
+	private Vector<Widget> widgets;
+	private Client client;
+	public Dashboard4_2(Client c){
+		client = c;
 		
-		command = d;
-		
-		this.setLayout( new GridLayout(2 ,1) );
+		panel = new JPanel();
+		panel.setLayout( new GridLayout(2 ,1) );
 		
 		
 		//top row
 		JPanel db1 = new JPanel();
 		db1.setLayout( new BoxLayout( db1 , BoxLayout.LINE_AXIS) );
 		db1.setBackground( Color.black);
-		this.add( db1 );
+		panel.add( db1 );
 		db1.add(Box.createRigidArea(new Dimension(12, 0)));
 		JPanel sec1 = new JPanel();
 		db1.add( sec1 );
@@ -56,8 +55,8 @@ public class Dashboard4_2 extends JPanel{
 		JButton hot = new JButton ( "RANCH" );
 		hot.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				//System.out.println("INDUCTION IRON SET TO HOT");
-				command.setText("SET SUPERSTITIOUS SALAD TO RANCH");
+				widgets.get(0).setVal(0);
+				client.updateWidget(widgets.get(0));
 			}
 		});
 		
@@ -68,8 +67,8 @@ public class Dashboard4_2 extends JPanel{
 		JButton cold = new JButton ( "ITALIAN" );
 		cold.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				//System.out.println("INDUCTION IRON SET TO COLD");
-				command.setText("SET SUPERSTICIOUS SALAD TO ITALIAN");
+				widgets.get(0).setVal(1);
+				client.updateWidget(widgets.get(0));
 			}
 		});
 		sec1.add( cold );
@@ -96,19 +95,17 @@ public class Dashboard4_2 extends JPanel{
 			public void actionPerformed(ActionEvent ae) {
 				if( cable.getText().equals("HOOKED")){
 					cable.setText("UNHOOKED");
-					//System.out.println("GROOVED CABLE UNLOCKED");
-					command.setText("UNHOOK CROWLEY CLAW");
+					widgets.get(1).setVal(1);
 				}
 				else{
 					cable.setText("HOOKED");
-					//System.out.println("GROOVED CABLE LOCKED");
-					command.setText("HOOK CRAWLEY CLAW");
+					widgets.get(1).setVal(0);
 				}
+				client.updateWidget(widgets.get(1));
 			}
 		});
 		
 		sec2.add(Box.createRigidArea(new Dimension(0, 95)));
-		
 		db1.add( sec2 );
 		db1.add(Box.createRigidArea(new Dimension(10, 0)));
 		
@@ -117,7 +114,7 @@ public class Dashboard4_2 extends JPanel{
 		JPanel db2 = new JPanel();
 		db2.setLayout( new BoxLayout( db2 , BoxLayout.LINE_AXIS) );
 		db2.setBackground( Color.black);
-		this.add( db2 );
+		panel.add( db2 );
 		
 		db2.add(Box.createRigidArea(new Dimension(12, 0)));
 		JPanel sec3 = new JPanel();
@@ -133,13 +130,12 @@ public class Dashboard4_2 extends JPanel{
 		sec3.add(Box.createRigidArea(new Dimension(0, 70)));
 		JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 3, 0);
 		slider.addChangeListener(new ChangeListener() {
-	        @Override
 	        public void stateChanged(ChangeEvent ce) {
 	        	JSlider source = (JSlider)ce.getSource();
                 if(!source.getValueIsAdjusting())
                 {
-                	//System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
-                	command.setText( "SET PHYLON SAUCER TO " + source.getValue() );
+                	widgets.get(3).setVal(source.getValue());
+                	client.updateWidget(widgets.get(3));
                 }
 	        }
 	    });
@@ -168,26 +164,41 @@ public class Dashboard4_2 extends JPanel{
 		final JButton beamswitch = new JButton();
 		sec4.add(beamswitch);
 		beamswitch.setAlignmentX( Component.CENTER_ALIGNMENT );
-		beamswitch.setBackground( Color.green);
+		beamswitch.setBackground(Color.green);
 		beamswitch.setMaximumSize( new Dimension(100, 135));
 		beamswitch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				if( beamswitch.getBackground().equals(Color.green)){
 					beamswitch.setBackground( Color.blue);
-					command.setText( "SET RAY HUE TO BLUE");
+					widgets.get(2).setVal(1);
 				}
 				else if(beamswitch.getBackground().equals(Color.blue)){
 					beamswitch.setBackground( Color.red);
-					command.setText( "SET RAY HUE TO RED");
+					widgets.get(2).setVal(2);
 				}
 				else{
 					beamswitch.setBackground( Color.green);
-					command.setText( "SET RAY HUE TO GREEN");
+					widgets.get(2).setVal(0);
 				}
+				client.updateWidget(widgets.get(2));
 			}
 		});
 		sec4.add(Box.createRigidArea(new Dimension(0, 30)));
 		
+		widgets = new Vector<Widget>(4);
+		widgets.add(new AnyButton("Superstitious Salad", 2, 0, new Vector<String>(Arrays.asList("Put Ranch on the Superstitious Salad", "Put Italian on the Superstitious Salad"))));
+		widgets.add(new AnyButtonStored("Crowley Claw", 2, 0, new Vector<String>(Arrays.asList("Unhook the Crowley Claw", "Hook the Crowley Claw"))));
+		widgets.add(new AnyButtonStored("Ray Hue", 3, 0, new Vector<String>(Arrays.asList("Set the Ray Hue to Green", "Set the Ray Hue to Blue", "Set the Ray Hue to Red"))));
+		widgets.add(new Slider("Phylon Saucer", 0, 4, 0));
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+
+	public Vector<Widget> getWidgets() {
+		// TODO Auto-generated method stub
+		return widgets;
 	}	
 
 

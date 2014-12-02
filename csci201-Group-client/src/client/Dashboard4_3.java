@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -20,25 +22,21 @@ import javax.swing.JToggleButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class Dashboard4_3  extends JPanel{
-	
-	private static final long serialVersionUID = 1L;
-	
-	private JTextArea command;
-	
-
-	public Dashboard4_3( JTextArea d ){
-		
-		command = d;
-		
-		this.setLayout( new GridLayout(2 ,1) );
+public class Dashboard4_3  implements Dashboard{
+	private JPanel panel;
+	private Vector<Widget> widgets;
+	private Client client;
+	public Dashboard4_3(Client c){
+		client = c;
+		panel = new JPanel();
+		panel.setLayout( new GridLayout(2 ,1) );
 		
 		
 		//top row
 		JPanel db1 = new JPanel();
 		db1.setLayout( new BoxLayout( db1 , BoxLayout.LINE_AXIS) );
 		db1.setBackground( Color.black);
-		this.add( db1 );
+		panel.add( db1 );
 		db1.add(Box.createRigidArea(new Dimension(12, 0)));
 		JPanel sec1 = new JPanel();
 		db1.add( sec1 );
@@ -56,8 +54,8 @@ public class Dashboard4_3  extends JPanel{
 		JButton hot = new JButton ( "UPDATE" );
 		hot.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				//System.out.println("INDUCTION IRON SET TO HOT");
-				command.setText("UPDATE THE SHIP'S LOG");
+				widgets.get(0).setVal(0);
+				client.updateWidget(widgets.get(0));
 			}
 		});
 		
@@ -84,7 +82,8 @@ public class Dashboard4_3  extends JPanel{
 		zero.setMaximumSize( new Dimension(45, 45));
 		zero.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				command.setText("SET GRANULAR PUTTY TO 0");	
+				widgets.get(1).setVal(0);
+				client.updateWidget(widgets.get(1));
 			}
 		});
 		final JButton one = new JButton("1");
@@ -93,7 +92,8 @@ public class Dashboard4_3  extends JPanel{
 		one.setMaximumSize( new Dimension(45, 45));
 		one.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				command.setText("SET GRANULAR PUTTY TO 1");	
+				widgets.get(1).setVal(1);
+				client.updateWidget(widgets.get(1));
 			}
 		});
 		
@@ -103,7 +103,8 @@ public class Dashboard4_3  extends JPanel{
 		two.setMaximumSize( new Dimension(45, 45));
 		two.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				command.setText("SET GRANULAR PUTTY TO 2");	
+				widgets.get(1).setVal(2);
+				client.updateWidget(widgets.get(1));
 			}
 		});
 		
@@ -117,7 +118,7 @@ public class Dashboard4_3  extends JPanel{
 		JPanel db2 = new JPanel();
 		db2.setLayout( new BoxLayout( db2 , BoxLayout.LINE_AXIS) );
 		db2.setBackground( Color.black);
-		this.add( db2 );
+		panel.add( db2 );
 		
 		db2.add(Box.createRigidArea(new Dimension(12, 0)));
 		JPanel sec3 = new JPanel();
@@ -133,13 +134,12 @@ public class Dashboard4_3  extends JPanel{
 		sec3.add(Box.createRigidArea(new Dimension(0, 70)));
 		JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 5, 0);
 		slider.addChangeListener(new ChangeListener() {
-	        @Override
 	        public void stateChanged(ChangeEvent ce) {
 	        	JSlider source = (JSlider)ce.getSource();
                 if(!source.getValueIsAdjusting())
                 {
-                	//System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
-                	command.setText( "SET SUCTIONGAUGE TO " + source.getValue() );
+                	widgets.get(2).setVal(source.getValue());
+                	client.updateWidget(widgets.get(2));
                 }
 	        }
 	    });
@@ -173,16 +173,31 @@ public class Dashboard4_3  extends JPanel{
 			public void actionPerformed(ActionEvent ae) {
 				if( beamswitch.getText().equals("OFF")){
 					beamswitch.setText("ON");
-					System.out.println("TURN ON BETA ALERT");
+					widgets.get(3).setVal(1);
 				}
 				else{
 					beamswitch.setText("OFF");
-					System.out.println("TURN OFF BETA ALERT");
+					widgets.get(3).setVal(0);
 				}
+				client.updateWidget(widgets.get(3));
 			}
 		});
 		sec4.add(Box.createRigidArea(new Dimension(0, 30)));
 		
+		widgets = new Vector<Widget>(4);
+		widgets.add(new AnyButton("Ship's Log", 1, 0, new Vector<String>(Arrays.asList("Update the Ship's Log"))));
+		widgets.add(new AnyButton("Granular Putty", 3, 0, new Vector<String>(Arrays.asList("Set Granular Putty to 0", "Set Granular Putty to 1", "Set Granular Putty to 2"))));
+		widgets.add(new Slider("Suction Gauge", 0, 6, 0));
+		widgets.add(new AnyButtonStored("Beta Alert", 2, 0, new Vector<String>(Arrays.asList("Turn off Beta Alert", "Turn on Beta Alert"))));
+		
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+
+	public Vector<Widget> getWidgets() {
+		return widgets;
 	}	
 
 

@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -21,30 +23,27 @@ import javax.swing.JToggleButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class Dashboard5_4 extends JPanel{
+public class Dashboard5_4 implements Dashboard{
 	
-	private JTextArea command;
-	
-	
-	private static final long serialVersionUID = 1L;
-	public Dashboard5_4( JTextArea d ){
+	private JPanel panel;
+	private Vector<Widget> widgets;
+	private Client client;
+	public Dashboard5_4(Client c){
 		
-		command = d;
-		this.setLayout( new GridLayout(2 ,1) );
-		
+		this.client = c;
+		panel = new JPanel();
+		panel.setLayout( new GridLayout(2 ,1) );
 		
 		//top row
 		JPanel db1 = new JPanel();
 		db1.setLayout( new BoxLayout( db1 , BoxLayout.LINE_AXIS) );
 		db1.setBackground( Color.black);
-		this.add( db1 );
+		panel.add( db1 );
 		db1.add(Box.createRigidArea(new Dimension(12, 0)));
 		JPanel sec1 = new JPanel();
 		db1.add( sec1 );
 		sec1.setLayout( new BoxLayout( sec1 , BoxLayout.PAGE_AXIS) );
 		sec1.setBorder( BorderFactory.createLineBorder(Color.black) );
-		
-
 		sec1.add(Box.createRigidArea(new Dimension(255 , 20)));
 		
 		JLabel gridText = new JLabel("PENTOSE");
@@ -55,13 +54,28 @@ public class Dashboard5_4 extends JPanel{
 		buttonGrid.setLayout( new GridLayout(2,2) );
 		buttonGrid.setMaximumSize( new Dimension(180,180 ));
 		ButtonGroup bg = new ButtonGroup();
-		for(int i =0; i < 4; i++){
+		for(int i = 0; i < 4; i++){
 			final JToggleButton temp = new JToggleButton( String.valueOf(i+1));
 			bg.add(temp);
 			buttonGrid.add(temp);
 			temp.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
-					command.setText("SET PENTOSE TO " +  temp.getText() );
+					int newval = 0;
+					if(temp.getText().equals("1")){
+						newval = 0;
+					}
+					else if(temp.getText().equals("2")){
+						newval = 1;
+					}
+					else if(temp.getText().equals("3")){
+						newval = 2;
+					}
+					else if(temp.getText().equals("4")){
+						newval = 3;
+					}
+					AnyButtonStored currentWidget = (AnyButtonStored)widgets.get(0);
+					currentWidget.setVal(newval);
+					client.updateWidget(widgets.get(0));
 				}
 			});
 		}
@@ -87,7 +101,10 @@ public class Dashboard5_4 extends JPanel{
 		cable.setMaximumSize( new Dimension(120, 35));
 		cable.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				command.setText( "QUELL TACHYON ADAPTER");
+				int newVal = 0;
+				AnyButton currentWidget = (AnyButton)widgets.get(1);
+				currentWidget.setVal(newVal);
+				client.updateWidget(widgets.get(1));
 			}
 		});
 		sec2.add(Box.createRigidArea(new Dimension(0, 25)));
@@ -97,7 +114,10 @@ public class Dashboard5_4 extends JPanel{
 		synth.setMaximumSize( new Dimension(120, 35));
 		synth.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				command.setText( "SYNTHESIZE TACHYON ADAPTER");
+				int newVal = 1;
+				AnyButton currentWidget = (AnyButton)widgets.get(1);
+				currentWidget.setVal(newVal);
+				client.updateWidget(widgets.get(1));
 			}
 		});
 		
@@ -107,11 +127,10 @@ public class Dashboard5_4 extends JPanel{
 		db1.add(Box.createRigidArea(new Dimension(10, 0)));
 		
 		//bottom row
-
 		JPanel db2 = new JPanel();
 		db2.setLayout( new BoxLayout( db2 , BoxLayout.LINE_AXIS) );
 		db2.setBackground( Color.black);
-		this.add( db2 );
+		panel.add( db2 );
 		
 		db2.add(Box.createRigidArea(new Dimension(12, 0)));
 		JPanel sec3 = new JPanel();
@@ -134,22 +153,34 @@ public class Dashboard5_4 extends JPanel{
 		slider.setMaximumSize( new Dimension(450, 35));
 		sec3.add(Box.createRigidArea(new Dimension(0, 90)));
 		slider.addChangeListener(new ChangeListener() {
-	        @Override
+	        
 	        public void stateChanged(ChangeEvent ce) {
 	        	JSlider source = (JSlider)ce.getSource();
                 if(!source.getValueIsAdjusting())
                 {
-                	//System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
-                	command.setText( "SET SUPERCALIFRAGILISTICEXPIALIDOCIOUS TO " + source.getValue() );
+                	int newval = source.getValue();
+                	Slider currentwidget = (Slider)widgets.get(2);
+                	currentwidget.setVal(newval);
+                	client.updateWidget(widgets.get(2));
                 }
 	        }
 	    });
-		//defribilator
-		//hahahaha
-		//Supercalifragilisticexpialidocious
-		
 
+		widgets = new Vector<Widget>(3);
+		widgets.add(new AnyButtonStored("Pentose", 4, 0, new Vector<String>(Arrays.asList(
+				"Set Pentose to 1", "Set Pentose to 2", "Set Pentose to 3", "Set Pentose to 4"))));
+		widgets.add(new AnyButton("Tachyon Adapter", 2, 0, new Vector<String>(Arrays.asList("Quell the Tachyon Adapter", "Synthesize the Tachyon Adapter"))));
+		widgets.add(new Slider("Supercalifragilisticexpialidocious", 0, 11, 0));
 		
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+	@Override
+	public Vector<Widget> getWidgets() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

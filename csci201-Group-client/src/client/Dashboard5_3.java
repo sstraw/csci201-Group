@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -19,26 +21,21 @@ import javax.swing.JTextArea;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class Dashboard5_3 extends JPanel{
-	
-
-
-private JTextArea command;
-	
-	
-	private static final long serialVersionUID = 1L;
-	public Dashboard5_3( JTextArea d ){
+public class Dashboard5_3 implements Dashboard{
+	private JPanel panel;
+	private Vector<Widget> widgets;
+	private Client client;
+	public Dashboard5_3(Client c){
 		
-		command = d;
-		this.setLayout( new GridLayout(1,1) );
-		
-		
+		this.client = c;
+		panel = new JPanel();
+		panel.setLayout( new GridLayout(1,1) );
 		
 		//top row
 		JPanel db1 = new JPanel();
 		db1.setLayout( new BoxLayout( db1 , BoxLayout.LINE_AXIS) );
 		db1.setBackground( Color.black);
-		this.add( db1 );
+		panel.add( db1 );
 		db1.add(Box.createRigidArea(new Dimension(12, 0)));
 		JPanel sec1 = new JPanel();
 		db1.add( sec1 );
@@ -46,7 +43,6 @@ private JTextArea command;
 		sec1.setBorder( BorderFactory.createLineBorder(Color.black) );
 		sec1.setBackground( Color.black);
 		sec1.add(Box.createRigidArea(new Dimension(315, 15)));
-		
 		
 		JPanel sec2 = new JPanel();
 		sec2.setLayout( new BoxLayout( sec2 , BoxLayout.PAGE_AXIS) );
@@ -63,7 +59,10 @@ private JTextArea command;
 		cable.setMaximumSize( new Dimension(120, 75));
 		cable.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				command.setText( "BLIGE AIR ENGINES");
+				int newVal = 0;
+				AnyButton currentWidget = (AnyButton)widgets.get(0);
+				currentWidget.setVal(newVal);
+				client.updateWidget(widgets.get(0));
 			}
 		});
 		sec2.add(Box.createRigidArea(new Dimension(0, 30)));
@@ -73,7 +72,10 @@ private JTextArea command;
 		plan.setMaximumSize( new Dimension(120, 75));
 		plan.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				command.setText( "PLAN AIR ENGINES");
+				int newVal = 1;
+				AnyButton currentWidget = (AnyButton)widgets.get(0);
+				currentWidget.setVal(newVal);
+				client.updateWidget(widgets.get(0));
 			}
 		});
 		sec2.add(Box.createRigidArea(new Dimension(0, 30)));
@@ -83,11 +85,13 @@ private JTextArea command;
 		humid.setMaximumSize( new Dimension(120, 75));
 		humid.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				command.setText( "HUMIDIFY AIR ENGINES");
+				int newVal = 2;
+				AnyButton currentWidget = (AnyButton)widgets.get(0);
+				currentWidget.setVal(newVal);
+				client.updateWidget(widgets.get(0));
 			}
 		});
 		sec2.add(Box.createRigidArea(new Dimension(0, 30)));
-		
 		
 		sec1.add(sec2);
 		
@@ -106,7 +110,10 @@ private JTextArea command;
 		cable2.setMaximumSize( new Dimension(120, 35));
 		cable2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				command.setText( "UNCORK SHIFTSANITIZER");
+				int newVal = 0;
+				AnyButton currentWidget = (AnyButton)widgets.get(1);
+				currentWidget.setVal(newVal);
+				client.updateWidget(widgets.get(1));
 			}
 		});
 		sec4.add(Box.createRigidArea(new Dimension(0, 30)));
@@ -116,7 +123,10 @@ private JTextArea command;
 		cable3.setMaximumSize( new Dimension(120, 35));
 		cable3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				command.setText( "ENGORGE SHIFTSANITIZER");
+				int newVal = 1;
+				AnyButton currentWidget = (AnyButton)widgets.get(1);
+				currentWidget.setVal(newVal);
+				client.updateWidget(widgets.get(1));
 			}
 		});
 		sec4.add(Box.createRigidArea(new Dimension(0, 30)));
@@ -128,10 +138,7 @@ private JTextArea command;
 		
 		db1.add(Box.createRigidArea(new Dimension(5, 0)));
 		
-		
 		//bottom row
-
-		
 		db1.add(Box.createRigidArea(new Dimension(12, 0)));
 		JPanel sec3 = new JPanel();
 		
@@ -153,27 +160,32 @@ private JTextArea command;
 		slider.setMaximumSize( new Dimension(40, 300));
 		sec3.add(Box.createRigidArea(new Dimension(0, 90)));
 		slider.addChangeListener(new ChangeListener() {
-	        @Override
-	        public void stateChanged(ChangeEvent ce) {
+			public void stateChanged(ChangeEvent ce) {
 	        	JSlider source = (JSlider)ce.getSource();
                 if(!source.getValueIsAdjusting())
                 {
-                	//System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
-                	command.setText( "SET EAVSTROUGH TO " + source.getValue() );
+                	int newval = source.getValue();
+                	Slider currentwidget = (Slider)widgets.get(2);
+                	currentwidget.setVal(newval);
+                	client.updateWidget(widgets.get(2));
                 }
 	        }
 	    });
 		
-		//defribilator
-		//hahahaha
-		//Supercalifragilisticexpialidocious
-		
-		
-	
-		
 		db1.add( sec3 );
 		
-		
+		widgets = new Vector<Widget>(3);
+		widgets.add(new AnyButton("Air Engines", 3, 0, new Vector<String>(Arrays.asList("Bilge the Air Engines", "Plan the Air Engines", "Humidify the Air Engines"))));
+		widgets.add(new AnyButton("Shift Sanitizer", 2, 0, new Vector<String>(Arrays.asList("Uncork the Shift Sanitizer", "Engorge the Shift Sanitizer"))));
+		widgets.add(new Slider("Eavstrough", 0, 6, 0));
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+
+	public Vector<Widget> getWidgets() {
+		return widgets;
 	}
 
 }

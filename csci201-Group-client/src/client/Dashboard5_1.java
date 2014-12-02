@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -20,30 +22,26 @@ import javax.swing.JToggleButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class Dashboard5_1  extends JPanel{
+public class Dashboard5_1  implements Dashboard{
 	
-	private JTextArea command;
-	
-	
-	private static final long serialVersionUID = 1L;
-	public Dashboard5_1( JTextArea d ){
-		
-		command = d;
-		this.setLayout( new GridLayout(2 ,1) );
-		
+	private JPanel panel;
+	private Vector<Widget> widgets;
+	private Client client;
+	public Dashboard5_1(Client c){
+		this.client = c;
+		panel = new JPanel();
+		panel.setLayout( new GridLayout(2 ,1) );
 		
 		//top row
 		JPanel db1 = new JPanel();
 		db1.setLayout( new BoxLayout( db1 , BoxLayout.LINE_AXIS) );
 		db1.setBackground( Color.black);
-		this.add( db1 );
+		panel.add( db1 );
 		db1.add(Box.createRigidArea(new Dimension(12, 0)));
 		JPanel sec1 = new JPanel();
 		db1.add( sec1 );
 		sec1.setLayout( new BoxLayout( sec1 , BoxLayout.PAGE_AXIS) );
 		sec1.setBorder( BorderFactory.createLineBorder(Color.black) );
-		
-
 		sec1.add(Box.createRigidArea(new Dimension(255 , 20)));
 		
 		JLabel gridText = new JLabel("TRIPLE GRID PLEXER");
@@ -53,20 +51,22 @@ public class Dashboard5_1  extends JPanel{
 		JPanel buttonGrid = new JPanel();
 		buttonGrid.setLayout( new GridLayout(3,3) );
 		buttonGrid.setMaximumSize( new Dimension(180,180 ));
-		for(int i =0; i < 9; i++){
+		for(int i = 0; i < 9; i++){
 			final JButton temp = new JButton( String.valueOf(i+1));
 			temp.setBackground( Color.green);
 			buttonGrid.add(temp);
 			temp.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
+					int widget = Integer.parseInt(((JButton)ae.getSource()).getText());
 					if(temp.getBackground().equals(Color.green) ){
 						temp.setBackground( Color.red);
-						command.setText("SET TRIPLE GRID PLEXER " +  temp.getText() + " TO RED");
+						widgets.get(widget - 1).setVal(1);
 					}
 					else{
 						temp.setBackground( Color.green);
-						command.setText("SET TRIPLE GRID PLEXER " +  temp.getText() + " TO GREEN");
+						widgets.get(widget - 1).setVal(0);
 					}
+					client.updateWidget(widgets.get(widget - 1));
 				}
 			});
 		}
@@ -92,7 +92,10 @@ public class Dashboard5_1  extends JPanel{
 		cable.setMaximumSize( new Dimension(120, 35));
 		cable.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				command.setText( "DISPERSE QUANTUM OMEGIFIER");
+				int newVal = 0;
+				AnyButton currentWidget = (AnyButton)widgets.get(9);
+				currentWidget.setVal(newVal);
+				client.updateWidget(widgets.get(9));
 			}
 		});
 		sec2.add(Box.createRigidArea(new Dimension(0, 25)));
@@ -102,7 +105,10 @@ public class Dashboard5_1  extends JPanel{
 		synth.setMaximumSize( new Dimension(120, 35));
 		synth.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				command.setText( "SYNTHESIZE QUANTUM OMEGIFIER");
+				int newVal = 1;
+				AnyButton currentWidget = (AnyButton)widgets.get(9);
+				currentWidget.setVal(newVal);
+				client.updateWidget(widgets.get(9));
 			}
 		});
 		
@@ -116,7 +122,7 @@ public class Dashboard5_1  extends JPanel{
 		JPanel db2 = new JPanel();
 		db2.setLayout( new BoxLayout( db2 , BoxLayout.LINE_AXIS) );
 		db2.setBackground( Color.black);
-		this.add( db2 );
+		panel.add( db2 );
 		
 		db2.add(Box.createRigidArea(new Dimension(12, 0)));
 		JPanel sec3 = new JPanel();
@@ -139,19 +145,18 @@ public class Dashboard5_1  extends JPanel{
 		slider.setMaximumSize( new Dimension(250, 35));
 		sec3.add(Box.createRigidArea(new Dimension(0, 90)));
 		slider.addChangeListener(new ChangeListener() {
-	        @Override
 	        public void stateChanged(ChangeEvent ce) {
 	        	JSlider source = (JSlider)ce.getSource();
                 if(!source.getValueIsAdjusting())
                 {
-                	//System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
-                	command.setText( "SET ELASTIC ILLUSIONER TO " + source.getValue() );
+                	int newval = source.getValue();
+                	Slider currentwidget = (Slider)widgets.get(10);
+                	currentwidget.setVal(newval);
+                	client.updateWidget(widgets.get(10));
                 }
 	        }
 	    });
-		//defribilator
-		//hahahaha
-		//Supercalifragilisticexpialidocious
+		
 		
 		db2.add(Box.createRigidArea(new Dimension(12, 0)));
 		JPanel sec4 = new JPanel();
@@ -176,18 +181,40 @@ public class Dashboard5_1  extends JPanel{
 		
 		beamcable.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				int newval = 0;
 				if( beamcable.getText().equals("DIRTY")){
 					beamcable.setText("CLEAN");
-					command.setText("SET MILK MOLECULIZER TO CLEAN");
+					newval = 1;
 				}
 				else{
 					beamcable.setText("DIRTY");
-					command.setText("SET MILK MOLECULIZER TO DIRTY");
+					newval = 0;
 				}
+				AnyButtonStored currentWidget = (AnyButtonStored)widgets.get(11);
+				currentWidget.setVal(newval);
+				client.updateWidget(widgets.get(11));
 			}
 		});
 		sec4.add(Box.createRigidArea(new Dimension(0, 30)));
 		
+		widgets = new Vector<Widget>(12);
+		for (int i = 1; i < 10; i++){
+			widgets.add(new AnyButtonStored(String.format("Triple Grid Plexer %d", i), 2, 0,
+					    new Vector<String>(Arrays.asList(String.format("Set Triple Grid Plexer %d to Red", i), (String.format("Set Triple Grid Plexer %d to Green", i))))));
+		}
+		widgets.add(new AnyButton("Quantum Omegifier", 2, 0, new Vector<String>(Arrays.asList("Disperse the Quantum Omegifier", "Synthesize the Quantum Omegifier"))));
+		widgets.add(new Slider("Elastic Illusioner", 0, 11, 0));
+		widgets.add(new AnyButtonStored("Milk Moleculizer", 2, 0, new Vector<String>(Arrays.asList("Switch Milk Moleculizer to Dirty", "Switch Milk Moleculizer to Clean"))));
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+
+	@Override
+	public Vector<Widget> getWidgets() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

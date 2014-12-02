@@ -4,22 +4,34 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Vector;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -28,102 +40,310 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-public class Client extends Thread {
+
+
+public class Client implements Runnable {
+	final static public int WAITINGROOM = 1;
+	final static public int INGAME = 2;
+	final static public int GAMEOVER = 3;
 	
-	ArrayList<JPanel> levelOneDashboards; //will hold hardcoded set of Dashboards for each level
-	ArrayList<JPanel> levelTwoDashboards;
-	ArrayList<JPanel> levelThreeDashboards;
-	ArrayList<JPanel> levelFourDashboards;
-	ArrayList<JPanel> levelFiveDashboards;
 	
-	private int currentLevel;
-	private boolean waitingRoom = true;
+	Vector<Dashboard> levelOneDashboards; //will hold hardcoded set of Dashboards for each level
+	Vector<Dashboard> levelTwoDashboards;
+	Vector<Dashboard> levelThreeDashboards;
+	Vector<Dashboard> levelFourDashboards;
+	Vector<Dashboard> levelFiveDashboards;
 	
-	// Chat variables
-	private static Semaphore semaphore = new Semaphore(4);
+	String hostIP;
+	String username;
+	private int clientState = Client.WAITINGROOM;
+	
+	JFrame wrFrame;
+	JTextArea playerTA;
+	JButton readyButton; //waiting room button
+	
+	private ReentrantLock lock = new ReentrantLock();
 	private Socket s;
-	private PrintWriter pw;
-	private BufferedReader br;
-
+	private ObjectOutputStream objectCannon;
+	private ObjectInputStream objectIn;
 	private JTextArea dashCommand = new JTextArea();
-	private ClientGUI clientGUI = new ClientGUI( dashCommand );
+	private ClientGUI clientGUI; 
+	
+	private Thread thread;
 	
 
 	
-	public Client(String hostname, int port) {
+	public Client() {
 		
 		
-		//this event gets called whenever an action is done on the dashboard
-		dashCommand.getDocument().addDocumentListener(new DocumentListener() {
-
-		    public void removeUpdate(DocumentEvent e) {
-		       // System.out.println("removeUpdate");
-		    }
-
-		    public void insertUpdate(DocumentEvent e) {
-		    	command(dashCommand.getText());
-		    	
-		    	
-		    }
-
-		    public void changedUpdate(DocumentEvent e) {
-		       // System.out.println("changedUpdate");
-		    }
-		});
+		addGUIActions();
 		
+		displayLoginGUI();
 		// Establish connection to server
 		try {
-			s = new Socket(hostname, port);
-			this.pw = new PrintWriter(s.getOutputStream());
-			this.br = new BufferedReader(new InputStreamReader(s.getInputStream()));
-			this.start();
-		
-			while (true) {
-				semaphore.acquire();
-				if(clientGUI.sendMessage() == true ){
-					String line = clientGUI.getChatMessage();
-					System.out.println("YOUR LINE: " + line);
-					pw.println(line);
-					pw.flush();
-				}
-				semaphore.release();
-			}
-		} catch (IOException | InterruptedException ioe) {
+			s = new Socket(hostIP, 55555);
+			this.objectCannon = new ObjectOutputStream(s.getOutputStream());
+			this.objectIn = new ObjectInputStream(s.getInputStream());
+			thread = new Thread(this);
+			thread.start();
+			setPlayerName();
+			displayWaitingRoomGUI();
+			
+		} catch (IOException ioe) {
 			System.out.println("ioe in ChatClient: " + ioe.getMessage());
 		}
 	}
 	
-	// Still have to figure out how we're sending the dashboards 
-		// to the clientGUIs.
-		/*
-		void chooseDashboard(int index) {  //
-			if (currentLevel==1) { 
-				currentDashboard = levelOneDashboards.get(index);
-			} else if (currentLevel==2) {
-				currentDashboard = levelTwoDashboards.get(index);
-			} else if (currentLevel==3) {
-				currentDashboard = levelThreeDashboards.get(index);
-			} else if (currentLevel==4) {
-				currentDashboard = levelFourDashboards.get(index);
-			} else if (currentLevel==5) {
-				currentDashboard = levelFiveDashboards.get(index);
-			}
-		}*/
+	private void addGUIActions() {
 		
+	//this event gets called whenever an action is done on the dashboard
+			dashCommand.getDocument().addDocumentListener(new DocumentListener() {
+
+			    public void removeUpdate(DocumentEvent e) {
+			       // System.out.println("removeUpdate");
+			    }
+
+			    public void insertUpdate(DocumentEvent e) {
+			    	
+			    }
+
+			    public void changedUpdate(DocumentEvent e) {
+			       // System.out.println("changedUpdate");
+			    }
+			});
+	}
+	
+	private void displayLoginGUI() {	
+		JPanel loginPanel = new JPanel();
+				
+		loginPanel.setLayout(new BorderLayout());
+		
+		JPanel ipPanel = new JPanel();
+		JLabel hostLab = new JLabel("Host IP: ");
+		ipPanel.add(hostLab);
+		JTextField ipTF = new JTextField(30);
+		ipPanel.add(ipTF);
+		loginPanel.add(ipPanel, BorderLayout.NORTH);
+		
+		JPanel unPanel = new JPanel();
+		JLabel unLab = new JLabel("Username: ");
+		unPanel.add(unLab);
+		JTextField unTF = new JTextField(25);
+		unPanel.add(unTF);
+		loginPanel.add(unPanel, BorderLayout.CENTER);
+		JButton okButton = new JButton("OK");
+		loginPanel.add(unPanel, BorderLayout.SOUTH);
+		
+		ImageIcon icon = new ImageIcon("Images/rocketicon.jpg");
+		
+		int result = JOptionPane.showConfirmDialog(null, loginPanel, 
+	               "Welcome to Space Team", JOptionPane.DEFAULT_OPTION,  JOptionPane.PLAIN_MESSAGE, icon);
+		if (result == JOptionPane.OK_OPTION) {  	  
+			hostIP = ipTF.getText();
+			username = unTF.getText();
+		} 
+	}
+	
+	public void displayWaitingRoomGUI() {
+		JPanel wrPanel = new JPanel();
+		wrPanel.setLayout(new BorderLayout());
+		playerTA = new JTextArea(username, 4, 20);
+		playerTA.setEditable(false);
+		readyButton = new JButton("Ready");
+		wrPanel.add(playerTA, BorderLayout.CENTER);
+		wrPanel.add(readyButton, BorderLayout.SOUTH);
+		wrFrame = new JFrame("Waiting Room");
+		wrFrame.add(wrPanel);
+		wrFrame.setSize(300, 200);
+		wrFrame.setLocationRelativeTo(null);
+		wrFrame.setVisible(true);
+		
+		readyButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				if (readyButton.getText().equals("Ready")) {
+					setReady(true);
+					readyButton.setText("Not Ready");
+				} else {
+					setReady(false);
+					readyButton.setText("Ready");
+				}
+			}
+		});
+	}
+	
+	private void setPlayerName(){
+		lock.lock();
+		try {
+			this.objectCannon.writeObject(new String("setName"));
+			this.objectCannon.writeObject(username);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally{
+			lock.unlock();
+		}
+	}
+	
+	private void setReady(boolean ready){
+		lock.lock();
+		try {
+			System.out.println("3 - State Sending");
+			this.objectCannon.writeObject(new String("setState"));
+			if (ready){
+				this.objectCannon.writeObject(new String("ready"));
+			}
+			else{
+				this.objectCannon.writeObject(new String("notready"));
+			}
+			System.out.println("State sent");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally{
+			lock.unlock();
+		}
+	}
+	
+	//Gives the server the list of widgets in use in the current dashboard
+	public void giveWidgets(Vector<Widget> widgets){
+		lock.lock();
+		try {
+			System.out.println("2 - Vector sending");
+			this.objectCannon.writeObject(new String("giveWidgets"));
+			this.objectCannon.writeObject(widgets);
+			System.out.println("2 - Vector sent");
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally{
+			lock.unlock();
+		}
+	}
+	public void sendMessage(String msg){
+		lock.lock();
+		try {
+			this.objectCannon.writeObject(new String("message"));
+			this.objectCannon.writeObject(new String(msg));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally{
+			lock.unlock();
+		}
+	}
+	public void updateWidget(Widget w) {
+		lock.lock();
+		try {
+			System.out.println("1 Sending widget update");
+			System.out.println("  " + w.getInstructionString());
+			objectCannon.writeObject(new String("widgetChanged"));
+			objectCannon.writeObject(w);
+			objectCannon.writeObject(w.getVal());
+			System.out.println("1 Update sent");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally{
+			lock.unlock();
+		}
+	}
+
+	public void GameOverGUI() {	
+		JFrame finalframe = new JFrame("Game Over");
+	}
 	
 	public void run() {
-		try {
-			semaphore.acquire();
-			while(true) {
-				String line;
-				while((line = br.readLine()) != null){
-					System.out.println("FROM OTHER CLIENT: " + line);
-					clientGUI.receiveMessage(line);
+		while (true){
+			//Receive and process input
+			try {
+				String value1 = ((String) objectIn.readObject()).trim();;
+				String value2;
+				Object o;
+				
+				//Switch values
+				switch(value1){
+				
+				case("connected user"):
+					value2 = ((String) objectIn.readObject()).trim();;
+					if (clientState == WAITINGROOM){
+						playerTA.append("\n" + value2);
+					}
+					break;
+				case("startLevel"):
+					int level = (Integer) objectIn.readObject();
+					int ind = (Integer) objectIn.readObject();
+					if (clientState == WAITINGROOM) {
+						wrFrame.dispose();
+						clientGUI = new ClientGUI(dashCommand, this);
+						clientGUI.setDashboard(level, ind);
+						clientState = INGAME;
+					} else if (clientState == INGAME) {
+						clientGUI.setDashboard(level, ind);
+					}
+					break;
+					
+				case("instruction"):
+					o = objectIn.readObject();
+					int time = (Integer) objectIn.readObject();
+					if (o instanceof Widget){
+						Widget w = (Widget) o;
+						String instruction = w.getInstructionString();
+						clientGUI.updateInstruction(instruction, time);
+					}
+					break;
+					
+				case("instruction completed"):
+					System.out.println("Instruction completed");
+					//do GUI shit
+					
+					/*
+					o = objectIn.readObject();
+					if (o instanceof Widget){
+						Widget w = (Widget) o;s
+					//Assign instruction
+					}
+					else{
+						System.out.println("WRONG OBJECT RECEIVED");
+					}
+					break;
+					*/
+					break;
+				case("instruction failed"):
+					System.out.println("Instruction failed");
+					//do GUI shit
+					
+					/*
+					o = objectIn.readObject();
+					if (o instanceof Widget){
+						Widget w = (Widget) o;
+						//Assign instruction
+					}
+					else{
+						System.out.println("WRONG OBJECT RECEIVED");
+					}
+					break; */
+					break;
+				case("game over"):
+					//Do shit
+					break;
+					
+				case("message"):
+					value2 = ((String) objectIn.readObject()).trim();
+					clientGUI.receiveMessage(value2);
+					break;
+					/*value2 = buffer.readLine().trim();
+					this.Client.sendMessage(this, value2);
+					break; */
 				}
-				semaphore.release();
+			} catch (SocketException e){
+				System.out.println("Socket closed. Quitting...");
+				return;
+			} catch (IOException e) {
+				System.out.println("Socket closed. Quitting...");
+				return;
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (IOException | InterruptedException ioe) {
-			System.out.println("ioe in run: " + ioe.getMessage());
 		}
 	}
 	
@@ -146,14 +366,7 @@ public class Client extends Thread {
 	    catch (IllegalAccessException e) {
 	       // handle exception
 	    }
-		new Client("10.123.43.191", 10000);
+		new Client();
 	}
-	
-	public void command(String c){
-		
-		//this is where you can check if the command matches the instruction that was given
-		System.out.println( c );
-	}
-	
 }
 

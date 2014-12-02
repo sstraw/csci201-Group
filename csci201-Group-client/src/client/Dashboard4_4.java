@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -19,23 +21,22 @@ import javax.swing.JTextArea;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class Dashboard4_4 extends JPanel{
+public class Dashboard4_4 implements Dashboard{
 	
-	private JTextArea command;
-	
-	
-	private static final long serialVersionUID = 1L;
-	public Dashboard4_4( JTextArea d ){
-		
-		command = d;
-		this.setLayout( new GridLayout(2 ,1) );
+	private JPanel panel;
+	private Vector<Widget> widgets;
+	private Client client;
+	public Dashboard4_4(Client c){
+		client = c;
+		panel = new JPanel();
+		panel.setLayout( new GridLayout(2 ,1) );
 		
 		
 		//top row
 		JPanel db1 = new JPanel();
 		db1.setLayout( new BoxLayout( db1 , BoxLayout.LINE_AXIS) );
 		db1.setBackground( Color.black);
-		this.add( db1 );
+		panel.add( db1 );
 		db1.add(Box.createRigidArea(new Dimension(12, 0)));
 		JPanel sec1 = new JPanel();
 		
@@ -52,20 +53,22 @@ public class Dashboard4_4 extends JPanel{
 		JPanel buttonGrid = new JPanel();
 		buttonGrid.setLayout( new GridLayout(2,2) );
 		buttonGrid.setMaximumSize( new Dimension(180,180 ));
-		for(int i =0; i < 4; i++){
+		for(int i = 0; i < 4; i++){
 			final JButton temp = new JButton( String.valueOf(i+1));
 			temp.setBackground( Color.green);
 			buttonGrid.add(temp);
 			temp.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
+					int widget = Integer.parseInt(((JButton)ae.getSource()).getText());
 					if(temp.getBackground().equals(Color.green) ){
 						temp.setBackground( Color.red);
-						command.setText("SET GRIDLOCK " +  temp.getText() + " TO RED");
+						widgets.get(widget).setVal(1);
 					}
 					else{
 						temp.setBackground( Color.green);
-						command.setText("SET GRIDLOCK " +  temp.getText() + " TO GREEN");
+						widgets.get(widget).setVal(0);
 					}
+					client.updateWidget(widgets.get(widget));
 				}
 			});
 		}
@@ -91,11 +94,10 @@ public class Dashboard4_4 extends JPanel{
 		cable.setMaximumSize( new Dimension(120, 55));
 		cable.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				command.setText( "REWIND DISC LOOP");
+				widgets.get(0).setVal(0);
+				client.updateWidget(widgets.get(0));
 			}
 		});
-		
-		
 		
 		sec2.add(Box.createRigidArea(new Dimension(0, 85)));
 		
@@ -109,7 +111,7 @@ public class Dashboard4_4 extends JPanel{
 		JPanel db2 = new JPanel();
 		db2.setLayout( new BoxLayout( db2 , BoxLayout.LINE_AXIS) );
 		db2.setBackground( Color.black);
-		this.add( db2 );
+		panel.add( db2 );
 		
 		db2.add(Box.createRigidArea(new Dimension(12, 0)));
 		JPanel sec3 = new JPanel();
@@ -137,14 +139,11 @@ public class Dashboard4_4 extends JPanel{
 	        	JSlider source = (JSlider)ce.getSource();
                 if(!source.getValueIsAdjusting())
                 {
-                	//System.out.println( "PHASON COLLIDER SET TO " +  source.getValue() );
-                	command.setText( "SET MOLECULAR MAGNIFIER TO " + source.getValue() );
+                	widgets.get(5).setVal(source.getValue());
+                	client.updateWidget(widgets.get(5));
                 }
 	        }
 	    });
-		//defribilator
-		//hahahaha
-		//Supercalifragilisticexpialidocious
 		
 		db2.add(Box.createRigidArea(new Dimension(12, 0)));
 		JPanel sec4 = new JPanel();
@@ -165,11 +164,27 @@ public class Dashboard4_4 extends JPanel{
 		
 		beamcable.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				command.setText("BOOST POWER-CYCLE");
+				widgets.get(6).setVal(0);
+				client.updateWidget(widgets.get(6));
 			}
 		});
 		sec4.add(Box.createRigidArea(new Dimension(0, 50)));
 		
+		widgets = new Vector<Widget>(7);
+		widgets.add(new AnyButton("Disc Loop", 1, 0, new Vector<String>(Arrays.asList("Rewind the Disc Loop"))));
+		widgets.add(new AnyButtonStored("Gridlock 1", 2, 0, new Vector<String>(Arrays.asList("Set Gridlock 1 to Green", "Set Gridlock 1 to Red"))));
+		widgets.add(new AnyButtonStored("Gridlock 2", 2, 0, new Vector<String>(Arrays.asList("Set Gridlock 2 to Green", "Set Gridlock 2 to Red"))));
+		widgets.add(new AnyButtonStored("Gridlock 3", 2, 0, new Vector<String>(Arrays.asList("Set Gridlock 3 to Green", "Set Gridlock 3 to Red"))));
+		widgets.add(new AnyButtonStored("Gridlock 4", 2, 0, new Vector<String>(Arrays.asList("Set Gridlock 4 to Green", "Set Gridlock 4 to Red"))));
+		widgets.add(new Slider("Molecular Magnifier", 0, 4, 0));
+		widgets.add(new AnyButton("Power Cycle", 1, 0, new Vector<String>(Arrays.asList("Boost the Power Cycle"))));
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+	public Vector<Widget> getWidgets() {
+		return widgets;
 	}
 
 }
