@@ -249,6 +249,7 @@ public class Client implements Runnable {
 
 	public void GameOverGUI() {	
 		JFrame finalframe = new JFrame("Game Over");
+		
 	}
 	
 	public void run() {
@@ -293,12 +294,13 @@ public class Client implements Runnable {
 					
 				case("instruction completed"):
 					System.out.println("Instruction completed");
+					
 					//do GUI shit
 					
 					/*
 					o = objectIn.readObject();
 					if (o instanceof Widget){
-						Widget w = (Widget) o;s
+						Widget w = (Widget) o;
 					//Assign instruction
 					}
 					else{
@@ -323,7 +325,7 @@ public class Client implements Runnable {
 					break; */
 					break;
 				case("game over"):
-					//Do shit
+					
 					break;
 					
 				case("message"):

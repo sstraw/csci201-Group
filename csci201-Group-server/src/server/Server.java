@@ -140,7 +140,7 @@ public class Server implements Runnable{
 	}
 	
 	private int getMaxMisses(){
-		return 10 - currentLevel;
+		return 12 - currentLevel;
 	}
 	
 	//Time each instruction gets
@@ -196,6 +196,8 @@ public class Server implements Runnable{
 	private void gameOver() {
 		for (ServerThread s : playerThreads) {
 			s.gameOver();
+			
+			
 		}
 	}
 	
