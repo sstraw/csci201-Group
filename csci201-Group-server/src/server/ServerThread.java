@@ -276,7 +276,6 @@ public class ServerThread implements Runnable {
 				case("setState"):
 					System.out.println("3 - State receiving");
 					value2 = ((String) objectin.readObject()).trim();
-					//String value3 = ((String) objectin.readObject()).trim();
 					switch(value2){
 					case("ready"):
 						this.ready = true;
@@ -289,7 +288,6 @@ public class ServerThread implements Runnable {
 						//Do nothing.
 					}
 					server.setReady(this);
-					//System.out.println("value3 = " + value3);
 					System.out.println("3 - State receivied");
 					break;
 					

@@ -63,7 +63,6 @@ public class Client implements Runnable {
 			thread = new Thread(this);
 			thread.start();
 			setPlayerName();
-			displayWaitingRoomGUI();
 			
 		} catch (IOException ioe) {
 			//System.out.println("ioe in ChatClient: " + ioe.getMessage());
@@ -115,17 +114,18 @@ public class Client implements Runnable {
 		if (result == JOptionPane.OK_OPTION) {  	  
 			hostIP = ipTF.getText();
 			username = unTF.getText();
+			displayWaitingRoomGUI();
 		} 
 		else{
 			System.exit(0);
 		}
 	}
 	
-	public void displayWaitingRoomGUI() {
+	private void displayWaitingRoomGUI() {
 		wrGUI = new WaitingRoomGUI(this);
 	}
 	
-	public void setPlayerName(){
+	private void setPlayerName(){
 		lock.lock();
 		try {
 			this.objectCannon.writeObject(new String("setName"));
@@ -229,7 +229,6 @@ public class Client implements Runnable {
 					value2 = ((String) objectIn.readObject()).trim();
 					if (clientState == WAITINGROOM){
 						wrGUI.playerTA.append("\n" + value2 + " ... Preparing for launch!");
-						//wrGUI.repaint();
 					}
 					break;
 					
@@ -243,9 +242,11 @@ public class Client implements Runnable {
 					int level = (Integer) objectIn.readObject();
 					int ind = (Integer) objectIn.readObject();
 					if (clientState == WAITINGROOM) {
+						wrGUI.setFocusable(false);
 						wrGUI.dispose();
 						clientGUI = new ClientGUI(dashCommand, this);
 						clientGUI.setDashboard(level, ind);
+						clientGUI.setFocusable(true);
 						clientState = INGAME;
 					} else if (clientState == INGAME) {
 						clientGUI.setDashboard(level, ind);

@@ -117,7 +117,7 @@ public class WaitingRoomGUI extends JFrame implements Serializable {
 		    			  playerChat.setText(message);
 		    		  }
 		    		  else{	playerChat.append(e.getKeyChar() + "");	  }	  }
-		    	  return true;
+		    	  return false;
 		      }
 		});
 		
