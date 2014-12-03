@@ -233,6 +233,24 @@ public class ServerThread implements Runnable {
 		}
 	}
 	
+	public void setReadyStatus(ServerThread otherPlayer){
+		lock.lock();
+		try{
+			objectcannon.writeObject(new String("setReady"));
+			String readyStatus = "";
+			if(otherPlayer.isReady())
+				readyStatus = "ready";
+			else
+				readyStatus = "notready";
+			objectcannon.writeObject(readyStatus);
+			objectcannon.writeObject(new String(otherPlayer.getName()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally{
+			lock.unlock();
+		}
+	}
+	
 	public void run(){
 
 		while (isRunning){
@@ -249,6 +267,7 @@ public class ServerThread implements Runnable {
 				case("setState"):
 					System.out.println("3 - State receiving");
 					value2 = ((String) objectin.readObject()).trim();
+					//String value3 = ((String) objectin.readObject()).trim();
 					switch(value2){
 					case("ready"):
 						this.ready = true;
@@ -260,6 +279,8 @@ public class ServerThread implements Runnable {
 					default:
 						//Do nothing.
 					}
+					server.setReady(this);
+					//System.out.println("value3 = " + value3);
 					System.out.println("3 - State receivied");
 					break;
 					

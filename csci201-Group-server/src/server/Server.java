@@ -70,6 +70,10 @@ public class Server implements Runnable{
 		return gamestate;
 	}
 	
+	public int getNumPlayers(){
+		return playerThreads.size();
+	}
+	
 	public Widget getInstruction(){
 		lock.lock();
 		//This line generates a random widget from the list of widgets, and then
@@ -237,6 +241,17 @@ public class Server implements Runnable{
 			if (!s.equals(caller)){
 				caller.newConnection(s.getName());
 				s.newConnection(caller.getName());
+			}
+		}
+		lock.unlock();
+	}
+	
+	public void setReady(ServerThread caller){
+		lock.lock();
+		for (ServerThread s : playerThreads){
+			if (!s.equals(caller)){
+				caller.setReadyStatus(s);
+				s.setReadyStatus(caller);
 			}
 		}
 		lock.unlock();

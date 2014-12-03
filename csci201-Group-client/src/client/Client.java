@@ -40,10 +40,8 @@ public class Client implements Runnable {
 	private JFrame wrFrame, loginFrame;
 	private JTextArea playerTA = new JTextArea(4, 20);
 	private JButton readyButton; //waiting room button
+	private boolean clientReady;
 	boolean endFlag = true;
-	boolean endFlag2 = true;
-	
-	private JTextArea scoreTA = new JTextArea(2, 20);
 	
 	private ReentrantLock lock = new ReentrantLock();
 	private Socket s;
@@ -66,9 +64,9 @@ public class Client implements Runnable {
 			thread.start();
 			setPlayerName();
 			displayWaitingRoomGUI();
-			//displayGameOverGUI();			
+			
 		} catch (IOException ioe) {
-			System.out.println("ioe in ChatClient: " + ioe.getMessage());
+			//System.out.println("ioe in ChatClient: " + ioe.getMessage());
 		}
 	}
 	
@@ -127,12 +125,13 @@ public class Client implements Runnable {
 		JPanel wrPanel = new JPanel();
 		wrPanel.setLayout(new BorderLayout());
 		//playerTA = new JTextArea(username, 4, 20);
-		playerTA.setText(username);
+		playerTA.setText(username + " ... Preparing for launch!");
 		//Font font = new Font("Arial Black", Font.BOLD, 14);
 		//playerTA.setFont(font);
 		//playerTA.setBackground(new Color(122, 141, 255));
 		playerTA.setEditable(false);
-		readyButton = new JButton("Ready");
+		readyButton = new JButton("Ready for Take-Off!");
+		readyButton.setBackground(Color.GREEN);
 		wrPanel.add(playerTA, BorderLayout.CENTER);
 		wrPanel.add(readyButton, BorderLayout.SOUTH);
 		wrFrame = new JFrame("Waiting Room");
@@ -144,38 +143,19 @@ public class Client implements Runnable {
 		
 		readyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				if (readyButton.getText().equals("Ready")) {
+				if (readyButton.getText().equals("Ready for Take-Off!")) {
 					setReady(true);
-					readyButton.setText("Not Ready");
+					readyButton.setText("Abort Launch!");
+					readyButton.setBackground(Color.RED);
+					clientReady = true;
 				} else {
 					setReady(false);
-					readyButton.setText("Ready");
+					readyButton.setText("Ready for Take-Off!");
+					readyButton.setBackground(Color.GREEN);
+					clientReady = false;
 				}
 			}
 		});
-	}
-	
-	public void displayGameOverGUI() {
-		JPanel goPanel = new JPanel();
-		goPanel.setLayout(new BorderLayout());
-		//scoreTA.setText(username);
-		scoreTA.setEditable(false);
-		//readyButton = new JButton("Ready");
-		goPanel.add(scoreTA, BorderLayout.CENTER);
-		//goPanel.add(readyButton, BorderLayout.SOUTH);
-		JFrame goFrame = new JFrame("SCOREBOARD");
-		goFrame.add(goPanel);
-		goFrame.setSize(300, 200);
-		goFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		goFrame.setLocationRelativeTo(null);
-		goFrame.setVisible(true);
-		
-		/*readyButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				
-			}
-		});*/
-		
 	}
 	
 	private void setPlayerName(){
@@ -188,6 +168,7 @@ public class Client implements Runnable {
 		} finally{
 			lock.unlock();
 		}
+		System.out.println("My username is: " + username);
 	}
 	
 	private void setReady(boolean ready){
@@ -201,6 +182,7 @@ public class Client implements Runnable {
 			else{
 				this.objectCannon.writeObject(new String("notready"));
 			}
+			//this.objectCannon.writeObject(new String(username));
 			System.out.println("State sent");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -268,8 +250,13 @@ public class Client implements Runnable {
 				case("connected user"):
 					value2 = ((String) objectIn.readObject()).trim();
 					if (clientState == WAITINGROOM){
-						playerTA.append("\n" + value2);
+						playerTA.append("\n" + value2 + " ... Preparing for launch!");
 					}
+					break;
+				case("setReady"):
+					value2 = ((String) objectIn.readObject()).trim();
+					String value3 = ((String) objectIn.readObject()).trim();
+					updateWaitingRoom(value3, value2);
 					break;
 				case("startLevel"):
 					int level = (Integer) objectIn.readObject();
@@ -294,21 +281,8 @@ public class Client implements Runnable {
 					}
 					break;
 					
-				case("scores"):
-					if (endFlag2) {
-						int numUsers = ((Integer) objectIn.readObject());
-						for (int i=0; i<numUsers; i++) {
-							String un = ((String) objectIn.readObject()).trim();
-							String score = ((String) objectIn.readObject()).trim();
-							scoreTA.append(un);
-							scoreTA.append(" -- " + score + " points\n");
-						}
-						endFlag2 = false;
-					}
-					break;
-					
 				case("instruction completed"):
-					System.out.println("Instruction completed");
+					//System.out.println("Instruction completed");
 					
 					//do GUI shit
 					
@@ -325,7 +299,7 @@ public class Client implements Runnable {
 					*/
 					break;
 				case("instruction failed"):
-					System.out.println("Instruction failed");
+					//System.out.println("Instruction failed");
 					//do GUI shit
 					
 					/*
@@ -348,11 +322,6 @@ public class Client implements Runnable {
 								JOptionPane.ERROR_MESSAGE);	
 						endFlag=false;
 					}
-					
-					//get users + scores
-					//set scoreTA 
-					displayGameOverGUI();
-					
 					break;
 					
 				case("message"):
@@ -364,15 +333,50 @@ public class Client implements Runnable {
 					break; */
 				}
 			} catch (SocketException e){
-				System.out.println("Socket closed. Quitting...");
+				//System.out.println("Socket closed. Quitting...");
 				return;
 			} catch (IOException e) {
-				System.out.println("Socket closed. Quitting...");
+				//System.out.println("Socket closed. Quitting...");
 				return;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public void updateWaitingRoom(String username, String readyStatus){
+		String[] oldLines = playerTA.getText().split("\n");
+		Vector<String> newLines = new Vector<String>();
+		for(String line : oldLines){
+			String wrStatus = "";
+			//System.out.println("Line in playerTA: " + line);
+			if(line.contains(username)){
+				if(readyStatus.equals("ready")){
+					wrStatus = " ... Ready for Take-Off!";
+				}
+				else if (readyStatus.equals("notready")){
+					wrStatus = " ... Preparing for launch!";
+				}
+				newLines.add(username + wrStatus);
+			}
+			else if(line.contains(this.username)){
+				if(clientReady){
+					wrStatus = " ... Ready for Take-Off!";
+				}
+				else if (!clientReady){
+					wrStatus = " ... Preparing for launch!";
+				}
+				newLines.add(this.username + wrStatus);
+			}
+			else
+				newLines.add(line);
+		}
+		playerTA.setText("");
+		for(String line : newLines){
+			//System.out.println("New line: " + line);
+			playerTA.append(line + "\n");
+		}
+		//wrFrame.repaint();
 	}
 	
 	public static void main(String [] args) {
