@@ -2,7 +2,10 @@ package client;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+<<<<<<< HEAD
 import java.awt.Component;
+=======
+>>>>>>> branch 'master' of https://github.com/sstraw/csci201-Group
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -16,14 +19,18 @@ import java.util.Vector;
 import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.BorderFactory;
+<<<<<<< HEAD
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+=======
+>>>>>>> branch 'master' of https://github.com/sstraw/csci201-Group
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -40,15 +47,9 @@ public class Client implements Runnable {
 
 	String hostIP;
 	String username;
-	private int clientState = Client.WAITINGROOM;
-	
-	private JFrame wrFrame, loginFrame;
-	private JTextArea playerTA = new JTextArea(4, 20);
-	private JButton readyButton; //waiting room button
+	boolean clientReady;
+	int clientState = Client.WAITINGROOM;
 	boolean endFlag = true;
-	boolean endFlag2 = true;
-	
-	private JTextArea scoreTA = new JTextArea(2, 20);
 	
 	private ReentrantLock lock = new ReentrantLock();
 	private Socket s;
@@ -56,6 +57,7 @@ public class Client implements Runnable {
 	private ObjectInputStream objectIn;
 	private JTextArea dashCommand = new JTextArea();
 	private ClientGUI clientGUI; 	
+	private WaitingRoomGUI wrGUI;
 	private Thread thread;
 
 	public Client() {
@@ -70,10 +72,9 @@ public class Client implements Runnable {
 			thread = new Thread(this);
 			thread.start();
 			setPlayerName();
-			displayWaitingRoomGUI();
-			//displayGameOverGUI();			
+			
 		} catch (IOException ioe) {
-			System.out.println("ioe in ChatClient: " + ioe.getMessage());
+			//System.out.println("ioe in ChatClient: " + ioe.getMessage());
 		}
 	}
 	
@@ -122,12 +123,14 @@ public class Client implements Runnable {
 		if (result == JOptionPane.OK_OPTION) {  	  
 			hostIP = ipTF.getText();
 			username = unTF.getText();
+			displayWaitingRoomGUI();
 		} 
 		else{
 			System.exit(0);
 		}
 	}
 	
+<<<<<<< HEAD
 	public void displayWaitingRoomGUI() {
 		JPanel wrPanel = new JPanel();
 		wrPanel.setLayout(new BorderLayout());
@@ -182,6 +185,11 @@ public class Client implements Runnable {
 		});
 		
 	}*/
+=======
+	private void displayWaitingRoomGUI() {
+		wrGUI = new WaitingRoomGUI(this);
+	}
+>>>>>>> branch 'master' of https://github.com/sstraw/csci201-Group
 	
 	private void setPlayerName(){
 		lock.lock();
@@ -193,9 +201,10 @@ public class Client implements Runnable {
 		} finally{
 			lock.unlock();
 		}
+		System.out.println("My username is: " + username);
 	}
 	
-	private void setReady(boolean ready){
+	public void setReady(boolean ready){
 		lock.lock();
 		try {
 			System.out.println("3 - State Sending");
@@ -228,10 +237,22 @@ public class Client implements Runnable {
 			lock.unlock();
 		}
 	}
-	public void sendMessage(String msg){
+	public void sendInGameMessage(String msg){
 		lock.lock();
 		try {
-			this.objectCannon.writeObject(new String("message"));
+			this.objectCannon.writeObject(new String("gameMessage"));
+			this.objectCannon.writeObject(new String(msg));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally{
+			lock.unlock();
+		}
+	}
+	
+	public void sendWaitingRoomMessage(String msg){
+		lock.lock();
+		try {
+			this.objectCannon.writeObject(new String("waitingRoomMessage"));
 			this.objectCannon.writeObject(new String(msg));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -347,16 +368,25 @@ public class Client implements Runnable {
 				case("connected user"):
 					value2 = ((String) objectIn.readObject()).trim();
 					if (clientState == WAITINGROOM){
-						playerTA.append("\n" + value2);
+						wrGUI.playerTA.append("\n" + value2 + " ... Preparing for launch!");
 					}
 					break;
+					
+				case("setReady"):
+					value2 = ((String) objectIn.readObject()).trim();
+					String value3 = ((String) objectIn.readObject()).trim();
+					updateWaitingRoom(value3, value2);
+					break;
+					
 				case("startLevel"):
 					int level = (Integer) objectIn.readObject();
 					int ind = (Integer) objectIn.readObject();
 					if (clientState == WAITINGROOM) {
-						wrFrame.dispose();
+						wrGUI.setFocusable(false);
+						wrGUI.dispose();
 						clientGUI = new ClientGUI(dashCommand, this);
 						clientGUI.setDashboard(level, ind);
+						clientGUI.setFocusable(true);
 						clientState = INGAME;
 					} else if (clientState == INGAME) {
 						clientGUI.setDashboard(level, ind);
@@ -373,6 +403,7 @@ public class Client implements Runnable {
 					}
 					break;
 					
+<<<<<<< HEAD
 				case("scores"):
 					if (endFlag2) {
 						int numUsers = ((Integer) objectIn.readObject());
@@ -391,8 +422,10 @@ public class Client implements Runnable {
 					}
 					break;
 					
+=======
+>>>>>>> branch 'master' of https://github.com/sstraw/csci201-Group
 				case("instruction completed"):
-					System.out.println("Instruction completed");
+					//System.out.println("Instruction completed");
 					
 					//do GUI shit
 					
@@ -409,7 +442,7 @@ public class Client implements Runnable {
 					*/
 					break;
 				case("instruction failed"):
-					System.out.println("Instruction failed");
+					//System.out.println("Instruction failed");
 					//do GUI shit
 					
 					/*
@@ -432,19 +465,25 @@ public class Client implements Runnable {
 								JOptionPane.ERROR_MESSAGE);	
 						endFlag=false;
 					}
+<<<<<<< HEAD
 					
 					//get users + scores
 					//set scoreTA
 					
+=======
+>>>>>>> branch 'master' of https://github.com/sstraw/csci201-Group
 					break;
 					
-				case("message"):
+				case("gameMessage"):
 					value2 = ((String) objectIn.readObject()).trim();
 					clientGUI.receiveMessage(value2);
 					break;
-					/*value2 = buffer.readLine().trim();
-					this.Client.sendMessage(this, value2);
-					break; */
+				
+				case("waitingRoomMessage"):
+					value2 = ((String) objectIn.readObject()).trim();
+					wrGUI.receiveMessage(value2);
+					break;
+
 				}
 			} catch (SocketException e){
 				System.out.println("Socket closed. Quitting...");
@@ -455,6 +494,38 @@ public class Client implements Runnable {
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	public void updateWaitingRoom(String username, String readyStatus){
+		String[] oldLines = wrGUI.playerTA.getText().split("\n");
+		Vector<String> newLines = new Vector<String>();
+		for(String line : oldLines){
+			String wrStatus = "";
+			if(line.contains(username)){
+				if(readyStatus.equals("ready")){
+					wrStatus = " ... Ready for Take-Off!";
+				}
+				else if (readyStatus.equals("notready")){
+					wrStatus = " ... Preparing for launch!";
+				}
+				newLines.add(username + wrStatus);
+			}
+			else if(line.contains(this.username)){
+				if(clientReady){
+					wrStatus = " ... Ready for Take-Off!";
+				}
+				else if (!clientReady){
+					wrStatus = " ... Preparing for launch!";
+				}
+				newLines.add(this.username + wrStatus);
+			}
+			else
+				newLines.add(line);
+		}
+		wrGUI.playerTA.setText("");
+		for(String line : newLines){
+			wrGUI.playerTA.append(line + "\n");
 		}
 	}
 	

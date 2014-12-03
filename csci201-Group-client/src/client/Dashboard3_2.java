@@ -244,8 +244,8 @@ public class Dashboard3_2 implements Dashboard
 		
 		widgets = new Vector<Widget>(6);
 		widgets.add(new Slider("Chokefulorum", 0, 4, 0));
-		widgets.add(new Slider("Newtonian Photomist", 0, 4, 0));
 		widgets.add(new AnyButtonStored("Powercyclone", 2, 0, new Vector<String>(Arrays.asList("Kick Powercyclone", "Release Powercyclone"))));
+		widgets.add(new Slider("Newtonian Photomist", 0, 4, 0));
 		widgets.add(new Slider("Flight Barometer", 0, 6, 0));
 		widgets.add(new AnyButton("Spacehorn", 1, 0, new Vector<String>(Arrays.asList("Honk the Spacehorn"))));
 		widgets.add(new AnyButton("Robot Uprising", 1, 0, new Vector<String>(Arrays.asList("Quell the Robot Uprising"))));

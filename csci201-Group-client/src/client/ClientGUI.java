@@ -32,8 +32,7 @@ public class ClientGUI extends JFrame implements Serializable {
 	
 	protected int currentLevel;
 	JTextField instruction;
-	
-	
+
 	//private JPanel currentDashboard;
 	private DashboardFactory dbFactory = new DashboardFactory();
 	private JPanel currentDashboard;
@@ -71,11 +70,14 @@ public class ClientGUI extends JFrame implements Serializable {
 						  sendMessage = true;
 						  playerChat.setText("");
 						  playerChat.setCaretPosition(0);
-						  client.sendMessage(message);
+						  client.sendInGameMessage(message);
 				      }
 		    		  else if(keys == KeyEvent.VK_BACK_SPACE){
 		    			  message = playerChat.getText();
-		    			  message = message.substring(0, message.length() - 1);
+		    			  if(message.length() > 1)
+		    				  message = message.substring(0, message.length() - 1);
+		    			  else
+		    				  message = "";
 		    			  playerChat.setText(message);
 		    		  }
 		    		  else{	playerChat.append(e.getKeyChar() + "");	  }	  }
@@ -115,9 +117,7 @@ public class ClientGUI extends JFrame implements Serializable {
 		this.dashboard = dashboard;
 		add(this.dashboard, BorderLayout.CENTER);
 	}*/
-	
 
-		
 	public void createGUI(){
 		setSize(750, 700);
 		setLocation(250, 25); 
@@ -168,10 +168,6 @@ public class ClientGUI extends JFrame implements Serializable {
                 } 
             }
         };
-       // timer = new Timer(100, listener);
-       // timer.start();
-		    
-		
 		
 		dbContainer = new JPanel();
 		dbContainer.setLayout(new BorderLayout());
@@ -189,6 +185,7 @@ public class ClientGUI extends JFrame implements Serializable {
 		groupChat = new JTextArea();
 		groupChat.setWrapStyleWord(true);
         groupChat.setLineWrap(true);      
+        groupChat.setFocusable(false);
 
 		groupChatScrollPane = new JScrollPane(groupChat);
 		groupChatScrollPane.setBorder(BorderFactory.createTitledBorder("Space Chatter:"));
