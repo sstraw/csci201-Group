@@ -41,6 +41,9 @@ public class Client implements Runnable {
 	private JTextArea playerTA = new JTextArea(4, 20);
 	private JButton readyButton; //waiting room button
 	boolean endFlag = true;
+	boolean endFlag2 = true;
+	
+	private JTextArea scoreTA = new JTextArea(2, 20);
 	
 	private ReentrantLock lock = new ReentrantLock();
 	private Socket s;
@@ -63,7 +66,7 @@ public class Client implements Runnable {
 			thread.start();
 			setPlayerName();
 			displayWaitingRoomGUI();
-			
+			//displayGameOverGUI();			
 		} catch (IOException ioe) {
 			System.out.println("ioe in ChatClient: " + ioe.getMessage());
 		}
@@ -150,6 +153,29 @@ public class Client implements Runnable {
 				}
 			}
 		});
+	}
+	
+	public void displayGameOverGUI() {
+		JPanel goPanel = new JPanel();
+		goPanel.setLayout(new BorderLayout());
+		//scoreTA.setText(username);
+		scoreTA.setEditable(false);
+		//readyButton = new JButton("Ready");
+		goPanel.add(scoreTA, BorderLayout.CENTER);
+		//goPanel.add(readyButton, BorderLayout.SOUTH);
+		JFrame goFrame = new JFrame("SCOREBOARD");
+		goFrame.add(goPanel);
+		goFrame.setSize(300, 200);
+		goFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		goFrame.setLocationRelativeTo(null);
+		goFrame.setVisible(true);
+		
+		/*readyButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				
+			}
+		});*/
+		
 	}
 	
 	private void setPlayerName(){
@@ -268,6 +294,19 @@ public class Client implements Runnable {
 					}
 					break;
 					
+				case("scores"):
+					if (endFlag2) {
+						int numUsers = ((Integer) objectIn.readObject());
+						for (int i=0; i<numUsers; i++) {
+							String un = ((String) objectIn.readObject()).trim();
+							String score = ((String) objectIn.readObject()).trim();
+							scoreTA.append(un);
+							scoreTA.append(" -- " + score + " points\n");
+						}
+						endFlag2 = false;
+					}
+					break;
+					
 				case("instruction completed"):
 					System.out.println("Instruction completed");
 					
@@ -309,6 +348,11 @@ public class Client implements Runnable {
 								JOptionPane.ERROR_MESSAGE);	
 						endFlag=false;
 					}
+					
+					//get users + scores
+					//set scoreTA 
+					displayGameOverGUI();
+					
 					break;
 					
 				case("message"):

@@ -29,6 +29,7 @@ public class ServerThread implements Runnable {
 	private Condition receivingWidgets = lock.newCondition();
 	private Thread timer;
 	private Thread thread;
+	private int numUsers;
 	
 	public ServerThread(Server server, Socket socket){
 		this.socket = socket;
@@ -72,14 +73,28 @@ public class ServerThread implements Runnable {
 		lock.unlock();
 	}
 	
-	/*public void sendConnectedUser(String un) {
+	public void storeNumUsers(int n) {
+		numUsers=n;
+	}
+	
+	public void sendScores(Vector<String> names, Vector<String> scores) {
 		lock.lock();
-		printwrite.println("connected user");
-		printwrite.flush();
-		printwrite.println(un);
-		printwrite.flush();
+		try {
+			objectcannon.writeObject(new String("scores"));
+			objectcannon.writeObject(new Integer(numUsers));
+			System.out.println("Sending " + name + " " + numUsers + " users/scores");
+			for (int i=0; i<numUsers; i++) {
+				objectcannon.writeObject(new String(names.get(i)));
+				objectcannon.writeObject(new String(scores.get(i)));
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		lock.unlock();
-	}*/
+	}
+	
+	
 	
 	public void instructionCompleted(){
 		//Server calls this when an instruction is passed

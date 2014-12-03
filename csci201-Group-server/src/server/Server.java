@@ -126,18 +126,14 @@ public class Server implements Runnable{
 		startLevel(1);
 		this.lock.unlock();
 	}
-	
-	public void updateConnectedPlayers() {
 		
-	}
-	
 	//Returns how many points needed to "win" the level. Not sure how we want to do it yet so...
 	private int getLevelCap(){
 		return 10 * currentLevel;
 	}
 	
 	private int getMaxMisses(){
-		return 12 - currentLevel;
+		return 6 - currentLevel;
 	}
 	
 	//Time each instruction gets
@@ -198,8 +194,17 @@ public class Server implements Runnable{
 	
 	public void gameOver() {
 		lock.lock();
-		for (ServerThread s : playerThreads) {
-			s.gameOver();					
+		Vector<String> usernames = new Vector<String>();
+		Vector<String> scores = new Vector<String>();
+
+		for (int i=0; i<playerThreads.size(); i++) {
+			usernames.add(playerThreads.get(i).getName());
+			scores.add("" + playerThreads.get(i).getPoints());
+		}
+		for (ServerThread s : playerThreads) {	
+			s.storeNumUsers(playerThreads.size());
+			s.sendScores(usernames, scores);
+			s.gameOver();	
 		}
 		lock.unlock();
 	}
