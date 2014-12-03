@@ -62,10 +62,21 @@ public class ServerThread implements Runnable {
 		return instructions_completed;
 	}
 	
-	public void sendMessage(String msg){
+	public void sendInGameMessage(String msg){
 		lock.lock();
 		try{
-			objectcannon.writeObject(new String("message"));
+			objectcannon.writeObject(new String("gameMessage"));
+			objectcannon.writeObject(new String(msg));
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+		lock.unlock();
+	}
+	
+	public void sendWaitingRoomMessage(String msg){
+		lock.lock();
+		try{
+			objectcannon.writeObject(new String("waitingRoomMessage"));
 			objectcannon.writeObject(new String(msg));
 		} catch (IOException e){
 			e.printStackTrace();
@@ -93,9 +104,7 @@ public class ServerThread implements Runnable {
 		}
 		lock.unlock();
 	}
-	
-	
-	
+
 	public void instructionCompleted(){
 		//Server calls this when an instruction is passed
 		//Needs to get a new instruction from the server, and pass it to the player
@@ -321,9 +330,15 @@ public class ServerThread implements Runnable {
 						cnfe.printStackTrace();
 					}
 				break;
-				case("message"):
+				
+				case("gameMessage"):
 					value2 = ((String) objectin.readObject()).trim();
-					this.server.sendMessage(this, value2);
+					this.server.sendGameMessage(this, value2);
+					break;
+					
+				case("waitingRoomMessage"):
+					value2 = ((String) objectin.readObject()).trim();
+					this.server.sendWaitingRoomMessage(this, value2);
 					break;
 				}
 				

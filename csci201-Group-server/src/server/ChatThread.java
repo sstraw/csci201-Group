@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.util.concurrent.Semaphore;
 
 public class ChatThread extends Thread {
-	private static Semaphore semaphore = new Semaphore(2);
+	private static Semaphore semaphore = new Semaphore(4);
 	private Socket s;
 	private Server server;
 	private PrintWriter pw;

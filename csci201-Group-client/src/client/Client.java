@@ -2,6 +2,7 @@ package client;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,12 +14,14 @@ import java.net.SocketException;
 import java.util.Vector;
 import java.util.concurrent.locks.ReentrantLock;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -35,12 +38,8 @@ public class Client implements Runnable {
 
 	String hostIP;
 	String username;
-	private int clientState = Client.WAITINGROOM;
-	
-	private JFrame wrFrame, loginFrame;
-	private JTextArea playerTA = new JTextArea(4, 20);
-	private JButton readyButton; //waiting room button
-	private boolean clientReady;
+	boolean clientReady;
+	int clientState = Client.WAITINGROOM;
 	boolean endFlag = true;
 	
 	private ReentrantLock lock = new ReentrantLock();
@@ -49,6 +48,7 @@ public class Client implements Runnable {
 	private ObjectInputStream objectIn;
 	private JTextArea dashCommand = new JTextArea();
 	private ClientGUI clientGUI; 	
+	private WaitingRoomGUI wrGUI;
 	private Thread thread;
 
 	public Client() {
@@ -57,7 +57,7 @@ public class Client implements Runnable {
 		displayLoginGUI();
 		// Establish connection to server
 		try {
-			s = new Socket("localhost", 55555);
+			s = new Socket("10.123.160.76", 55555);
 			this.objectCannon = new ObjectOutputStream(s.getOutputStream());
 			this.objectIn = new ObjectInputStream(s.getInputStream());
 			thread = new Thread(this);
@@ -122,43 +122,10 @@ public class Client implements Runnable {
 	}
 	
 	public void displayWaitingRoomGUI() {
-		JPanel wrPanel = new JPanel();
-		wrPanel.setLayout(new BorderLayout());
-		//playerTA = new JTextArea(username, 4, 20);
-		playerTA.setText(username + " ... Preparing for launch!");
-		//Font font = new Font("Arial Black", Font.BOLD, 14);
-		//playerTA.setFont(font);
-		//playerTA.setBackground(new Color(122, 141, 255));
-		playerTA.setEditable(false);
-		readyButton = new JButton("Ready for Take-Off!");
-		readyButton.setBackground(Color.GREEN);
-		wrPanel.add(playerTA, BorderLayout.CENTER);
-		wrPanel.add(readyButton, BorderLayout.SOUTH);
-		wrFrame = new JFrame("Waiting Room");
-		wrFrame.add(wrPanel);
-		wrFrame.setSize(300, 200);
-		wrFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		wrFrame.setLocationRelativeTo(null);
-		wrFrame.setVisible(true);
-		
-		readyButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				if (readyButton.getText().equals("Ready for Take-Off!")) {
-					setReady(true);
-					readyButton.setText("Abort Launch!");
-					readyButton.setBackground(Color.RED);
-					clientReady = true;
-				} else {
-					setReady(false);
-					readyButton.setText("Ready for Take-Off!");
-					readyButton.setBackground(Color.GREEN);
-					clientReady = false;
-				}
-			}
-		});
+		wrGUI = new WaitingRoomGUI(this);
 	}
 	
-	private void setPlayerName(){
+	public void setPlayerName(){
 		lock.lock();
 		try {
 			this.objectCannon.writeObject(new String("setName"));
@@ -171,7 +138,7 @@ public class Client implements Runnable {
 		System.out.println("My username is: " + username);
 	}
 	
-	private void setReady(boolean ready){
+	public void setReady(boolean ready){
 		lock.lock();
 		try {
 			System.out.println("3 - State Sending");
@@ -182,7 +149,6 @@ public class Client implements Runnable {
 			else{
 				this.objectCannon.writeObject(new String("notready"));
 			}
-			//this.objectCannon.writeObject(new String(username));
 			System.out.println("State sent");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -205,10 +171,22 @@ public class Client implements Runnable {
 			lock.unlock();
 		}
 	}
-	public void sendMessage(String msg){
+	public void sendInGameMessage(String msg){
 		lock.lock();
 		try {
-			this.objectCannon.writeObject(new String("message"));
+			this.objectCannon.writeObject(new String("gameMessage"));
+			this.objectCannon.writeObject(new String(msg));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally{
+			lock.unlock();
+		}
+	}
+	
+	public void sendWaitingRoomMessage(String msg){
+		lock.lock();
+		try {
+			this.objectCannon.writeObject(new String("waitingRoomMessage"));
 			this.objectCannon.writeObject(new String(msg));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -250,19 +228,22 @@ public class Client implements Runnable {
 				case("connected user"):
 					value2 = ((String) objectIn.readObject()).trim();
 					if (clientState == WAITINGROOM){
-						playerTA.append("\n" + value2 + " ... Preparing for launch!");
+						wrGUI.playerTA.append("\n" + value2 + " ... Preparing for launch!");
+						//wrGUI.repaint();
 					}
 					break;
+					
 				case("setReady"):
 					value2 = ((String) objectIn.readObject()).trim();
 					String value3 = ((String) objectIn.readObject()).trim();
 					updateWaitingRoom(value3, value2);
 					break;
+					
 				case("startLevel"):
 					int level = (Integer) objectIn.readObject();
 					int ind = (Integer) objectIn.readObject();
 					if (clientState == WAITINGROOM) {
-						wrFrame.dispose();
+						wrGUI.dispose();
 						clientGUI = new ClientGUI(dashCommand, this);
 						clientGUI.setDashboard(level, ind);
 						clientState = INGAME;
@@ -324,13 +305,16 @@ public class Client implements Runnable {
 					}
 					break;
 					
-				case("message"):
+				case("gameMessage"):
 					value2 = ((String) objectIn.readObject()).trim();
 					clientGUI.receiveMessage(value2);
 					break;
-					/*value2 = buffer.readLine().trim();
-					this.Client.sendMessage(this, value2);
-					break; */
+				
+				case("waitingRoomMessage"):
+					value2 = ((String) objectIn.readObject()).trim();
+					wrGUI.receiveMessage(value2);
+					break;
+
 				}
 			} catch (SocketException e){
 				//System.out.println("Socket closed. Quitting...");
@@ -345,11 +329,10 @@ public class Client implements Runnable {
 	}
 	
 	public void updateWaitingRoom(String username, String readyStatus){
-		String[] oldLines = playerTA.getText().split("\n");
+		String[] oldLines = wrGUI.playerTA.getText().split("\n");
 		Vector<String> newLines = new Vector<String>();
 		for(String line : oldLines){
 			String wrStatus = "";
-			//System.out.println("Line in playerTA: " + line);
 			if(line.contains(username)){
 				if(readyStatus.equals("ready")){
 					wrStatus = " ... Ready for Take-Off!";
@@ -371,12 +354,10 @@ public class Client implements Runnable {
 			else
 				newLines.add(line);
 		}
-		playerTA.setText("");
+		wrGUI.playerTA.setText("");
 		for(String line : newLines){
-			//System.out.println("New line: " + line);
-			playerTA.append(line + "\n");
+			wrGUI.playerTA.append(line + "\n");
 		}
-		//wrFrame.repaint();
 	}
 	
 	public static void main(String [] args) {

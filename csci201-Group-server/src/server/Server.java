@@ -257,7 +257,7 @@ public class Server implements Runnable{
 		lock.unlock();
 	}
 	
-	public void sendMessage(ServerThread serverthread, String msg){
+	public void sendGameMessage(ServerThread serverthread, String msg){
 		this.lock.lock();
 		if (msg.startsWith("/")){
 			//Indicates some sort of command
@@ -269,18 +269,47 @@ public class Server implements Runnable{
 						if (msg.contains(" ")){
 							//Has a message following, extract
 							msg = serverthread.getName() + " says <private>: " + msg.substring(msg.indexOf(" ")+1);
-							s.sendMessage(msg);
+							s.sendInGameMessage(msg);
 							this.lock.unlock();
 							return;
 						}
 					}
 				}
 			}
-			serverthread.sendMessage("Err: Message not formatted correctly");
+			serverthread.sendInGameMessage("Err: Message not formatted correctly");
 		}
 		else{
 			for (ServerThread s : playerThreads){
-				s.sendMessage(serverthread.getName() + "> " + msg);
+				s.sendInGameMessage(serverthread.getName() + "> " + msg);
+			}
+		}
+		this.lock.unlock();
+	}
+	
+	public void sendWaitingRoomMessage(ServerThread serverthread, String msg){
+		this.lock.lock();
+		if (msg.startsWith("/")){
+			//Indicates some sort of command
+			if (msg.startsWith("/msg") && msg.contains(" ")){
+				String player = msg.split(" ")[1];
+				for (ServerThread s : playerThreads){
+					if (s.getName().equals(player)){
+						msg = msg.substring(msg.indexOf(" ")+1);
+						if (msg.contains(" ")){
+							//Has a message following, extract
+							msg = serverthread.getName() + " says <private>: " + msg.substring(msg.indexOf(" ")+1);
+							s.sendWaitingRoomMessage(msg);
+							this.lock.unlock();
+							return;
+						}
+					}
+				}
+			}
+			serverthread.sendWaitingRoomMessage("Err: Message not formatted correctly");
+		}
+		else{
+			for (ServerThread s : playerThreads){
+				s.sendWaitingRoomMessage(serverthread.getName() + "> " + msg);
 			}
 		}
 		this.lock.unlock();
