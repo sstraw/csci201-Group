@@ -141,7 +141,7 @@ public class Server implements Runnable{
 		
 	//Returns how many points needed to "win" the level. Not sure how we want to do it yet so...
 	private int getLevelCap(){
-		return 10 * currentLevel;
+		return 8 * currentLevel;
 	}
 	
 	private int getMaxMisses(){
