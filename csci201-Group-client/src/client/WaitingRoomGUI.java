@@ -60,7 +60,8 @@ public class WaitingRoomGUI extends JFrame implements Serializable {
 		// waitingRoomChat will hold all chat messages
 		waitingRoomChat = new JTextArea();
 		waitingRoomChat.setWrapStyleWord(true);
-        waitingRoomChat.setLineWrap(true);      
+        waitingRoomChat.setLineWrap(true);  
+        waitingRoomChat.setFocusable(false);
 
 		waitingRoomChatScrollPane = new JScrollPane(waitingRoomChat);
 		waitingRoomChatScrollPane.setBorder(BorderFactory.createTitledBorder("Space Chatter:"));
@@ -113,7 +114,10 @@ public class WaitingRoomGUI extends JFrame implements Serializable {
 				      }
 		    		  else if(keys == KeyEvent.VK_BACK_SPACE){
 		    			  message = playerChat.getText();
-		    			  message = message.substring(0, message.length() - 1);
+		    			  if(message.length() > 1)
+		    				  message = message.substring(0, message.length() - 1);
+		    			  else
+		    				  message = "";
 		    			  playerChat.setText(message);
 		    		  }
 		    		  else{	playerChat.append(e.getKeyChar() + "");	  }	  }

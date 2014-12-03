@@ -57,7 +57,7 @@ public class Client implements Runnable {
 		displayLoginGUI();
 		// Establish connection to server
 		try {
-			s = new Socket("10.123.160.76", 55555);
+			s = new Socket("localhost", 55555);
 			this.objectCannon = new ObjectOutputStream(s.getOutputStream());
 			this.objectIn = new ObjectInputStream(s.getInputStream());
 			thread = new Thread(this);

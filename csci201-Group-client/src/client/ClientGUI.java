@@ -74,7 +74,10 @@ public class ClientGUI extends JFrame implements Serializable {
 				      }
 		    		  else if(keys == KeyEvent.VK_BACK_SPACE){
 		    			  message = playerChat.getText();
-		    			  message = message.substring(0, message.length() - 1);
+		    			  if(message.length() > 1)
+		    				  message = message.substring(0, message.length() - 1);
+		    			  else
+		    				  message = "";
 		    			  playerChat.setText(message);
 		    		  }
 		    		  else{	playerChat.append(e.getKeyChar() + "");	  }	  }
@@ -182,6 +185,7 @@ public class ClientGUI extends JFrame implements Serializable {
 		groupChat = new JTextArea();
 		groupChat.setWrapStyleWord(true);
         groupChat.setLineWrap(true);      
+        groupChat.setFocusable(false);
 
 		groupChatScrollPane = new JScrollPane(groupChat);
 		groupChatScrollPane.setBorder(BorderFactory.createTitledBorder("Space Chatter:"));
