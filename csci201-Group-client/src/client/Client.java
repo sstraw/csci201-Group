@@ -318,10 +318,10 @@ public class Client implements Runnable {
 
 				}
 			} catch (SocketException e){
-				//System.out.println("Socket closed. Quitting...");
+				System.out.println("Socket closed. Quitting...");
 				return;
 			} catch (IOException e) {
-				//System.out.println("Socket closed. Quitting...");
+				System.out.println("Socket closed. Quitting...");
 				return;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
