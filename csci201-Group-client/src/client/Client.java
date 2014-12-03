@@ -2,10 +2,7 @@ package client;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-<<<<<<< HEAD
 import java.awt.Component;
-=======
->>>>>>> branch 'master' of https://github.com/sstraw/csci201-Group
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -19,11 +16,8 @@ import java.util.Vector;
 import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.BorderFactory;
-<<<<<<< HEAD
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-=======
->>>>>>> branch 'master' of https://github.com/sstraw/csci201-Group
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -131,39 +125,6 @@ public class Client implements Runnable {
 		}
 	}
 	
-<<<<<<< HEAD
-	public void displayWaitingRoomGUI() {
-		JPanel wrPanel = new JPanel();
-		wrPanel.setLayout(new BorderLayout());
-		//playerTA = new JTextArea(username, 4, 20);
-		playerTA.setText(username);
-		//Font font = new Font("Arial Black", Font.BOLD, 14);
-		//playerTA.setFont(font);
-		//playerTA.setBackground(new Color(122, 141, 255));
-		playerTA.setEditable(false);
-		readyButton = new JButton("Ready");
-		wrPanel.add(playerTA, BorderLayout.CENTER);
-		wrPanel.add(readyButton, BorderLayout.SOUTH);
-		wrFrame = new JFrame("Waiting Room");
-		wrFrame.add(wrPanel);
-		wrFrame.setSize(300, 200);
-		wrFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		wrFrame.setLocationRelativeTo(null);
-		wrFrame.setVisible(true);
-		
-		readyButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				if (readyButton.getText().equals("Ready")) {
-					setReady(true);
-					readyButton.setText("Not Ready");
-				} else {
-					setReady(false);
-					readyButton.setText("Ready");
-				}
-			}
-		});
-	}
-	
 	/*public void displayGameOverGUI() {
 		JPanel goPanel = new JPanel();
 		goPanel.setLayout(new BorderLayout());
@@ -186,11 +147,11 @@ public class Client implements Runnable {
 		});
 		
 	}*/
-=======
+
 	private void displayWaitingRoomGUI() {
 		wrGUI = new WaitingRoomGUI(this);
 	}
->>>>>>> branch 'master' of https://github.com/sstraw/csci201-Group
+
 	
 	private void setPlayerName(){
 		lock.lock();
@@ -419,9 +380,8 @@ public class Client implements Runnable {
 					}
 					break;
 					
-<<<<<<< HEAD
 				case("scores"):
-					if (endFlag2) {
+					if (endFlag) {
 						int numUsers = ((Integer) objectIn.readObject());
 						String[] usernames = new String[numUsers];
 						int[] scores = new int[numUsers];
@@ -434,44 +394,10 @@ public class Client implements Runnable {
 						}
 						
 						GameOverGUI(usernames, scores, numUsers);
-						endFlag2 = false;
+						endFlag = false;
 					}
 					break;
-					
-=======
->>>>>>> branch 'master' of https://github.com/sstraw/csci201-Group
-				case("instruction completed"):
-					//System.out.println("Instruction completed");
-					
-					//do GUI shit
-					
-					/*
-					o = objectIn.readObject();
-					if (o instanceof Widget){
-						Widget w = (Widget) o;
-					//Assign instruction
-					}
-					else{
-						System.out.println("WRONG OBJECT RECEIVED");
-					}
-					break;
-					*/
-					break;
-				case("instruction failed"):
-					//System.out.println("Instruction failed");
-					//do GUI shit
-					
-					/*
-					o = objectIn.readObject();
-					if (o instanceof Widget){
-						Widget w = (Widget) o;
-						//Assign instruction
-					}
-					else{
-						System.out.println("WRONG OBJECT RECEIVED");
-					}
-					break; */
-					break;
+
 				case("game over"):
 					clientGUI.closeClientGUI();
 					if (endFlag) {
@@ -481,13 +407,6 @@ public class Client implements Runnable {
 								JOptionPane.ERROR_MESSAGE);	
 						endFlag=false;
 					}
-<<<<<<< HEAD
-					
-					//get users + scores
-					//set scoreTA
-					
-=======
->>>>>>> branch 'master' of https://github.com/sstraw/csci201-Group
 					break;
 					
 				case("gameMessage"):
