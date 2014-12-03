@@ -38,6 +38,7 @@ public class Client implements Runnable {
 
 	String hostIP;
 	String username;
+	String avatar;
 	boolean clientReady;
 	int clientState = Client.WAITINGROOM;
 	boolean endFlag = true;
@@ -62,8 +63,8 @@ public class Client implements Runnable {
 			this.objectIn = new ObjectInputStream(s.getInputStream());
 			thread = new Thread(this);
 			thread.start();
+			getAvatar();
 			setPlayerName();
-			
 		} catch (IOException ioe) {
 			//System.out.println("ioe in ChatClient: " + ioe.getMessage());
 		}
@@ -138,6 +139,17 @@ public class Client implements Runnable {
 		System.out.println("My username is: " + username);
 	}
 	
+	private void getAvatar(){
+		lock.lock();
+		try {
+			this.objectCannon.writeObject(new String("avatar"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally{
+			lock.unlock();
+		}
+	}
+	
 	public void setReady(boolean ready){
 		lock.lock();
 		try {
@@ -145,9 +157,11 @@ public class Client implements Runnable {
 			this.objectCannon.writeObject(new String("setState"));
 			if (ready){
 				this.objectCannon.writeObject(new String("ready"));
+				updateWaitingRoom(username, "ready");
 			}
 			else{
 				this.objectCannon.writeObject(new String("notready"));
+				updateWaitingRoom(username, "notready");
 			}
 			System.out.println("State sent");
 		} catch (IOException e) {
@@ -220,6 +234,7 @@ public class Client implements Runnable {
 			try {
 				String value1 = ((String) objectIn.readObject()).trim();;
 				String value2;
+				String value3;
 				Object o;
 				
 				//Switch values
@@ -227,14 +242,15 @@ public class Client implements Runnable {
 				
 				case("connected user"):
 					value2 = ((String) objectIn.readObject()).trim();
+					value3 = ((String) objectIn.readObject()).trim();
 					if (clientState == WAITINGROOM){
-						wrGUI.playerTA.append("\n" + value2 + " ... Preparing for launch!");
+						wrGUI.addUser(value2 + ": Preparing for launch!", value3);
 					}
 					break;
 					
 				case("setReady"):
 					value2 = ((String) objectIn.readObject()).trim();
-					String value3 = ((String) objectIn.readObject()).trim();
+					value3 = ((String) objectIn.readObject()).trim();
 					updateWaitingRoom(value3, value2);
 					break;
 					
@@ -315,7 +331,12 @@ public class Client implements Runnable {
 					value2 = ((String) objectIn.readObject()).trim();
 					wrGUI.receiveMessage(value2);
 					break;
-
+				
+				case("avatar"):
+					value2 = ((String) objectIn.readObject()).trim();
+					avatar = value2;
+					wrGUI.addUser(this.username + ": Preparing for launch!", avatar);
+					break;
 				}
 			} catch (SocketException e){
 				System.out.println("Socket closed. Quitting...");
@@ -330,34 +351,18 @@ public class Client implements Runnable {
 	}
 	
 	public void updateWaitingRoom(String username, String readyStatus){
-		String[] oldLines = wrGUI.playerTA.getText().split("\n");
-		Vector<String> newLines = new Vector<String>();
-		for(String line : oldLines){
-			String wrStatus = "";
-			if(line.contains(username)){
-				if(readyStatus.equals("ready")){
-					wrStatus = " ... Ready for Take-Off!";
-				}
-				else if (readyStatus.equals("notready")){
-					wrStatus = " ... Preparing for launch!";
-				}
-				newLines.add(username + wrStatus);
-			}
-			else if(line.contains(this.username)){
-				if(clientReady){
-					wrStatus = " ... Ready for Take-Off!";
-				}
-				else if (!clientReady){
-					wrStatus = " ... Preparing for launch!";
-				}
-				newLines.add(this.username + wrStatus);
-			}
-			else
-				newLines.add(line);
+		String wrStatus = "";
+		if(readyStatus.equals("ready")){
+			wrStatus = ": Ready for Take-Off!";
 		}
-		wrGUI.playerTA.setText("");
-		for(String line : newLines){
-			wrGUI.playerTA.append(line + "\n");
+		else if (readyStatus.equals("notready")){
+			wrStatus = ": Preparing for launch!";
+		}
+		
+		for(JLabel label : wrGUI.playerReadyLabels){	
+			if(label.getText().contains(username)){
+				wrGUI.updateLabel(username, username + wrStatus);
+			}
 		}
 	}
 	

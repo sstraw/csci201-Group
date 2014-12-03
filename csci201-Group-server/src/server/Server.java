@@ -22,6 +22,8 @@ public class Server implements Runnable{
 	private Vector<Widget> currentWidgets;
 	private Vector<Integer> dashboardIndexes;
 	private ServerSocket serversocket;
+	private Vector<String> avatarsAvailable;
+	private Vector<String> avatarsInUse;
 	private int gamestate;
 	private int currentLevel;
 	private int currentPoints;
@@ -33,6 +35,12 @@ public class Server implements Runnable{
 	public Server(){
 		playerThreads = new Vector<ServerThread>(4);
 		currentWidgets = new Vector<Widget>();
+		avatarsAvailable = new Vector<String>(4);
+		avatarsAvailable.add("avatar1");
+		avatarsAvailable.add("avatar2");
+		avatarsAvailable.add("avatar3");
+		avatarsAvailable.add("avatar4");
+		avatarsInUse = new Vector<String>();
 		gamestate = Server.WAITINGROOM;
 		generator = new Random();
 		try {
@@ -239,11 +247,34 @@ public class Server implements Runnable{
 		lock.lock();
 		for (ServerThread s : playerThreads){
 			if (!s.equals(caller)){
-				caller.newConnection(s.getName());
-				s.newConnection(caller.getName());
+				caller.newConnection(s.getName(), s.getAvatar());
+				s.newConnection(caller.getName(), caller.getAvatar());
 			}
 		}
 		lock.unlock();
+	}
+	
+	public void getAvatar(ServerThread caller){
+		lock.lock();
+		
+		try{
+			/*String playerAvatar = "";
+			while(playerAvatar == ""){
+				int avatarIndex = generator.nextInt(avatarsAvailable.size() - 0) + 0;
+				playerAvatar = avatarsAvailable.get(avatarIndex);
+				boolean duplicateAvatar = false;
+				for(ServerThread player : playerThreads){
+					if(player.getAvatar() == playerAvatar)
+						duplicateAvatar = true;
+				}
+				if(duplicateAvatar)
+					playerAvatar = "";
+			}*/
+			String playerAvatar = avatarsAvailable.remove(0);
+			caller.setAvatar(playerAvatar);
+		} finally{
+			lock.unlock();
+		}
 	}
 	
 	public void setReady(ServerThread caller){

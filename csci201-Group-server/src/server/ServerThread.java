@@ -21,6 +21,7 @@ public class ServerThread implements Runnable {
 	private ObjectOutputStream objectcannon;
 	private PrintWriter printwrite;
 	private String name;
+	private String avatar = "";
 	private boolean ready;
 	private boolean isRunning;
 	private Widget instruction;
@@ -60,6 +61,10 @@ public class ServerThread implements Runnable {
 	
 	public int getPoints(){
 		return instructions_completed;
+	}
+	
+	public String getAvatar(){
+		return avatar;
 	}
 	
 	public void sendInGameMessage(String msg){
@@ -228,12 +233,27 @@ public class ServerThread implements Runnable {
 		}
 	}
 	
-	public void newConnection(String s){
+	public void newConnection(String s, String avatar){
 		lock.lock();
 		try {
 			objectcannon.writeObject(new String("connected user"));
 			System.out.println(name + " being sent connected user: " + s);
 			objectcannon.writeObject(s);
+			objectcannon.writeObject(avatar);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally{
+			lock.unlock();
+		}
+	}
+	
+	public void setAvatar(String avatar){
+		lock.lock();
+		try {
+			this.avatar = avatar;
+			objectcannon.writeObject(new String("avatar"));
+			objectcannon.writeObject(this.avatar);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -296,7 +316,11 @@ public class ServerThread implements Runnable {
 					this.name = value2;
 					server.getPlayers(this);
 					break;
-
+					
+				case("avatar"):
+					server.getAvatar(this);
+					break;
+					
 				case("giveWidgets"):
 					try {
 						System.out.println("2 - Vector receiving");
@@ -309,8 +333,6 @@ public class ServerThread implements Runnable {
 					} catch (ClassNotFoundException cnfe) {
 						cnfe.printStackTrace();
 					}
-					
-					
 					break; 
 					
 				case("widgetChanged"):
